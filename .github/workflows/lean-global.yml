@@ -1,0 +1,63 @@
+name: Lean Global
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build full formalization
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: --wfail Formalization
+
+      - name: Generate graph artifacts
+        run: python scripts/generate_graph_artifacts.py
+
+      - name: Check graph artifacts are current
+        run: git diff --exit-code -- graph-artifacts
+
+      - name: Check explorer bridge artifacts exist
+        run: |
+          test -f graph-artifacts/lean-bridge-data.json
+          test -f graph-artifacts/lean-bridge-data.js
+          test -f graph-artifacts/thesis-svg/manifest.json
+
+      - name: Upload graph artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: graph-artifacts
+          path: graph-artifacts/
+
+      - name: Trigger explorer rebuild
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.DISPATCH_EXPLORER_TOKEN || secrets.EXPLORER_REPO_TOKEN }}
+          TARGET_REPOSITORY: TokeZinn/thesis-lean-explorer
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_RUN_ID: ${{ github.run_id }}
+        run: |
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "DISPATCH_EXPLORER_TOKEN is not configured; skipping explorer dispatch."
+            exit 0
+          fi
+
+          if gh api "repos/${TARGET_REPOSITORY}/dispatches" \
+            -f event_type=verification-artifacts-updated \
+            -f client_payload[source_repository]="${GITHUB_REPOSITORY}" \
+            -f client_payload[source_sha]="${SOURCE_SHA}" \
+            -f client_payload[source_run_id]="${SOURCE_RUN_ID}"; then
+            echo "Triggered explorer rebuild for ${TARGET_REPOSITORY}."
+          else
+            echo "::warning::Could not trigger explorer rebuild. Check that DISPATCH_EXPLORER_TOKEN is a fine-grained PAT scoped to ${TARGET_REPOSITORY} with Contents: read and write."
+          fi

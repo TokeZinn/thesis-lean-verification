@@ -1,0 +1,6 @@
+/.lake/
+/shelf/
+/ThesisTrace/
+/scripts/generate_thesis_trace.py
+*.zip
+*.tar.gz

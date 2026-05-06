@@ -1,0 +1,22 @@
+name: Lean Stochastic
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build stochastic section
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: --wfail Foundations.Stochastic.PointProcesses Foundations.Stochastic.PermutedTuples Foundations.Stochastic.TupleMeasures Foundations.Stochastic.KernelHilbert

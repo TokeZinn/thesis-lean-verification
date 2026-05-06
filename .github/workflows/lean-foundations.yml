@@ -1,0 +1,22 @@
+name: Lean Foundations
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build foundations section
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: --wfail Basic Foundations.Economics Foundations.External

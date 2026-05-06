@@ -1,0 +1,2513 @@
+{
+  "defn:disjoint-union": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 40,
+    "svg": "thesis-svg/defn__disjoint-union.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__disjoint-union.svg"
+  },
+  "prin:agent-actions": {
+    "env": "prin",
+    "source": "1 - theoretical foundations/1_economics.tex",
+    "line": 107,
+    "svg": "thesis-svg/prin__agent-actions.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prin__agent-actions.svg"
+  },
+  "prin:finitism": {
+    "env": "prin",
+    "source": "1 - theoretical foundations/1_economics.tex",
+    "line": 119,
+    "svg": "thesis-svg/prin__finitism.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prin__finitism.svg"
+  },
+  "prin:clearing": {
+    "env": "prin",
+    "source": "1 - theoretical foundations/1_economics.tex",
+    "line": 132,
+    "svg": "thesis-svg/prin__clearing.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prin__clearing.svg"
+  },
+  "exmp:adm-static": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 54,
+    "svg": "thesis-svg/exmp__adm-static.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__adm-static.svg"
+  },
+  "exmp:agent-adm-static": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 70,
+    "svg": "thesis-svg/exmp__agent-adm-static.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__agent-adm-static.svg"
+  },
+  "eq:agent-adm-static-inj": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 78,
+    "svg": "thesis-svg/eq__agent-adm-static-inj.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__agent-adm-static-inj.svg"
+  },
+  "exmp:adm-dyn": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 88,
+    "svg": "thesis-svg/exmp__adm-dyn.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__adm-dyn.svg"
+  },
+  "exmp:agent-adm-dyn": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 96,
+    "svg": "thesis-svg/exmp__agent-adm-dyn.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__agent-adm-dyn.svg"
+  },
+  "eq:agent-adm-dyn-1": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 106,
+    "svg": "thesis-svg/eq__agent-adm-dyn-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__agent-adm-dyn-1.svg"
+  },
+  "eq:agent-adm-dyn-2": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 106,
+    "svg": "thesis-svg/eq__agent-adm-dyn-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__agent-adm-dyn-2.svg"
+  },
+  "eq:agent-adm-dyn-3": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 106,
+    "svg": "thesis-svg/eq__agent-adm-dyn-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__agent-adm-dyn-3.svg"
+  },
+  "prop:disjoint-isomorphism": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 120,
+    "svg": "thesis-svg/prop__disjoint-isomorphism.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-isomorphism.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-isomorphism__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-isomorphism__proof.svg",
+    "proofLine": 130
+  },
+  "prop:disjoint-product": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 145,
+    "svg": "thesis-svg/prop__disjoint-product.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-product.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-product__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-product__proof.svg",
+    "proofLine": 155
+  },
+  "prop:disjoint-partial-order": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 187,
+    "svg": "thesis-svg/prop__disjoint-partial-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-partial-order.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-partial-order__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-partial-order__proof.svg",
+    "proofLine": 194
+  },
+  "exmp:partial-order-static-market": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 211,
+    "svg": "thesis-svg/exmp__partial-order-static-market.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__partial-order-static-market.svg"
+  },
+  "prop:disjoint-total-order": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 229,
+    "svg": "thesis-svg/prop__disjoint-total-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-total-order.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-total-order__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-total-order__proof.svg",
+    "proofLine": 236
+  },
+  "cor:strict-disjoint-total-order": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 266,
+    "svg": "thesis-svg/cor__strict-disjoint-total-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__strict-disjoint-total-order.svg"
+  },
+  "thm:szpilrajn": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 276,
+    "svg": "thesis-svg/thm__szpilrajn.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__szpilrajn.svg"
+  },
+  "exmp:total-order-static-market": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 285,
+    "svg": "thesis-svg/exmp__total-order-static-market.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__total-order-static-market.svg"
+  },
+  "exmp:total-order-dynamic-market": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 309,
+    "svg": "thesis-svg/exmp__total-order-dynamic-market.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__total-order-dynamic-market.svg"
+  },
+  "exmp:completing-order-agent-based-static-market": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 334,
+    "svg": "thesis-svg/exmp__completing-order-agent-based-static-market.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__completing-order-agent-based-static-market.svg"
+  },
+  "defn:disjoint-union-metrization": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 367,
+    "svg": "thesis-svg/defn__disjoint-union-metrization.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__disjoint-union-metrization.svg"
+  },
+  "eq:disjoint-metric": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 369,
+    "svg": "thesis-svg/eq__disjoint-metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-metric.svg"
+  },
+  "prop:disjoint-union-metrization": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 388,
+    "svg": "thesis-svg/prop__disjoint-union-metrization.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-union-metrization.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-union-metrization__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-union-metrization__proof.svg",
+    "proofLine": 391
+  },
+  "prop:disjoint-union-metric-properties": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 403,
+    "svg": "thesis-svg/prop__disjoint-union-metric-properties.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__disjoint-union-metric-properties.svg",
+    "proofSvg": "thesis-svg/prop__disjoint-union-metric-properties__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__disjoint-union-metric-properties__proof.svg",
+    "proofLine": 410
+  },
+  "property:disjoint-metric-1": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 405,
+    "svg": "thesis-svg/property__disjoint-metric-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-metric-1.svg"
+  },
+  "property:disjoint-metric-2": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 405,
+    "svg": "thesis-svg/property__disjoint-metric-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-metric-2.svg"
+  },
+  "thm:pasting-lemma": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 440,
+    "svg": "thesis-svg/thm__pasting-lemma.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__pasting-lemma.svg",
+    "proofSvg": "thesis-svg/thm__pasting-lemma__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__pasting-lemma__proof.svg",
+    "proofLine": 448
+  },
+  "eq:finite-delta-collapses-disjoint-metric": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 458,
+    "svg": "thesis-svg/eq__finite-delta-collapses-disjoint-metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__finite-delta-collapses-disjoint-metric.svg"
+  },
+  "thm:pasting-lemma-measurable": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 471,
+    "svg": "thesis-svg/thm__pasting-lemma-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__pasting-lemma-measurable.svg",
+    "proofSvg": "thesis-svg/thm__pasting-lemma-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__pasting-lemma-measurable__proof.svg",
+    "proofLine": 479
+  },
+  "defn:finite-subsets": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 515,
+    "svg": "thesis-svg/defn__finite-subsets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__finite-subsets.svg"
+  },
+  "prop:injection-into-finite-sets": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 528,
+    "svg": "thesis-svg/prop__injection-into-finite-sets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__injection-into-finite-sets.svg"
+  },
+  "prop:finite-sets-over-finite-set": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 534,
+    "svg": "thesis-svg/prop__finite-sets-over-finite-set.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-sets-over-finite-set.svg"
+  },
+  "prop:countable-finite-sets": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 542,
+    "svg": "thesis-svg/prop__countable-finite-sets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__countable-finite-sets.svg"
+  },
+  "defn:separable": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 561,
+    "svg": "thesis-svg/defn__separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__separable.svg"
+  },
+  "defn:Hausdorff-distance": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 567,
+    "svg": "thesis-svg/defn__Hausdorff-distance.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__Hausdorff-distance.svg"
+  },
+  "rem:hausdorff-convention": {
+    "env": "rem",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 575,
+    "svg": "thesis-svg/rem__hausdorff-convention.svg",
+    "repoPath": "graph-artifacts/thesis-svg/rem__hausdorff-convention.svg"
+  },
+  "thm:Hausdorff-finite-sets": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 588,
+    "svg": "thesis-svg/thm__Hausdorff-finite-sets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__Hausdorff-finite-sets.svg",
+    "proofSvg": "thesis-svg/thm__Hausdorff-finite-sets__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__Hausdorff-finite-sets__proof.svg",
+    "proofLine": 591
+  },
+  "prop:finite-separable": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 642,
+    "svg": "thesis-svg/prop__finite-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-separable.svg",
+    "proofSvg": "thesis-svg/prop__finite-separable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__finite-separable__proof.svg",
+    "proofLine": 645
+  },
+  "eq:separable-finite-bound": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 656,
+    "svg": "thesis-svg/eq__separable-finite-bound.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__separable-finite-bound.svg"
+  },
+  "prop:finite-set-cauchy": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 680,
+    "svg": "thesis-svg/prop__finite-set-cauchy.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-set-cauchy.svg",
+    "proofSvg": "thesis-svg/prop__finite-set-cauchy__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__finite-set-cauchy__proof.svg",
+    "proofLine": 687
+  },
+  "eq:cauchy-but-not": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 721,
+    "svg": "thesis-svg/eq__cauchy-but-not.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__cauchy-but-not.svg"
+  },
+  "defn:isolative": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 727,
+    "svg": "thesis-svg/defn__isolative.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__isolative.svg"
+  },
+  "prop:isolative-finite-sets-complete": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 743,
+    "svg": "thesis-svg/prop__isolative-finite-sets-complete.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__isolative-finite-sets-complete.svg",
+    "proofSvg": "thesis-svg/prop__isolative-finite-sets-complete__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__isolative-finite-sets-complete__proof.svg",
+    "proofLine": 746
+  },
+  "prop:finite-hausdorff-isolative": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 757,
+    "svg": "thesis-svg/prop__finite-hausdorff-isolative.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-hausdorff-isolative.svg",
+    "proofSvg": "thesis-svg/prop__finite-hausdorff-isolative__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__finite-hausdorff-isolative__proof.svg",
+    "proofLine": 760
+  },
+  "prop:finite-hausdorff-isolative-iff-isolative": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 778,
+    "svg": "thesis-svg/prop__finite-hausdorff-isolative-iff-isolative.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-hausdorff-isolative-iff-isolative.svg"
+  },
+  "defn:distinct-finite-sets": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 792,
+    "svg": "thesis-svg/defn__distinct-finite-sets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__distinct-finite-sets.svg"
+  },
+  "prop:index-augmented-hausdorff": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 801,
+    "svg": "thesis-svg/prop__index-augmented-hausdorff.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__index-augmented-hausdorff.svg"
+  },
+  "property:distinct-finite-complete": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 807,
+    "svg": "thesis-svg/property__distinct-finite-complete.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__distinct-finite-complete.svg"
+  },
+  "property:distinct-finite-separable": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 807,
+    "svg": "thesis-svg/property__distinct-finite-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__distinct-finite-separable.svg"
+  },
+  "thm:distinct-properties": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 801,
+    "svg": "thesis-svg/thm__distinct-properties.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__distinct-properties.svg"
+  },
+  "lem:helpful-distinct": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 815,
+    "svg": "thesis-svg/lem__helpful-distinct.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__helpful-distinct.svg",
+    "proofSvg": "thesis-svg/lem__helpful-distinct__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__helpful-distinct__proof.svg",
+    "proofLine": 825
+  },
+  "eq:bound-distinct-1": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 827,
+    "svg": "thesis-svg/eq__bound-distinct-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__bound-distinct-1.svg"
+  },
+  "eq:dinstinct-conseq-1": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 831,
+    "svg": "thesis-svg/eq__dinstinct-conseq-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__dinstinct-conseq-1.svg"
+  },
+  "eq:bound-distinct-2": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 835,
+    "svg": "thesis-svg/eq__bound-distinct-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__bound-distinct-2.svg"
+  },
+  "eq:dinstinct-conseq-2": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 839,
+    "svg": "thesis-svg/eq__dinstinct-conseq-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__dinstinct-conseq-2.svg"
+  },
+  "defn:tuple": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 886,
+    "svg": "thesis-svg/defn__tuple.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tuple.svg"
+  },
+  "defn:tuple-space": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 886,
+    "svg": "thesis-svg/defn__tuple-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tuple-space.svg"
+  },
+  "defn:tuple-length": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 897,
+    "svg": "thesis-svg/defn__tuple-length.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tuple-length.svg"
+  },
+  "defn:sorted-tuples": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 911,
+    "svg": "thesis-svg/defn__sorted-tuples.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorted-tuples.svg"
+  },
+  "prop:totally-ordered-tuple-sorted-iff-monotone": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 932,
+    "svg": "thesis-svg/prop__totally-ordered-tuple-sorted-iff-monotone.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__totally-ordered-tuple-sorted-iff-monotone.svg",
+    "proofSvg": "thesis-svg/prop__totally-ordered-tuple-sorted-iff-monotone__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__totally-ordered-tuple-sorted-iff-monotone__proof.svg",
+    "proofLine": 938
+  },
+  "defn:finite-permutations": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 967,
+    "svg": "thesis-svg/defn__finite-permutations.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__finite-permutations.svg"
+  },
+  "defn:sorting-permutations": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 989,
+    "svg": "thesis-svg/defn__sorting-permutations.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorting-permutations.svg"
+  },
+  "thm:permutation-exists": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 999,
+    "svg": "thesis-svg/thm__permutation-exists.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__permutation-exists.svg",
+    "proofSvg": "thesis-svg/thm__permutation-exists__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__permutation-exists__proof.svg",
+    "proofLine": 1003
+  },
+  "defn:sorting-map": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1022,
+    "svg": "thesis-svg/defn__sorting-map.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorting-map.svg"
+  },
+  "eq:sort-permute": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1024,
+    "svg": "thesis-svg/eq__sort-permute.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__sort-permute.svg"
+  },
+  "thm:sorting-exists": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1032,
+    "svg": "thesis-svg/thm__sorting-exists.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__sorting-exists.svg",
+    "proofSvg": "thesis-svg/thm__sorting-exists__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__sorting-exists__proof.svg",
+    "proofLine": 1035
+  },
+  "cor:unique-sorting-map-total-order": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1053,
+    "svg": "thesis-svg/cor__unique-sorting-map-total-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__unique-sorting-map-total-order.svg",
+    "proofSvg": "thesis-svg/cor__unique-sorting-map-total-order__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/cor__unique-sorting-map-total-order__proof.svg",
+    "proofLine": 1056
+  },
+  "cor:unique-and-idempotent-sort": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1100,
+    "svg": "thesis-svg/cor__unique-and-idempotent-sort.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__unique-and-idempotent-sort.svg"
+  },
+  "eq:sort-idempotent": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1102,
+    "svg": "thesis-svg/eq__sort-idempotent.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__sort-idempotent.svg"
+  },
+  "eq:sort-unique": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1102,
+    "svg": "thesis-svg/eq__sort-unique.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__sort-unique.svg"
+  },
+  "defn:index-comparable": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1112,
+    "svg": "thesis-svg/defn__index-comparable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__index-comparable.svg"
+  },
+  "defn:reflexive-transitive-closure": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1124,
+    "svg": "thesis-svg/defn__reflexive-transitive-closure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__reflexive-transitive-closure.svg"
+  },
+  "prop:transitive-closure-finite": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1140,
+    "svg": "thesis-svg/prop__transitive-closure-finite.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__transitive-closure-finite.svg"
+  },
+  "defn:connectivity-relation": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1149,
+    "svg": "thesis-svg/defn__connectivity-relation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__connectivity-relation.svg"
+  },
+  "prop:sim-equivalence": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1156,
+    "svg": "thesis-svg/prop__sim-equivalence.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__sim-equivalence.svg",
+    "proofSvg": "thesis-svg/prop__sim-equivalence__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__sim-equivalence__proof.svg",
+    "proofLine": 1159
+  },
+  "defn:segments": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1169,
+    "svg": "thesis-svg/defn__segments.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__segments.svg"
+  },
+  "prop:segments-partition-incomp": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1184,
+    "svg": "thesis-svg/prop__segments-partition-incomp.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__segments-partition-incomp.svg"
+  },
+  "defn:tau": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1200,
+    "svg": "thesis-svg/defn__tau.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tau.svg"
+  },
+  "prop:tau-injective": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1207,
+    "svg": "thesis-svg/prop__tau-injective.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__tau-injective.svg",
+    "proofSvg": "thesis-svg/prop__tau-injective__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__tau-injective__proof.svg",
+    "proofLine": 1210
+  },
+  "cor:connected-segments-totally-ordered-by-arrival-index": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1213,
+    "svg": "thesis-svg/cor__connected-segments-totally-ordered-by-arrival-index.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__connected-segments-totally-ordered-by-arrival-index.svg"
+  },
+  "lem:distinct-finite-set-natural-projection-injective": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1222,
+    "svg": "thesis-svg/lem__distinct-finite-set-natural-projection-injective.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__distinct-finite-set-natural-projection-injective.svg",
+    "proofSvg": "thesis-svg/lem__distinct-finite-set-natural-projection-injective__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__distinct-finite-set-natural-projection-injective__proof.svg",
+    "proofLine": 1225
+  },
+  "defn:sorting-finite-sets": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1233,
+    "svg": "thesis-svg/defn__sorting-finite-sets.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorting-finite-sets.svg"
+  },
+  "defn:minimum-sorting-rule": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1262,
+    "svg": "thesis-svg/defn__minimum-sorting-rule.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__minimum-sorting-rule.svg"
+  },
+  "prop:minimum-sorting-map-is-sorting-map": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1283,
+    "svg": "thesis-svg/prop__minimum-sorting-map-is-sorting-map.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__minimum-sorting-map-is-sorting-map.svg",
+    "proofSvg": "thesis-svg/prop__minimum-sorting-map-is-sorting-map__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__minimum-sorting-map-is-sorting-map__proof.svg",
+    "proofLine": 1287
+  },
+  "cor:minimum-sorting-map-idempotent": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1318,
+    "svg": "thesis-svg/cor__minimum-sorting-map-idempotent.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__minimum-sorting-map-idempotent.svg"
+  },
+  "prop:graph-injects": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1338,
+    "svg": "thesis-svg/prop__graph-injects.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__graph-injects.svg"
+  },
+  "thm:tuple-space-metrization": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1346,
+    "svg": "thesis-svg/thm__tuple-space-metrization.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__tuple-space-metrization.svg",
+    "proofSvg": "thesis-svg/thm__tuple-space-metrization__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__tuple-space-metrization__proof.svg",
+    "proofLine": 1354
+  },
+  "eq:sorted-tuple-separable": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1367,
+    "svg": "thesis-svg/eq__sorted-tuple-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__sorted-tuple-separable.svg"
+  },
+  "eq:tuple-collapse": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1362,
+    "svg": "thesis-svg/eq__tuple-collapse.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__tuple-collapse.svg"
+  },
+  "eq:tuple-complete": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1367,
+    "svg": "thesis-svg/eq__tuple-complete.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__tuple-complete.svg"
+  },
+  "eq:tuple-length": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1362,
+    "svg": "thesis-svg/eq__tuple-length.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__tuple-length.svg"
+  },
+  "eq:tuple-separable": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1367,
+    "svg": "thesis-svg/eq__tuple-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__tuple-separable.svg"
+  },
+  "thm:tuple-space-properties": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1360,
+    "svg": "thesis-svg/thm__tuple-space-properties.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__tuple-space-properties.svg",
+    "proofSvg": "thesis-svg/thm__tuple-space-properties__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__tuple-space-properties__proof.svg",
+    "proofLine": 1374
+  },
+  "eq:bounded-by-one": {
+    "env": "align",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1386,
+    "svg": "thesis-svg/eq__bounded-by-one.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__bounded-by-one.svg"
+  },
+  "cor:tuple-metrization": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1499,
+    "svg": "thesis-svg/cor__tuple-metrization.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__tuple-metrization.svg"
+  },
+  "prop:truncated-metric-equivalent-topology": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1513,
+    "svg": "thesis-svg/prop__truncated-metric-equivalent-topology.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__truncated-metric-equivalent-topology.svg"
+  },
+  "property:continuous-iff": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1531,
+    "svg": "thesis-svg/property__continuous-iff.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__continuous-iff.svg"
+  },
+  "property:continuous-iff-restricted": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1531,
+    "svg": "thesis-svg/property__continuous-iff-restricted.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__continuous-iff-restricted.svg"
+  },
+  "property:measurable-iff": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1531,
+    "svg": "thesis-svg/property__measurable-iff.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__measurable-iff.svg"
+  },
+  "property:measurable-iff-restricted": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1531,
+    "svg": "thesis-svg/property__measurable-iff-restricted.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__measurable-iff-restricted.svg"
+  },
+  "thm:the-standard-machinery": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1529,
+    "svg": "thesis-svg/thm__the-standard-machinery.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__the-standard-machinery.svg",
+    "proofSvg": "thesis-svg/thm__the-standard-machinery__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__the-standard-machinery__proof.svg",
+    "proofLine": 1540
+  },
+  "exmp:sort-discont": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1571,
+    "svg": "thesis-svg/exmp__sort-discont.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__sort-discont.svg"
+  },
+  "thm:measurable-partition": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1603,
+    "svg": "thesis-svg/thm__measurable-partition.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__measurable-partition.svg",
+    "proofSvg": "thesis-svg/thm__measurable-partition__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__measurable-partition__proof.svg",
+    "proofLine": 1610
+  },
+  "defn:permutation-map": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1629,
+    "svg": "thesis-svg/defn__permutation-map.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__permutation-map.svg"
+  },
+  "prop:permuting-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1642,
+    "svg": "thesis-svg/prop__permuting-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__permuting-continuous.svg",
+    "proofSvg": "thesis-svg/prop__permuting-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__permuting-continuous__proof.svg",
+    "proofLine": 1649
+  },
+  "prop:permutations-countable": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1671,
+    "svg": "thesis-svg/prop__permutations-countable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__permutations-countable.svg",
+    "proofSvg": "thesis-svg/prop__permutations-countable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__permutations-countable__proof.svg",
+    "proofLine": 1674
+  },
+  "defn:sorting-valid-elements": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1684,
+    "svg": "thesis-svg/defn__sorting-valid-elements.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorting-valid-elements.svg"
+  },
+  "cor:tuple-space-covered-by-sorting-valid-elements": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1694,
+    "svg": "thesis-svg/cor__tuple-space-covered-by-sorting-valid-elements.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__tuple-space-covered-by-sorting-valid-elements.svg"
+  },
+  "exmp:equal-real-tuple-nonunique-sorting-permutations": {
+    "env": "exmp",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1707,
+    "svg": "thesis-svg/exmp__equal-real-tuple-nonunique-sorting-permutations.svg",
+    "repoPath": "graph-artifacts/thesis-svg/exmp__equal-real-tuple-nonunique-sorting-permutations.svg"
+  },
+  "cor:local-continuity-sorting": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1720,
+    "svg": "thesis-svg/cor__local-continuity-sorting.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__local-continuity-sorting.svg"
+  },
+  "lem:permutations-inherit-order": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1731,
+    "svg": "thesis-svg/lem__permutations-inherit-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__permutations-inherit-order.svg"
+  },
+  "lem:sorting-valid-first-choice-partition-covers": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1745,
+    "svg": "thesis-svg/lem__sorting-valid-first-choice-partition-covers.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__sorting-valid-first-choice-partition-covers.svg"
+  },
+  "prop:induced-sorting": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1758,
+    "svg": "thesis-svg/prop__induced-sorting.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__induced-sorting.svg"
+  },
+  "prop:measurable-partition-sorting": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1773,
+    "svg": "thesis-svg/prop__measurable-partition-sorting.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__measurable-partition-sorting.svg",
+    "proofSvg": "thesis-svg/prop__measurable-partition-sorting__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__measurable-partition-sorting__proof.svg",
+    "proofLine": 1780
+  },
+  "thm:measurable-sorting-exists": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1808,
+    "svg": "thesis-svg/thm__measurable-sorting-exists.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__measurable-sorting-exists.svg",
+    "proofSvg": "thesis-svg/thm__measurable-sorting-exists__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__measurable-sorting-exists__proof.svg",
+    "proofLine": 1811
+  },
+  "cor:many-measurable-sorting-exists": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1817,
+    "svg": "thesis-svg/cor__many-measurable-sorting-exists.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__many-measurable-sorting-exists.svg",
+    "proofSvg": "thesis-svg/cor__many-measurable-sorting-exists__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/cor__many-measurable-sorting-exists__proof.svg",
+    "proofLine": 1820
+  },
+  "thm:minimal-sorting-measurable": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 1830,
+    "svg": "thesis-svg/thm__minimal-sorting-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__minimal-sorting-measurable.svg",
+    "proofSvg": "thesis-svg/thm__minimal-sorting-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__minimal-sorting-measurable__proof.svg",
+    "proofLine": 1833
+  },
+  "defn:concat-tuple": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 8,
+    "svg": "thesis-svg/defn__concat-tuple.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__concat-tuple.svg"
+  },
+  "defn:sorted-tuple-add": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 30,
+    "svg": "thesis-svg/defn__sorted-tuple-add.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorted-tuple-add.svg"
+  },
+  "prop:tuple-monoid": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 43,
+    "svg": "thesis-svg/prop__tuple-monoid.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__tuple-monoid.svg",
+    "proofSvg": "thesis-svg/prop__tuple-monoid__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__tuple-monoid__proof.svg",
+    "proofLine": 46
+  },
+  "defn:pairing": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 77,
+    "svg": "thesis-svg/defn__pairing.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__pairing.svg"
+  },
+  "cor:pairing-finite-set-is-sorted-tuple": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 85,
+    "svg": "thesis-svg/cor__pairing-finite-set-is-sorted-tuple.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__pairing-finite-set-is-sorted-tuple.svg"
+  },
+  "defn:reindex": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 89,
+    "svg": "thesis-svg/defn__reindex.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__reindex.svg"
+  },
+  "defn:cancel": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 109,
+    "svg": "thesis-svg/defn__cancel.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__cancel.svg"
+  },
+  "defn:sorted-cancel": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 128,
+    "svg": "thesis-svg/defn__sorted-cancel.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__sorted-cancel.svg"
+  },
+  "cor:cancel-closure-sorted": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 139,
+    "svg": "thesis-svg/cor__cancel-closure-sorted.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__cancel-closure-sorted.svg"
+  },
+  "defn:modification": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 149,
+    "svg": "thesis-svg/defn__modification.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__modification.svg"
+  },
+  "property:cancel-continuous": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 182,
+    "svg": "thesis-svg/property__cancel-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__cancel-continuous.svg"
+  },
+  "property:concat-continuous": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 182,
+    "svg": "thesis-svg/property__concat-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__concat-continuous.svg"
+  },
+  "property:modification-continuous": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 182,
+    "svg": "thesis-svg/property__modification-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__modification-continuous.svg"
+  },
+  "thm:analytic-properties-actions": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 174,
+    "svg": "thesis-svg/thm__analytic-properties-actions.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__analytic-properties-actions.svg",
+    "proofSvg": "thesis-svg/thm__analytic-properties-actions__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__analytic-properties-actions__proof.svg",
+    "proofLine": 188
+  },
+  "cor:sorted-operations-measurable": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 282,
+    "svg": "thesis-svg/cor__sorted-operations-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__sorted-operations-measurable.svg",
+    "proofSvg": "thesis-svg/cor__sorted-operations-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/cor__sorted-operations-measurable__proof.svg",
+    "proofLine": 298
+  },
+  "defn:actions": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 305,
+    "svg": "thesis-svg/defn__actions.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__actions.svg"
+  },
+  "defn:composite-actions": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 321,
+    "svg": "thesis-svg/defn__composite-actions.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__composite-actions.svg"
+  },
+  "eq:recursive-application": {
+    "env": "align",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 346,
+    "svg": "thesis-svg/eq__recursive-application.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__recursive-application.svg"
+  },
+  "cor:action-metrization": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 367,
+    "svg": "thesis-svg/cor__action-metrization.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__action-metrization.svg",
+    "proofSvg": "thesis-svg/cor__action-metrization__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/cor__action-metrization__proof.svg",
+    "proofLine": 389
+  },
+  "prop:application-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 397,
+    "svg": "thesis-svg/prop__application-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__application-continuous.svg",
+    "proofSvg": "thesis-svg/prop__application-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__application-continuous__proof.svg",
+    "proofLine": 404
+  },
+  "thm:composite-action-metric": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 408,
+    "svg": "thesis-svg/thm__composite-action-metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__composite-action-metric.svg",
+    "proofSvg": "thesis-svg/thm__composite-action-metric__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__composite-action-metric__proof.svg",
+    "proofLine": 415
+  },
+  "thm:composite-application-continuous": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 420,
+    "svg": "thesis-svg/thm__composite-application-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__composite-application-continuous.svg",
+    "proofSvg": "thesis-svg/thm__composite-application-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__composite-application-continuous__proof.svg",
+    "proofLine": 427
+  },
+  "eq:recursive-application-composite": {
+    "env": "align",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 422,
+    "svg": "thesis-svg/eq__recursive-application-composite.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__recursive-application-composite.svg"
+  },
+  "prop:composition-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 23,
+    "svg": "thesis-svg/prop__composition-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__composition-continuous.svg"
+  },
+  "cor:filter": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 52,
+    "svg": "thesis-svg/cor__filter.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__filter.svg"
+  },
+  "prop:characteristic-functions-tuple": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 60,
+    "svg": "thesis-svg/prop__characteristic-functions-tuple.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__characteristic-functions-tuple.svg",
+    "proofSvg": "thesis-svg/prop__characteristic-functions-tuple__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__characteristic-functions-tuple__proof.svg",
+    "proofLine": 67
+  },
+  "cor:measurable-index-filter-for-countable-borel-family": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 96,
+    "svg": "thesis-svg/cor__measurable-index-filter-for-countable-borel-family.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__measurable-index-filter-for-countable-borel-family.svg"
+  },
+  "defn:tuple-projection": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 116,
+    "svg": "thesis-svg/defn__tuple-projection.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tuple-projection.svg"
+  },
+  "prop:tuple-projection-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 136,
+    "svg": "thesis-svg/prop__tuple-projection-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__tuple-projection-continuous.svg",
+    "proofSvg": "thesis-svg/prop__tuple-projection-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__tuple-projection-continuous__proof.svg",
+    "proofLine": 144
+  },
+  "defn:separation-operators": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 192,
+    "svg": "thesis-svg/defn__separation-operators.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__separation-operators.svg"
+  },
+  "prop:separation-1": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 229,
+    "svg": "thesis-svg/prop__separation-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__separation-1.svg",
+    "proofSvg": "thesis-svg/prop__separation-1__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__separation-1__proof.svg",
+    "proofLine": 236
+  },
+  "prop:separation-2": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 229,
+    "svg": "thesis-svg/prop__separation-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__separation-2.svg",
+    "proofSvg": "thesis-svg/prop__separation-2__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__separation-2__proof.svg",
+    "proofLine": 236
+  },
+  "prop:separation-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 229,
+    "svg": "thesis-svg/prop__separation-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__separation-continuous.svg",
+    "proofSvg": "thesis-svg/prop__separation-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__separation-continuous__proof.svg",
+    "proofLine": 236
+  },
+  "eq:minimal-sort": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 320,
+    "svg": "thesis-svg/eq__minimal-sort.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__minimal-sort.svg"
+  },
+  "eq:permute-pointwise": {
+    "env": "align",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 322,
+    "svg": "thesis-svg/eq__permute-pointwise.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__permute-pointwise.svg"
+  },
+  "lem:tuple-space-measurable-2": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 335,
+    "svg": "thesis-svg/lem__tuple-space-measurable-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__tuple-space-measurable-2.svg",
+    "proofSvg": "thesis-svg/lem__tuple-space-measurable-2__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__tuple-space-measurable-2__proof.svg",
+    "proofLine": 338
+  },
+  "prop:minimal-sorting-measurable": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 342,
+    "svg": "thesis-svg/prop__minimal-sorting-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__minimal-sorting-measurable.svg",
+    "proofSvg": "thesis-svg/prop__minimal-sorting-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__minimal-sorting-measurable__proof.svg",
+    "proofLine": 345
+  },
+  "lem:cumulative-summation-continuous": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 403,
+    "svg": "thesis-svg/lem__cumulative-summation-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__cumulative-summation-continuous.svg",
+    "proofSvg": "thesis-svg/lem__cumulative-summation-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__cumulative-summation-continuous__proof.svg",
+    "proofLine": 411
+  },
+  "eq:index-mapping": {
+    "env": "align",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 435,
+    "svg": "thesis-svg/eq__index-mapping.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__index-mapping.svg"
+  },
+  "thm:index-measurable": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 452,
+    "svg": "thesis-svg/thm__index-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__index-measurable.svg"
+  },
+  "lem:increasing-decreasing-measurable": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 456,
+    "svg": "thesis-svg/lem__increasing-decreasing-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__increasing-decreasing-measurable.svg",
+    "proofSvg": "thesis-svg/lem__increasing-decreasing-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__increasing-decreasing-measurable__proof.svg",
+    "proofLine": 467
+  },
+  "lem:bounded-sets-measurable": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 487,
+    "svg": "thesis-svg/lem__bounded-sets-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__bounded-sets-measurable.svg",
+    "proofSvg": "thesis-svg/lem__bounded-sets-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__bounded-sets-measurable__proof.svg",
+    "proofLine": 498
+  },
+  "thm:equilibrium-quantity-measurable": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/4_market_clearing.tex",
+    "line": 565,
+    "svg": "thesis-svg/thm__equilibrium-quantity-measurable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__equilibrium-quantity-measurable.svg",
+    "proofSvg": "thesis-svg/thm__equilibrium-quantity-measurable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__equilibrium-quantity-measurable__proof.svg",
+    "proofLine": 580
+  },
+  "eq:prelim-pp": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 13,
+    "svg": "thesis-svg/eq__prelim-pp.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__prelim-pp.svg"
+  },
+  "eq:finite-measures": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 23,
+    "svg": "thesis-svg/eq__finite-measures.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__finite-measures.svg"
+  },
+  "eq:finite-integer-measures": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 27,
+    "svg": "thesis-svg/eq__finite-integer-measures.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__finite-integer-measures.svg"
+  },
+  "defn:weak-convergence-finite-measures": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 31,
+    "svg": "thesis-svg/defn__weak-convergence-finite-measures.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__weak-convergence-finite-measures.svg"
+  },
+  "eq:epsilon-extension": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 35,
+    "svg": "thesis-svg/eq__epsilon-extension.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__epsilon-extension.svg"
+  },
+  "thm:prokhorov-metric-weak-convergence-polish": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 39,
+    "svg": "thesis-svg/thm__prokhorov-metric-weak-convergence-polish.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__prokhorov-metric-weak-convergence-polish.svg"
+  },
+  "thm:sufficient-decomposition": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 52,
+    "svg": "thesis-svg/thm__sufficient-decomposition.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__sufficient-decomposition.svg"
+  },
+  "eq:lem-helpful-point-process-1": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 66,
+    "svg": "thesis-svg/eq__lem-helpful-point-process-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__lem-helpful-point-process-1.svg"
+  },
+  "eq:lem-helpful-point-process-2": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 66,
+    "svg": "thesis-svg/eq__lem-helpful-point-process-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__lem-helpful-point-process-2.svg"
+  },
+  "eq:lem-helpful-point-process-3": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 66,
+    "svg": "thesis-svg/eq__lem-helpful-point-process-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__lem-helpful-point-process-3.svg"
+  },
+  "lem:helpful-point-process": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 64,
+    "svg": "thesis-svg/lem__helpful-point-process.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__helpful-point-process.svg",
+    "proofSvg": "thesis-svg/lem__helpful-point-process__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__helpful-point-process__proof.svg",
+    "proofLine": 72
+  },
+  "cor:measures-coincide": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 94,
+    "svg": "thesis-svg/cor__measures-coincide.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__measures-coincide.svg",
+    "proofSvg": "thesis-svg/cor__measures-coincide__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/cor__measures-coincide__proof.svg",
+    "proofLine": 105
+  },
+  "lem:disintegration-lemma": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 112,
+    "svg": "thesis-svg/lem__disintegration-lemma.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__disintegration-lemma.svg",
+    "proofSvg": "thesis-svg/lem__disintegration-lemma__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__disintegration-lemma__proof.svg",
+    "proofLine": 135
+  },
+  "defn:permutative-equality": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 275,
+    "svg": "thesis-svg/defn__permutative-equality.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__permutative-equality.svg"
+  },
+  "prop:perm-equal-equiv": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 283,
+    "svg": "thesis-svg/prop__perm-equal-equiv.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__perm-equal-equiv.svg",
+    "proofSvg": "thesis-svg/prop__perm-equal-equiv__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__perm-equal-equiv__proof.svg",
+    "proofLine": 286
+  },
+  "defn:permuted-tuple-quotient-space": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 308,
+    "svg": "thesis-svg/defn__permuted-tuple-quotient-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__permuted-tuple-quotient-space.svg"
+  },
+  "prop:choosing-a-permutation": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 320,
+    "svg": "thesis-svg/prop__choosing-a-permutation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__choosing-a-permutation.svg",
+    "proofSvg": "thesis-svg/prop__choosing-a-permutation__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__choosing-a-permutation__proof.svg",
+    "proofLine": 323
+  },
+  "prop:finite-equivalence-classes": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 333,
+    "svg": "thesis-svg/prop__finite-equivalence-classes.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__finite-equivalence-classes.svg",
+    "proofSvg": "thesis-svg/prop__finite-equivalence-classes__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__finite-equivalence-classes__proof.svg",
+    "proofLine": 339
+  },
+  "defn:permuted-tuple-hausdorff-distance": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 343,
+    "svg": "thesis-svg/defn__permuted-tuple-hausdorff-distance.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__permuted-tuple-hausdorff-distance.svg"
+  },
+  "eq:special-case-permuted-hausdorff": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 360,
+    "svg": "thesis-svg/eq__special-case-permuted-hausdorff.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__special-case-permuted-hausdorff.svg"
+  },
+  "thm:permuted-tuple-hausdorff-metric-complete-separable": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 364,
+    "svg": "thesis-svg/thm__permuted-tuple-hausdorff-metric-complete-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__permuted-tuple-hausdorff-metric-complete-separable.svg",
+    "proofSvg": "thesis-svg/thm__permuted-tuple-hausdorff-metric-complete-separable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__permuted-tuple-hausdorff-metric-complete-separable__proof.svg",
+    "proofLine": 371
+  },
+  "defn:tuple-induced-integer-valued-measure": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 407,
+    "svg": "thesis-svg/defn__tuple-induced-integer-valued-measure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__tuple-induced-integer-valued-measure.svg"
+  },
+  "prop:tuple-induced-measure-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 448,
+    "svg": "thesis-svg/prop__tuple-induced-measure-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__tuple-induced-measure-continuous.svg",
+    "proofSvg": "thesis-svg/prop__tuple-induced-measure-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__tuple-induced-measure-continuous__proof.svg",
+    "proofLine": 455
+  },
+  "prop:tuple-measure-surjective": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 491,
+    "svg": "thesis-svg/prop__tuple-measure-surjective.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__tuple-measure-surjective.svg",
+    "proofSvg": "thesis-svg/prop__tuple-measure-surjective__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__tuple-measure-surjective__proof.svg",
+    "proofLine": 494
+  },
+  "cor:tuple-induced-measure-permutation-invariant": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 515,
+    "svg": "thesis-svg/cor__tuple-induced-measure-permutation-invariant.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__tuple-induced-measure-permutation-invariant.svg"
+  },
+  "prop:permuted-tuple-measure-map-bijective": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 522,
+    "svg": "thesis-svg/prop__permuted-tuple-measure-map-bijective.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__permuted-tuple-measure-map-bijective.svg",
+    "proofSvg": "thesis-svg/prop__permuted-tuple-measure-map-bijective__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__permuted-tuple-measure-map-bijective__proof.svg",
+    "proofLine": 529
+  },
+  "prop:inverse-permuted-tuple-measure-continuous": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 559,
+    "svg": "thesis-svg/prop__inverse-permuted-tuple-measure-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__inverse-permuted-tuple-measure-continuous.svg",
+    "proofSvg": "thesis-svg/prop__inverse-permuted-tuple-measure-continuous__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__inverse-permuted-tuple-measure-continuous__proof.svg",
+    "proofLine": 562
+  },
+  "thm:integer-measures-tuples-homeomorphic": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 635,
+    "svg": "thesis-svg/thm__integer-measures-tuples-homeomorphic.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__integer-measures-tuples-homeomorphic.svg"
+  },
+  "lem:measurable-enumeration": {
+    "env": "lem",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 639,
+    "svg": "thesis-svg/lem__measurable-enumeration.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__measurable-enumeration.svg"
+  },
+  "thm:point-process-tuple": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 648,
+    "svg": "thesis-svg/thm__point-process-tuple.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__point-process-tuple.svg",
+    "proofSvg": "thesis-svg/thm__point-process-tuple__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__point-process-tuple__proof.svg",
+    "proofLine": 655
+  },
+  "defn:functional-and-operator": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 715,
+    "svg": "thesis-svg/defn__functional-and-operator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__functional-and-operator.svg"
+  },
+  "defn:weak-linear-operator": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 721,
+    "svg": "thesis-svg/defn__weak-linear-operator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__weak-linear-operator.svg"
+  },
+  "defn:convex-cone": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 763,
+    "svg": "thesis-svg/defn__convex-cone.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__convex-cone.svg"
+  },
+  "defn:weakly-convex-operator": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 770,
+    "svg": "thesis-svg/defn__weakly-convex-operator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__weakly-convex-operator.svg"
+  },
+  "prop:phi-subspace": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 777,
+    "svg": "thesis-svg/prop__phi-subspace.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__phi-subspace.svg"
+  },
+  "prop:phi-extends": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 781,
+    "svg": "thesis-svg/prop__phi-extends.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__phi-extends.svg"
+  },
+  "defn:function-kernel-quotient-space": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 789,
+    "svg": "thesis-svg/defn__function-kernel-quotient-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__function-kernel-quotient-space.svg"
+  },
+  "prop:function-kernel-quotient-injective-extension": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 800,
+    "svg": "thesis-svg/prop__function-kernel-quotient-injective-extension.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__function-kernel-quotient-injective-extension.svg",
+    "proofSvg": "thesis-svg/prop__function-kernel-quotient-injective-extension__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__function-kernel-quotient-injective-extension__proof.svg",
+    "proofLine": 803
+  },
+  "thm:weak-linear-transport-vector-space-structure": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 814,
+    "svg": "thesis-svg/thm__weak-linear-transport-vector-space-structure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__weak-linear-transport-vector-space-structure.svg",
+    "proofSvg": "thesis-svg/thm__weak-linear-transport-vector-space-structure__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__weak-linear-transport-vector-space-structure__proof.svg",
+    "proofLine": 825
+  },
+  "cor:weak-convex-transport-convex-cone-structure": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 828,
+    "svg": "thesis-svg/cor__weak-convex-transport-convex-cone-structure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__weak-convex-transport-convex-cone-structure.svg"
+  },
+  "prop:weak-linear-kernel-inner-product-space": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 840,
+    "svg": "thesis-svg/prop__weak-linear-kernel-inner-product-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__weak-linear-kernel-inner-product-space.svg",
+    "proofSvg": "thesis-svg/prop__weak-linear-kernel-inner-product-space__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__weak-linear-kernel-inner-product-space__proof.svg",
+    "proofLine": 847
+  },
+  "defn:inner-product-kernel-space": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 855,
+    "svg": "thesis-svg/defn__inner-product-kernel-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__inner-product-kernel-space.svg"
+  },
+  "prop:kernel-space-hilbert-iff-image-closed": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 863,
+    "svg": "thesis-svg/prop__kernel-space-hilbert-iff-image-closed.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__kernel-space-hilbert-iff-image-closed.svg"
+  },
+  "cor:bijective-weak-linear-transport-hilbert-structure": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 867,
+    "svg": "thesis-svg/cor__bijective-weak-linear-transport-hilbert-structure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__bijective-weak-linear-transport-hilbert-structure.svg"
+  },
+  "prop:kernel-space-separable": {
+    "env": "prop",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 871,
+    "svg": "thesis-svg/prop__kernel-space-separable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__kernel-space-separable.svg",
+    "proofSvg": "thesis-svg/prop__kernel-space-separable__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__kernel-space-separable__proof.svg",
+    "proofLine": 874
+  },
+  "defn:completed-kernel-space": {
+    "env": "defn",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 884,
+    "svg": "thesis-svg/defn__completed-kernel-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__completed-kernel-space.svg"
+  },
+  "thm:closed-convex-cone-closure-projection": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 893,
+    "svg": "thesis-svg/thm__closed-convex-cone-closure-projection.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__closed-convex-cone-closure-projection.svg"
+  },
+  "thm:grothendieck-vector-space-from-convex-cone": {
+    "env": "thm",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 912,
+    "svg": "thesis-svg/thm__grothendieck-vector-space-from-convex-cone.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__grothendieck-vector-space-from-convex-cone.svg",
+    "proofSvg": "thesis-svg/thm__grothendieck-vector-space-from-convex-cone__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__grothendieck-vector-space-from-convex-cone__proof.svg",
+    "proofLine": 930
+  },
+  "thm:grothendieck-vectorization-is-span": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 1217,
+    "svg": "thesis-svg/thm__grothendieck-vectorization-is-span.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__grothendieck-vectorization-is-span.svg"
+  },
+  "cor:grothendieck-vectorization-inner-product-space": {
+    "env": "cor",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 1230,
+    "svg": "thesis-svg/cor__grothendieck-vectorization-inner-product-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__grothendieck-vectorization-inner-product-space.svg"
+  },
+  "eq:da-order-space": {
+    "env": "align",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 33,
+    "svg": "thesis-svg/eq__da-order-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__da-order-space.svg"
+  },
+  "eq:minimal-representation": {
+    "env": "align",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 108,
+    "svg": "thesis-svg/eq__minimal-representation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__minimal-representation.svg"
+  },
+  "eq:minimal-rep-order": {
+    "env": "align",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 118,
+    "svg": "thesis-svg/eq__minimal-rep-order.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__minimal-rep-order.svg"
+  },
+  "eq:inducing-points": {
+    "env": "align",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 148,
+    "svg": "thesis-svg/eq__inducing-points.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__inducing-points.svg"
+  },
+  "defn:parametrization-operator": {
+    "env": "defn",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 165,
+    "svg": "thesis-svg/defn__parametrization-operator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__parametrization-operator.svg"
+  },
+  "prop:weakly-convex": {
+    "env": "prop",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+    "line": 186,
+    "svg": "thesis-svg/prop__weakly-convex.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__weakly-convex.svg",
+    "proofSvg": "thesis-svg/prop__weakly-convex__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__weakly-convex__proof.svg",
+    "proofLine": 189
+  },
+  "eq:norm-relation": {
+    "env": "align",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 22,
+    "svg": "thesis-svg/eq__norm-relation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__norm-relation.svg"
+  },
+  "defn:expected-hilbert": {
+    "env": "defn",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 38,
+    "svg": "thesis-svg/defn__expected-hilbert.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__expected-hilbert.svg"
+  },
+  "thm:spectral-thm": {
+    "env": "thm",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 93,
+    "svg": "thesis-svg/thm__spectral-thm.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__spectral-thm.svg"
+  },
+  "eq:covariance-operator-estimate": {
+    "env": "align",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 122,
+    "svg": "thesis-svg/eq__covariance-operator-estimate.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__covariance-operator-estimate.svg"
+  },
+  "thm:conditional-expect-Hilbert": {
+    "env": "thm",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 132,
+    "svg": "thesis-svg/thm__conditional-expect-Hilbert.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__conditional-expect-Hilbert.svg",
+    "proofSvg": "thesis-svg/thm__conditional-expect-Hilbert__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/thm__conditional-expect-Hilbert__proof.svg",
+    "proofLine": 139
+  },
+  "cor:conditional-expect-Hilbert": {
+    "env": "cor",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 167,
+    "svg": "thesis-svg/cor__conditional-expect-Hilbert.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__conditional-expect-Hilbert.svg"
+  },
+  "thm:regression-theorem": {
+    "env": "thm",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 183,
+    "svg": "thesis-svg/thm__regression-theorem.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__regression-theorem.svg"
+  },
+  "prop:weak-stationarity": {
+    "env": "prop",
+    "source": "2 - day-ahead/3_functional_data_analysis.tex",
+    "line": 218,
+    "svg": "thesis-svg/prop__weak-stationarity.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__weak-stationarity.svg",
+    "proofSvg": "thesis-svg/prop__weak-stationarity__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__weak-stationarity__proof.svg",
+    "proofLine": 229
+  },
+  "eq:domain-std": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 67,
+    "svg": "thesis-svg/eq__domain-std.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__domain-std.svg"
+  },
+  "eq:image-std": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 71,
+    "svg": "thesis-svg/eq__image-std.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__image-std.svg"
+  },
+  "eq:standardizing-operator": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 115,
+    "svg": "thesis-svg/eq__standardizing-operator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__standardizing-operator.svg"
+  },
+  "eq:effect-map": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 166,
+    "svg": "thesis-svg/eq__effect-map.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__effect-map.svg"
+  },
+  "eq:domain-variation-rolling": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 215,
+    "svg": "thesis-svg/eq__domain-variation-rolling.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__domain-variation-rolling.svg"
+  },
+  "eq:image-variation-rolling": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 219,
+    "svg": "thesis-svg/eq__image-variation-rolling.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__image-variation-rolling.svg"
+  },
+  "eq:upsilon-t": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 240,
+    "svg": "thesis-svg/eq__upsilon-t.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__upsilon-t.svg"
+  },
+  "eq:upsilon-t-inverse": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 246,
+    "svg": "thesis-svg/eq__upsilon-t-inverse.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__upsilon-t-inverse.svg"
+  },
+  "eq:delta-xi-series": {
+    "env": "align",
+    "source": "2 - day-ahead/4_price_curve_analysis.tex",
+    "line": 252,
+    "svg": "thesis-svg/eq__delta-xi-series.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__delta-xi-series.svg"
+  },
+  "lem:rectangular-simple-dense-finite": {
+    "env": "lem",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 73,
+    "svg": "thesis-svg/lem__rectangular-simple-dense-finite.svg",
+    "repoPath": "graph-artifacts/thesis-svg/lem__rectangular-simple-dense-finite.svg",
+    "proofSvg": "thesis-svg/lem__rectangular-simple-dense-finite__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/lem__rectangular-simple-dense-finite__proof.svg",
+    "proofLine": 76
+  },
+  "eq:open-bound-1": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 109,
+    "svg": "thesis-svg/eq__open-bound-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__open-bound-1.svg"
+  },
+  "eq:open-bound-2": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 121,
+    "svg": "thesis-svg/eq__open-bound-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__open-bound-2.svg"
+  },
+  "eq:ensemble-tree": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 320,
+    "svg": "thesis-svg/eq__ensemble-tree.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__ensemble-tree.svg"
+  },
+  "eq:compute-split-1": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 421,
+    "svg": "thesis-svg/eq__compute-split-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__compute-split-1.svg"
+  },
+  "eq:compute-split-2": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 425,
+    "svg": "thesis-svg/eq__compute-split-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__compute-split-2.svg"
+  },
+  "eq:Shapley-value": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 489,
+    "svg": "thesis-svg/eq__Shapley-value.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__Shapley-value.svg"
+  },
+  "eq:delta-shap": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 514,
+    "svg": "thesis-svg/eq__delta-shap.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__delta-shap.svg"
+  },
+  "eq:non-binary-split": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 642,
+    "svg": "thesis-svg/eq__non-binary-split.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__non-binary-split.svg"
+  },
+  "eq:value-function": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 646,
+    "svg": "thesis-svg/eq__value-function.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__value-function.svg"
+  },
+  "eq:diebold-mariano-eq": {
+    "env": "align",
+    "source": "2 - day-ahead/5_forecasting_impact.tex",
+    "line": 860,
+    "svg": "thesis-svg/eq__diebold-mariano-eq.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__diebold-mariano-eq.svg"
+  },
+  "eq:payoff-with-impact": {
+    "env": "align",
+    "source": "2 - day-ahead/6_applications.tex",
+    "line": 37,
+    "svg": "thesis-svg/eq__payoff-with-impact.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__payoff-with-impact.svg"
+  },
+  "eq:payoff-without-impact": {
+    "env": "align",
+    "source": "2 - day-ahead/6_applications.tex",
+    "line": 41,
+    "svg": "thesis-svg/eq__payoff-without-impact.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__payoff-without-impact.svg"
+  },
+  "eq:approximate-battery-problem": {
+    "env": "align",
+    "source": "2 - day-ahead/6_applications.tex",
+    "line": 233,
+    "svg": "thesis-svg/eq__approximate-battery-problem.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__approximate-battery-problem.svg"
+  },
+  "eq:realised-battery-problem": {
+    "env": "align",
+    "source": "2 - day-ahead/6_applications.tex",
+    "line": 255,
+    "svg": "thesis-svg/eq__realised-battery-problem.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__realised-battery-problem.svg"
+  },
+  "eq:factorial-moment-measure": {
+    "env": "align",
+    "source": "3 - intraday/3_inference_for_point_processes.tex",
+    "line": 47,
+    "svg": "thesis-svg/eq__factorial-moment-measure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__factorial-moment-measure.svg"
+  },
+  "eq:lim-martingale-diff-compensator": {
+    "env": "align",
+    "source": "3 - intraday/3_inference_for_point_processes.tex",
+    "line": 149,
+    "svg": "thesis-svg/eq__lim-martingale-diff-compensator.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__lim-martingale-diff-compensator.svg"
+  },
+  "thm:time-change-theorem": {
+    "env": "thm",
+    "source": "3 - intraday/3_inference_for_point_processes.tex",
+    "line": 201,
+    "svg": "thesis-svg/thm__time-change-theorem.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__time-change-theorem.svg"
+  },
+  "eq:action-types-count": {
+    "env": "align",
+    "source": "3 - intraday/4_simulation_of_the_lob_suggested.tex",
+    "line": 645,
+    "svg": "thesis-svg/eq__action-types-count.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__action-types-count.svg"
+  },
+  "eq:monoid-1": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/algebra.tex",
+    "line": 7,
+    "svg": "thesis-svg/eq__monoid-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__monoid-1.svg"
+  },
+  "eq:monoid-2": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/algebra.tex",
+    "line": 7,
+    "svg": "thesis-svg/eq__monoid-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__monoid-2.svg"
+  },
+  "prop:topology-base": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 50,
+    "svg": "thesis-svg/prop__topology-base.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__topology-base.svg"
+  },
+  "defn:Hausdorff": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 71,
+    "svg": "thesis-svg/defn__Hausdorff.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__Hausdorff.svg"
+  },
+  "defn:second-countable": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 85,
+    "svg": "thesis-svg/defn__second-countable.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__second-countable.svg"
+  },
+  "defn:metric": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 124,
+    "svg": "thesis-svg/defn__metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__metric.svg"
+  },
+  "eq:metric-1": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 126,
+    "svg": "thesis-svg/eq__metric-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__metric-1.svg"
+  },
+  "eq:metric-2": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 126,
+    "svg": "thesis-svg/eq__metric-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__metric-2.svg"
+  },
+  "eq:metric-3": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 126,
+    "svg": "thesis-svg/eq__metric-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__metric-3.svg"
+  },
+  "defn:pseudometric": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 151,
+    "svg": "thesis-svg/defn__pseudometric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__pseudometric.svg"
+  },
+  "eq:pseudometric-1": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 153,
+    "svg": "thesis-svg/eq__pseudometric-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__pseudometric-1.svg"
+  },
+  "eq:pseudometric-2": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 153,
+    "svg": "thesis-svg/eq__pseudometric-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__pseudometric-2.svg"
+  },
+  "eq:pseudometric-3": {
+    "env": "enumerate",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 153,
+    "svg": "thesis-svg/eq__pseudometric-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__pseudometric-3.svg"
+  },
+  "cor:pseudometric-metric-relation": {
+    "env": "cor",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 162,
+    "svg": "thesis-svg/cor__pseudometric-metric-relation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__pseudometric-metric-relation.svg"
+  },
+  "eq:topology-extended-pseudometric": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 171,
+    "svg": "thesis-svg/eq__topology-extended-pseudometric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__topology-extended-pseudometric.svg",
+    "proofSvg": "thesis-svg/eq__topology-extended-pseudometric__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/eq__topology-extended-pseudometric__proof.svg",
+    "proofLine": 182
+  },
+  "defn:distance-to-set": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 208,
+    "svg": "thesis-svg/defn__distance-to-set.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__distance-to-set.svg"
+  },
+  "eq:naive-set-distance": {
+    "env": "align",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 225,
+    "svg": "thesis-svg/eq__naive-set-distance.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__naive-set-distance.svg"
+  },
+  "prop:hausdorff-distance": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 230,
+    "svg": "thesis-svg/prop__hausdorff-distance.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__hausdorff-distance.svg"
+  },
+  "defn:Cauchy-sequence": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 266,
+    "svg": "thesis-svg/defn__Cauchy-sequence.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__Cauchy-sequence.svg"
+  },
+  "defn:convergent-sequence": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 274,
+    "svg": "thesis-svg/defn__convergent-sequence.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__convergent-sequence.svg"
+  },
+  "defn:complete-space": {
+    "env": "defn",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 285,
+    "svg": "thesis-svg/defn__complete-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__complete-space.svg"
+  },
+  "thm:polish-charac": {
+    "env": "thm",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 303,
+    "svg": "thesis-svg/thm__polish-charac.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__polish-charac.svg"
+  },
+  "cor:product_metric": {
+    "env": "cor",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 324,
+    "svg": "thesis-svg/cor__product_metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/cor__product_metric.svg"
+  },
+  "prop:p-prod-prop": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 344,
+    "svg": "thesis-svg/prop__p-prod-prop.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__p-prod-prop.svg"
+  },
+  "prop:spc-continuous": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 376,
+    "svg": "thesis-svg/prop__spc-continuous.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__spc-continuous.svg"
+  },
+  "eq:cadlag": {
+    "env": "align",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 432,
+    "svg": "thesis-svg/eq__cadlag.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__cadlag.svg"
+  },
+  "eq:caglad": {
+    "env": "align",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 440,
+    "svg": "thesis-svg/eq__caglad.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__caglad.svg"
+  },
+  "prop:skorokhod-metric": {
+    "env": "prop",
+    "source": "A - preliminary theory/analysis.tex",
+    "line": 467,
+    "svg": "thesis-svg/prop__skorokhod-metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__skorokhod-metric.svg"
+  },
+  "eq:empirical-beta-copula": {
+    "env": "align",
+    "source": "A - preliminary theory/empirical-beta-copula.tex",
+    "line": 38,
+    "svg": "thesis-svg/eq__empirical-beta-copula.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__empirical-beta-copula.svg"
+  },
+  "eq:conditional-beta-density": {
+    "env": "align",
+    "source": "A - preliminary theory/empirical-beta-copula.tex",
+    "line": 71,
+    "svg": "thesis-svg/eq__conditional-beta-density.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__conditional-beta-density.svg"
+  },
+  "eq:conditional-beta-weights": {
+    "env": "align",
+    "source": "A - preliminary theory/empirical-beta-copula.tex",
+    "line": 77,
+    "svg": "thesis-svg/eq__conditional-beta-weights.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__conditional-beta-weights.svg"
+  },
+  "thm:atomic": {
+    "env": "thm",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 49,
+    "svg": "thesis-svg/thm__atomic.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__atomic.svg"
+  },
+  "prop:measurable-restrictions": {
+    "env": "prop",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 82,
+    "svg": "thesis-svg/prop__measurable-restrictions.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__measurable-restrictions.svg",
+    "proofSvg": "thesis-svg/prop__measurable-restrictions__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__measurable-restrictions__proof.svg",
+    "proofLine": 89
+  },
+  "thm:tonelli-fubini": {
+    "env": "thm",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 132,
+    "svg": "thesis-svg/thm__tonelli-fubini.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__tonelli-fubini.svg"
+  },
+  "defn:markov-kernel": {
+    "env": "defn",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 148,
+    "svg": "thesis-svg/defn__markov-kernel.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__markov-kernel.svg"
+  },
+  "thm:measure-disintegration": {
+    "env": "thm",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 162,
+    "svg": "thesis-svg/thm__measure-disintegration.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__measure-disintegration.svg"
+  },
+  "thm:prokhorov-metric": {
+    "env": "thm",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 368,
+    "svg": "thesis-svg/thm__prokhorov-metric.svg",
+    "repoPath": "graph-artifacts/thesis-svg/thm__prokhorov-metric.svg"
+  },
+  "defn:kallenberg-random-measure": {
+    "env": "defn",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 390,
+    "svg": "thesis-svg/defn__kallenberg-random-measure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__kallenberg-random-measure.svg"
+  },
+  "prop:mean-measure": {
+    "env": "prop",
+    "source": "A - preliminary theory/measure.tex",
+    "line": 417,
+    "svg": "thesis-svg/prop__mean-measure.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__mean-measure.svg"
+  },
+  "axiom:existence": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 9,
+    "svg": "thesis-svg/axiom__existence.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__existence.svg"
+  },
+  "axiom:extensionality": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 16,
+    "svg": "thesis-svg/axiom__extensionality.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__extensionality.svg"
+  },
+  "axiom:scheme-of-comprehension": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 23,
+    "svg": "thesis-svg/axiom__scheme-of-comprehension.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__scheme-of-comprehension.svg"
+  },
+  "axiom:foundation": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 62,
+    "svg": "thesis-svg/axiom__foundation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__foundation.svg"
+  },
+  "axiom:pairing": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 69,
+    "svg": "thesis-svg/axiom__pairing.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__pairing.svg"
+  },
+  "axiom:union": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 79,
+    "svg": "thesis-svg/axiom__union.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__union.svg"
+  },
+  "defn:product-space": {
+    "env": "defn",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 95,
+    "svg": "thesis-svg/defn__product-space.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__product-space.svg"
+  },
+  "defn:equivalence-relation": {
+    "env": "defn",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 114,
+    "svg": "thesis-svg/defn__equivalence-relation.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__equivalence-relation.svg"
+  },
+  "defn:equivalence-class": {
+    "env": "defn",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 124,
+    "svg": "thesis-svg/defn__equivalence-class.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__equivalence-class.svg"
+  },
+  "defn:function": {
+    "env": "defn",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 135,
+    "svg": "thesis-svg/defn__function.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__function.svg"
+  },
+  "defn:graph": {
+    "env": "defn",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 139,
+    "svg": "thesis-svg/defn__graph.svg",
+    "repoPath": "graph-artifacts/thesis-svg/defn__graph.svg"
+  },
+  "prop:graph-defines": {
+    "env": "prop",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 147,
+    "svg": "thesis-svg/prop__graph-defines.svg",
+    "repoPath": "graph-artifacts/thesis-svg/prop__graph-defines.svg",
+    "proofSvg": "thesis-svg/prop__graph-defines__proof.svg",
+    "proofRepoPath": "graph-artifacts/thesis-svg/prop__graph-defines__proof.svg",
+    "proofLine": 150
+  },
+  "axiom:replacement": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 164,
+    "svg": "thesis-svg/axiom__replacement.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__replacement.svg"
+  },
+  "axiom:choice": {
+    "env": "axiom",
+    "source": "A - preliminary theory/sets.tex",
+    "line": 204,
+    "svg": "thesis-svg/axiom__choice.svg",
+    "repoPath": "graph-artifacts/thesis-svg/axiom__choice.svg"
+  },
+  "eq:disjoint-partial-order-1": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 196,
+    "svg": "thesis-svg/eq__disjoint-partial-order-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-partial-order-1.svg"
+  },
+  "eq:disjoint-partial-order-2": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 196,
+    "svg": "thesis-svg/eq__disjoint-partial-order-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-partial-order-2.svg"
+  },
+  "eq:disjoint-partial-order-3": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 196,
+    "svg": "thesis-svg/eq__disjoint-partial-order-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-partial-order-3.svg"
+  },
+  "property:disjoint-total-order-1": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 238,
+    "svg": "thesis-svg/property__disjoint-total-order-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-total-order-1.svg"
+  },
+  "property:disjoint-total-order-2": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 238,
+    "svg": "thesis-svg/property__disjoint-total-order-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-total-order-2.svg"
+  },
+  "property:disjoint-total-order-3": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 238,
+    "svg": "thesis-svg/property__disjoint-total-order-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-total-order-3.svg"
+  },
+  "property:disjoint-total-order-4": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 238,
+    "svg": "thesis-svg/property__disjoint-total-order-4.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__disjoint-total-order-4.svg"
+  },
+  "eq:disjoint-union-metrization-1": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 393,
+    "svg": "thesis-svg/eq__disjoint-union-metrization-1.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-union-metrization-1.svg"
+  },
+  "eq:disjoint-union-metrization-2": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 393,
+    "svg": "thesis-svg/eq__disjoint-union-metrization-2.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-union-metrization-2.svg"
+  },
+  "eq:disjoint-union-metrization-3": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
+    "line": 393,
+    "svg": "thesis-svg/eq__disjoint-union-metrization-3.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__disjoint-union-metrization-3.svg"
+  },
+  "property:associative": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 48,
+    "svg": "thesis-svg/property__associative.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__associative.svg"
+  },
+  "property:commutative": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 48,
+    "svg": "thesis-svg/property__commutative.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__commutative.svg"
+  },
+  "property:identity": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 48,
+    "svg": "thesis-svg/property__identity.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__identity.svg"
+  },
+  "property:left-cancel": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 48,
+    "svg": "thesis-svg/property__left-cancel.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__left-cancel.svg"
+  },
+  "property:right-cancel": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/3_market_actions.tex",
+    "line": 48,
+    "svg": "thesis-svg/property__right-cancel.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__right-cancel.svg"
+  },
+  "property:permutation-reflexive": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 288,
+    "svg": "thesis-svg/property__permutation-reflexive.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__permutation-reflexive.svg"
+  },
+  "property:permutation-symmetry": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 288,
+    "svg": "thesis-svg/property__permutation-symmetry.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__permutation-symmetry.svg"
+  },
+  "property:permutation-transitivity": {
+    "env": "enumerate",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 288,
+    "svg": "thesis-svg/property__permutation-transitivity.svg",
+    "repoPath": "graph-artifacts/thesis-svg/property__permutation-transitivity.svg"
+  },
+  "eq:non-prime-and-prime": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 979,
+    "svg": "thesis-svg/eq__non-prime-and-prime.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__non-prime-and-prime.svg"
+  },
+  "eq:prime-and-ast": {
+    "env": "align",
+    "source": "1 - theoretical foundations/5_stochastic_markets.tex",
+    "line": 983,
+    "svg": "thesis-svg/eq__prime-and-ast.svg",
+    "repoPath": "graph-artifacts/thesis-svg/eq__prime-and-ast.svg"
+  }
+}

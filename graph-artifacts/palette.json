@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "sectionPalette": {
+    "foundations": "#0969da",
+    "market-actions": "#bf8700",
+    "market-clearing": "#cf222e",
+    "market-representation": "#1a7f37",
+    "other": "#6e7781",
+    "stochastic": "#8250df"
+  },
+  "sectionWorkflows": {
+    "foundations": "lean-foundations.yml",
+    "market-actions": "lean-market-actions.yml",
+    "market-clearing": "lean-market-clearing.yml",
+    "market-representation": "lean-market-representation.yml",
+    "other": "lean-global.yml",
+    "stochastic": "lean-stochastic.yml"
+  },
+  "statusPalette": {
+    "commentary": {
+      "color": "#6e7781",
+      "description": "Recorded as thesis/framework narrative rather than a compiled theorem.",
+      "label": "commentary"
+    },
+    "external": {
+      "color": "#8250df",
+      "description": "Represented by an intentional cited axiom or by a wrapper depending on one.",
+      "label": "external"
+    },
+    "unknown": {
+      "color": "#d1242f",
+      "description": "No reliable Lean trace was found.",
+      "label": "unknown"
+    },
+    "verified": {
+      "color": "#2da44e",
+      "description": "Backed by compiled Lean declarations without external axioms.",
+      "label": "verified"
+    }
+  }
+}

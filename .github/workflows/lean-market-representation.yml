@@ -1,0 +1,22 @@
+name: Lean Market Representation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build market representation section
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: --wfail MarketRepresentation Foundations.MarketRepresentation.DisjointUnion Foundations.MarketRepresentation.DisjointUnionTopology Foundations.MarketRepresentation.FiniteSets Foundations.MarketRepresentation.TuplesBasic Foundations.MarketRepresentation.TuplesSorting Foundations.MarketRepresentation.TuplesMetricTopology Foundations.MarketRepresentation.TuplesMeasurableSorting

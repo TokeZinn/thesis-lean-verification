@@ -1,0 +1,22 @@
+name: Lean Market Actions
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build market actions section
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: --wfail Foundations.MarketActions.Primitive Foundations.MarketActions.Analytic Foundations.MarketActions.Composite
