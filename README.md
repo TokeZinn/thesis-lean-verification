@@ -1,4 +1,5 @@
 # Thesis Lean Verification
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20138542.svg)](https://doi.org/10.5281/zenodo.20138542)
 
 This repository contains the Lean formalization that accompanies the thesis
 project. GitHub Actions builds the full formalization and each major section.
