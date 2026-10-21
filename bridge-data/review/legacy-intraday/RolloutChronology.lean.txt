@@ -1,0 +1,116 @@
+import Intraday.AdaptiveRollout
+import Intraday.QueueChronology
+
+/-! # Chronology of the complete adaptive path
+
+Positive source offsets are the appendix's stated library convention. Starting
+from a future calendar/queue, actual replay and staging preserve it after each
+successful event. The complete stochastic rollout therefore records strictly
+increasing event times within the horizon. This includes paths that stop early
+with a failure: their retained prefix remains chronological.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.RolloutChronology
+
+open AdaptiveRollout EventScheduler SimulatorTrajectory QueueChronology
+
+def Future (s : Schedule) {cfg : QueueAnchor.Config} (time : ℝ) (x : Frame cfg) : Prop :=
+  (∀ w ∈ x.remaining, time < s.times w) ∧
+    (halted x.path = false → ∀ g ∈ x.path.current.session.pending, time < g.dueTime)
+
+theorem selected_later (s : Schedule) {cfg : QueueAnchor.Config} (time : ℝ) (x : Frame cfg)
+    (hx : Future s time x) (selected : Selected) (hs : select s x = some selected) :
+    time < selected.event.time := by
+  have h := next_time_source _ _ _ _ _ _ (selected_next s x selected hs)
+  rcases h.1 with ⟨w, hw, he⟩ | ⟨g, hg, he⟩
+  · rw [← he]
+    exact hx.1 w hw
+  · rw [← he]
+    exact hx.2 (selected_active s x selected hs) g hg
+
+theorem selected_remaining_future (s : Schedule) {cfg : QueueAnchor.Config}
+    (x : Frame cfg) (selected : Selected) (hs : select s x = some selected) :
+    ∀ w ∈ selected.remaining, selected.event.time < s.times w := by
+  have hn := selected_next s x selected hs
+  have hspec := next_spec _ _ _ _ _ _ hn
+  have htime := next_time_source _ _ _ _ _ _ hn
+  intro w hw
+  rw [hspec.2.2] at hw
+  have hw' := Finset.mem_filter.mp hw
+  by_cases hh : s.times w ≤ s.horizon
+  · have hle := nextTime_no_skipped_boundary s.times x.remaining
+      x.path.current.session.pending s.horizon selected.event.time hspec.1 w hw'.1 hh
+    exact lt_of_le_of_ne hle (Ne.symm hw'.2)
+  · exact htime.2.trans_lt (lt_of_not_ge hh)
+
+theorem step_future (p : Parameters) (hp : PositiveOffsets p) (s : Schedule)
+    {cfg : QueueAnchor.Config} (x : Frame cfg) (selected : Selected)
+    (hs : select s x = some selected) (y : Path cfg)
+    (hy : y ∈ (SimulatorTrajectory.step p x.path selected.event).support) :
+    Future s selected.event.time (nextFrame selected y) := by
+  refine ⟨selected_remaining_future s x selected hs, ?_⟩
+  intro hh g hg
+  exact step_success_future p hp x.path y selected.event (selected_active s x selected hs)
+    hy hh g hg
+
+theorem trace_chronological_extension (p : Parameters) (hp : PositiveOffsets p) (s : Schedule)
+    {cfg : QueueAnchor.Config} {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n)
+    (time : ℝ) (hx : Future s time x) :
+    ∃ emitted : List (Entry cfg), z.path.history = x.path.history ++ emitted ∧
+      emitted.Pairwise (fun a b => a.event.time < b.event.time) ∧
+      ∀ entry ∈ emitted, time < entry.event.time ∧ entry.event.time ≤ s.horizon := by
+  induction h generalizing time with
+  | stop x hs =>
+    refine ⟨[], by simp, List.Pairwise.nil, ?_⟩
+    simp
+  | step x selected y z n hs hy rest ih =>
+    have htime := selected_later s time x hx selected hs
+    have hupper := (next_time_source _ _ _ _ _ _ (selected_next s x selected hs)).2
+    obtain ⟨emitted, he, hsort, htimes⟩ :=
+      ih selected.event.time (step_future p hp s x selected hs y hy)
+    obtain ⟨out, _, hout⟩ := (step_active_support p x.path y selected.event
+      (selected_active s x selected hs)).mp hy
+    let entry : Entry cfg := ⟨selected.event, advanced p x.path selected.event, out⟩
+    have hh : y.history = x.path.history ++ [entry] := by rw [← hout]; rfl
+    refine ⟨entry :: emitted, ?_, ?_, ?_⟩
+    · change z.path.history = y.history ++ emitted at he
+      simpa only [hh, List.append_assoc, List.singleton_append] using he
+    · exact List.pairwise_cons.mpr ⟨fun a ha => (htimes a ha).1, hsort⟩
+    · intro a ha
+      rcases List.mem_cons.mp ha with rfl | ha
+      · exact ⟨htime, hupper⟩
+      · exact ⟨htime.trans (htimes a ha).1, (htimes a ha).2⟩
+
+theorem run_chronological_extension (p : Parameters) (hp : PositiveOffsets p) (s : Schedule)
+    {cfg : QueueAnchor.Config} (x z : Frame cfg) (time : ℝ) (hx : Future s time x)
+    (hz : z ∈ (AdaptiveRollout.run p s x).support) :
+    ∃ emitted : List (Entry cfg), z.path.history = x.path.history ++ emitted ∧
+      emitted.Pairwise (fun a b => a.event.time < b.event.time) ∧
+      ∀ entry ∈ emitted, time < entry.event.time ∧ entry.event.time ≤ s.horizon := by
+  obtain ⟨n, ht⟩ := run_support_trace p s x z hz
+  exact trace_chronological_extension p hp s ht time hx
+
+theorem run_from_empty_history_chronological (p : Parameters) (hp : PositiveOffsets p)
+    (s : Schedule) {cfg : QueueAnchor.Config} (x z : Frame cfg) (time : ℝ)
+    (hx : Future s time x) (hempty : x.path.history = [])
+    (hz : z ∈ (AdaptiveRollout.run p s x).support) :
+    z.path.history.Pairwise (fun a b => a.event.time < b.event.time) ∧
+      ∀ entry ∈ z.path.history, time < entry.event.time ∧ entry.event.time ≤ s.horizon := by
+  obtain ⟨emitted, he, hsort, htimes⟩ := run_chronological_extension p hp s x z time hx hz
+  rw [hempty, List.nil_append] at he
+  rw [he]
+  exact ⟨hsort, htimes⟩
+
+theorem successful_calendar_empty (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x z : Frame cfg) (hz : z ∈ (AdaptiveRollout.run p s x).support)
+    (hh : halted z.path = false) (hc : ∀ w ∈ x.remaining, s.times w ≤ s.horizon) :
+    z.remaining = ∅ := by
+  obtain ⟨n, ht⟩ := run_support_trace p s x z hz
+  have hs := ht.remaining_subset p s
+  have hdone := (successful_completion p s x z hz hh).1
+  apply Finset.eq_empty_iff_forall_notMem.mpr
+  intro w hw
+  exact not_lt_of_ge (hc w (hs hw)) (hdone w hw)
+
+end Thesis.Intraday.RolloutChronology

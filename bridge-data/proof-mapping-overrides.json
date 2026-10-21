@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "mappings": {
+    "prop:graph-defines": {
+      "step-1": [
+        {
+          "nodeId": "prop:graph-defines",
+          "declaration": "graph_equals_function"
+        }
+      ]
+    },
+    "prop:empty-domain-function": {
+      "step-1": [
+        {
+          "nodeId": "prop:empty-domain-function",
+          "declaration": "empty_domain_functions_equal"
+        }
+      ]
+    },
+    "thm:measurable-sorting-exists": {
+      "step-3": [
+        {
+          "nodeId": "thm:measurable-partition",
+          "declaration": "measurable_iff_measurable_restrict_partition"
+        },
+        {
+          "nodeId": "thm:measurable-sorting-exists",
+          "declaration": "exists_measurableSortingRule_of_borelOrder"
+        }
+      ]
+    }
+  }
+}

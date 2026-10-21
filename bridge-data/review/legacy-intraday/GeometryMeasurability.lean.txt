@@ -1,0 +1,106 @@
+import Intraday.GeometryGauge
+
+/-! # Measurability of the reference gauge on actual finite books
+
+This connects the diagnostic to the order and tuple Borel structures already
+identified with the thesis's indexed-Hausdorff construction. Fixed empirical
+means, scales and principal directions are parameters. No assertion about the
+measurability or numerical correctness of an external fitting routine is used.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.GeometryMeasurability
+
+open Execution Conservation GeometrySweep GeometryGauge
+open scoped BigOperators
+
+attribute [local instance] Execution.sigmaBorel
+
+theorem continuous_notional_ofFn (n : ℕ) :
+    Continuous (fun x : (Fin n → Order) × ℝ => notional (List.ofFn x.1) x.2) := by
+  induction n with
+  | zero =>
+    simpa [notional] using
+      (continuous_const : Continuous (fun _ : (Fin 0 → Order) × ℝ => (0 : ℝ)))
+  | succ n ih =>
+    have hh : Continuous (fun x : (Fin (n + 1) → Order) × ℝ => x.1 0) :=
+      (continuous_apply 0).comp continuous_fst
+    have ht : Continuous (fun x : (Fin (n + 1) → Order) × ℝ =>
+        fun i : Fin n => x.1 i.succ) :=
+      continuous_pi fun i => (continuous_apply i.succ).comp continuous_fst
+    have hr := (continuous_const (y := (0 : ℝ))).max
+      (continuous_snd.sub (continuous_quantity.comp hh))
+    have hc := (continuous_price.comp hh).mul
+      ((continuous_quantity.comp hh).min ((continuous_const (y := (0 : ℝ))).max continuous_snd))
+    simpa [List.ofFn_succ, notional, Function.comp_def] using
+      hc.add (ih.comp (ht.prodMk hr))
+
+theorem measurable_book_notional :
+    Measurable (fun x : Book × ℝ => notional (bookOrders x.1) x.2) := by
+  apply measurable_tuple_prod
+  intro n
+  exact (continuous_notional_ofFn n).measurable
+
+theorem continuous_bookQuantity : Continuous bookQuantity := by
+  apply continuous_sigma
+  intro n
+  exact continuous_finset_sum Finset.univ fun i _ => continuous_quantity.comp (continuous_apply i)
+
+theorem continuous_referenceVolume : Continuous referenceVolume :=
+  (continuous_bookQuantity.comp continuous_fst).min
+    (continuous_bookQuantity.comp continuous_snd)
+
+theorem continuous_midpoint : Continuous midpoint :=
+  ((continuous_best 0).comp continuous_fst |>.add
+    ((continuous_best 0).comp continuous_snd)).div_const 2
+
+theorem measurable_signedCost (u : ℝ) : Measurable (fun b : State => signedCost b u) := by
+  by_cases hu : u ≤ 0
+  · simp only [signedCost, if_pos hu]
+    exact (measurable_book_notional.comp (measurable_fst.prodMk
+      (measurable_const.mul continuous_referenceVolume.measurable))).neg
+  · simp only [signedCost, if_neg hu]
+    exact measurable_book_notional.comp (measurable_snd.prodMk
+      (measurable_const.mul continuous_referenceVolume.measurable))
+
+theorem measurable_displacement (u : ℝ) : Measurable (fun b : State => displacement b u) := by
+  by_cases hz : u = 0
+  · simp only [displacement, if_pos hz]
+    exact measurable_const
+  have hv : Measurable (fun b : State => requestedVolume b u) :=
+    measurable_const.mul continuous_referenceVolume.measurable
+  by_cases hu : u ≤ 0
+  · simp only [displacement, if_neg hz, if_pos hu]
+    exact ((measurable_book_notional.comp (measurable_fst.prodMk
+      (measurable_const.mul continuous_referenceVolume.measurable))).div hv).sub
+        continuous_midpoint.measurable
+  · simp only [displacement, if_neg hz, if_neg hu]
+    exact ((measurable_book_notional.comp (measurable_snd.prodMk
+      (measurable_const.mul continuous_referenceVolume.measurable))).div hv).sub
+        continuous_midpoint.measurable
+
+theorem measurable_sampled (sC sD : ℝ) : Measurable (fun b : State => sampled b sC sD) := by
+  apply measurable_pi_iff.mpr
+  intro i
+  refine Fin.addCases (m := 41) (n := 41) ?_ ?_ i
+  · intro j
+    simpa only [sampled_notional] using (measurable_signedCost (node j)).div_const sC
+  · intro j
+    simpa only [sampled_displacement] using (measurable_displacement (node j)).div_const sD
+
+theorem continuous_project (basis : HistoricalBasis) : Continuous (project basis) := by
+  apply continuous_pi
+  intro j
+  change Continuous (fun v : Vector => ∑ i : Fin 82,
+    basis.directions i j * (v i - basis.mean i))
+  exact continuous_finset_sum Finset.univ fun i _ =>
+    continuous_const.mul ((continuous_apply i).sub continuous_const)
+
+theorem measurable_gauge (basis : HistoricalBasis) (sC sD : ℝ) :
+    Measurable (gauge basis sC sD) :=
+  (continuous_project basis).measurable.comp (measurable_sampled sC sD)
+
+theorem measurable_scaledGauge (basis : HistoricalBasis) (tolerance rawC rawD : ℝ) :
+    Measurable (scaledGauge basis tolerance rawC rawD) := measurable_gauge basis _ _
+
+end Thesis.Intraday.GeometryMeasurability

@@ -1,0 +1,256 @@
+import Intraday.BurstStaging
+import Intraday.AnchorPhase
+
+/-! # The configured price grid survives replay and queue processing
+
+Only additions and absolute replacements supply new prices. Cancellations,
+quantity changes, matched fills, sorting and visible projection retain live
+prices. Thus successfully staged groups preserve the grid required for the
+next anchor correction, including across due and drain-or-flush phases.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.ReplayGridInvariant
+
+open LiveLedger LifecycleResolver BilateralReplay InstructionReplay TypedReplay GroupReplay
+open StagedQueuePrices EventQueue MappedQuantityUpdate
+
+def BookOnGrid (grid : Finset ℝ) (s : Ledger) : Prop := ∀ a ∈ s.live, price a.order ∈ grid
+
+def GroupOnGrid (grid : Finset ℝ) (g : ScheduledGroup) : Prop :=
+  ∀ p ∈ groupPrices g, p ∈ grid
+
+def QueueOnGrid (grid : Finset ℝ) (queue : List ScheduledGroup) : Prop :=
+  ∀ g ∈ queue, GroupOnGrid grid g
+
+theorem queueOnGrid_iff (grid : Finset ℝ) (queue : List ScheduledGroup) :
+    QueueOnGrid grid queue ↔ ∀ p ∈ queuePrices queue, p ∈ grid := by
+  constructor
+  · intro h p hp
+    obtain ⟨g, hg, hp⟩ := List.mem_flatMap.mp hp
+    exact h g hg p hp
+  · intro h g hg p hp
+    exact h p (List.mem_flatMap.mpr ⟨g, hg, hp⟩)
+
+theorem activePrices_grid_iff (grid : Finset ℝ) (s : Ledger) (queue : List ScheduledGroup) :
+    activePrices s queue ⊆ grid ↔ BookOnGrid grid s ∧ QueueOnGrid grid queue := by
+  classical
+  constructor
+  · intro h
+    exact ⟨fun a ha => h (live_mem_active s queue ha),
+      (queueOnGrid_iff grid queue).mpr (fun _ hp => h (staged_mem_active s queue hp))⟩
+  · rintro ⟨hb, hq⟩ p hp
+    rcases List.mem_append.mp (List.mem_toFinset.mp hp) with hl | hr
+    · obtain ⟨a, ha, rfl⟩ := List.mem_map.mp hl
+      exact hb a ha
+    · exact (queueOnGrid_iff grid queue).mp hq p hr
+
+theorem eraseId_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s) (id : ℕ) :
+    BookOnGrid grid (eraseId s id) := fun a ha => h a (List.mem_filter.mp ha).1
+
+theorem resizeId_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (id : ℕ) (q : PositiveQuantity) : BookOnGrid grid (resizeId s id q) := by
+  intro a ha
+  obtain ⟨b, hb, rfl⟩ := List.mem_map.mp ha
+  simpa only [resized_price] using h b hb
+
+theorem appendFresh_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (key : ℕ) (buy : Bool) (o : Order) (ho : price o ∈ grid) :
+    BookOnGrid grid (appendFresh s key buy o) := by
+  intro a ha
+  rcases List.mem_append.mp ha with hold | hnew
+  · exact h a hold
+  · have he := List.mem_singleton.mp hnew
+    subst a
+    exact ho
+
+theorem addition_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (key : ℕ) (buy : Bool) (o : Order) (ho : price o ∈ grid) :
+    BookOnGrid grid (addition s key buy o).after := by
+  unfold addition
+  split
+  · exact h
+  · exact appendFresh_grid h key buy o ho
+
+theorem cancellation_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s) (key : ℕ) :
+    BookOnGrid grid (cancellation s key).after := by
+  unfold cancellation
+  split
+  · exact h
+  · exact eraseId_grid h _
+
+theorem change_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (key : ℕ) (buy : Bool) (o : Order) (ho : price o ∈ grid) :
+    BookOnGrid grid (change s key buy o).after := by
+  unfold change
+  split
+  · exact h
+  · split
+    · exact resizeId_grid h _ _
+    · exact appendFresh_grid (eraseId_grid h _) key buy o ho
+
+theorem resolveQuantity_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (key : ℕ) (q : PositiveQuantity) (priority : Time) :
+    BookOnGrid grid (resolveQuantity s key q priority).after := by
+  unfold resolveQuantity
+  split
+  · exact h
+  · rename_i a ha
+    exact change_grid h _ _ _ (h a (lookup_some_mem ha))
+
+theorem finishLeg_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (id : ℕ) (remaining : ℝ) : BookOnGrid grid (finishLeg s id remaining) := by
+  by_cases hp : 0 < remaining
+  · rw [finishLeg_positive s id hp]
+    exact resizeId_grid h _ _
+  · simp only [finishLeg, finishEvent, dif_neg hp, applyEvent]
+    exact eraseId_grid h _
+
+theorem settlePair_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (incoming resting : Entry) (immediate : Bool) :
+    BookOnGrid grid (settlePair s incoming resting immediate).after :=
+  finishLeg_grid (finishLeg_grid h _ _) _ _
+
+theorem fill_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (incoming resting : ℕ) (immediate : Bool) :
+    BookOnGrid grid (fill s incoming resting immediate).after := by
+  unfold fill
+  split
+  · split
+    · exact h
+    · exact settlePair_grid h _ _ _
+  · exact h
+
+theorem matchSequence_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (incoming : ℕ) (resting : List ℕ) :
+    BookOnGrid grid (matchSequence s incoming resting).after := by
+  induction resting generalizing s with
+  | nil => exact h
+  | cons r rs ih => exact ih (fill_grid h incoming r false)
+
+theorem finishInstruction_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (incoming : ℕ) (immediate : Bool) :
+    BookOnGrid grid (finishInstruction s incoming immediate).after := by
+  unfold finishInstruction
+  split
+  · exact h
+  · split
+    · exact eraseId_grid h _
+    · exact h
+
+theorem replayInstruction_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (incoming : ℕ) (resting : List ℕ) (immediate : Bool) :
+    BookOnGrid grid (replayInstruction s incoming resting immediate).after :=
+  finishInstruction_grid (matchSequence_grid h _ _) _ _
+
+theorem resolveRecord_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (r : SourceRecord) (hr : ∀ p ∈ recordPrices r, p ∈ grid) :
+    BookOnGrid grid (resolveRecord s r).after := by
+  cases r with
+  | lifecycle r =>
+    cases r with
+    | add key buy o => exact addition_grid h _ _ _ (hr _ (List.mem_singleton_self _))
+    | cancel key => exact cancellation_grid h key
+    | change key buy o => exact change_grid h _ _ _ (hr _ (List.mem_singleton_self _))
+  | quantityUpdate key q priority => exact resolveQuantity_grid h _ _ _
+  | instruction incoming resting immediate => exact replayInstruction_grid h _ _ _
+
+theorem resolveRecords_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (records : List SourceRecord) (hr : ∀ p ∈ records.flatMap recordPrices, p ∈ grid) :
+    BookOnGrid grid (resolveRecords s records).after := by
+  induction records generalizing s with
+  | nil => exact h
+  | cons r rs ih =>
+    exact ih (resolveRecord_grid h r (fun p hp => hr p (List.mem_append_left _ hp)))
+      (fun p hp => hr p (List.mem_append_right _ hp))
+
+theorem process_grid {grid : Finset ℝ} {s : Ledger} (h : BookOnGrid grid s)
+    (depth : ℕ) (g : ScheduledGroup) (hg : GroupOnGrid grid g) :
+    BookOnGrid grid (process depth s g).retained :=
+  fun a ha => resolveRecords_grid h g.records hg a (LedgerVisibility.refresh_mem _ _ ha)
+
+theorem step_grid {grid : Finset ℝ} {s : GroupReplay.State} (h : BookOnGrid grid s.book)
+    (depth : ℕ) (g : ScheduledGroup) (hg : GroupOnGrid grid g) :
+    BookOnGrid grid (step depth s g).book := by
+  unfold step
+  split
+  · exact h
+  · exact process_grid h depth g hg
+
+theorem run_grid {grid : Finset ℝ} {s : GroupReplay.State} (h : BookOnGrid grid s.book)
+    (depth : ℕ) (gs : List ScheduledGroup) (hg : QueueOnGrid grid gs) :
+    BookOnGrid grid (run depth s gs).state.book := by
+  induction gs generalizing s with
+  | nil => exact h
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · exact h
+    · exact ih (step_grid h depth g (hg g (List.mem_cons_self ..)))
+        (fun a ha => hg a (List.mem_cons_of_mem _ ha))
+
+theorem queueOnGrid_subset {grid : Finset ℝ} {a b : List ScheduledGroup}
+    (h : QueueOnGrid grid b) (hab : ∀ g ∈ a, g ∈ b) : QueueOnGrid grid a :=
+  fun g hg => h g (hab g hg)
+
+theorem drainSelected_grid {grid : Finset ℝ} {s : GroupReplay.State}
+    (h : BookOnGrid grid s.book) (depth : ℕ) (queue : List ScheduledGroup)
+    (hq : QueueOnGrid grid queue) (p : ScheduledGroup → Bool) :
+    BookOnGrid grid (drainSelected depth s queue p).state.book ∧
+      QueueOnGrid grid (drainSelected depth s queue p).pending := by
+  refine ⟨run_grid h depth _
+    (queueOnGrid_subset hq (fun g hg => (selected_mem p queue g).mp hg |>.1)),
+    queueOnGrid_subset hq ?_⟩
+  intro g hg
+  exact (drainSelected_accounting depth s queue p).mem_iff.mp (List.mem_append_right _ hg)
+
+theorem boundary_grid {grid : Finset ℝ} {s : GroupReplay.State}
+    (h : BookOnGrid grid s.book) (depth : ℕ) (queue : List ScheduledGroup)
+    (hq : QueueOnGrid grid queue) (window : ℕ) (policy : BoundaryPolicy) :
+    BookOnGrid grid (boundary depth s queue window policy).state.book ∧
+      QueueOnGrid grid (boundary depth s queue window policy).pending := by
+  unfold boundary
+  split
+  · exact ⟨h, hq⟩
+  · cases policy with
+    | drain => exact drainSelected_grid h depth queue hq _
+    | flush => exact ⟨h, queueOnGrid_subset hq (fun g hg => (deferred_mem _ queue g).mp hg |>.1)⟩
+
+theorem tick_grid {grid : Finset ℝ} {s : GroupReplay.State}
+    (h : BookOnGrid grid s.book) (depth : ℕ) (queue : List ScheduledGroup)
+    (hq : QueueOnGrid grid queue) (time : ℝ) (window : Option ℕ) (policy : BoundaryPolicy) :
+    BookOnGrid grid (QueueTick.tick depth s queue time window policy).boundaryPhase.state.book ∧
+      QueueOnGrid grid (QueueTick.tick depth s queue time window policy).boundaryPhase.pending := by
+  obtain ⟨hb, hp⟩ := drainSelected_grid h depth queue hq (due time)
+  cases window with
+  | none => exact ⟨hb, hp⟩
+  | some w => exact boundary_grid hb depth _ hp w policy
+
+theorem installTick_grid (grid : Finset ℝ) (depth : ℕ) (x : AnchorPhase.Session)
+    (time : ℝ) (window : Option ℕ) (policy : BoundaryPolicy)
+    (h : activePrices x.replay.book x.pending ⊆ grid) :
+    activePrices (AnchorPhase.installTick depth x time window policy).replay.book
+      (AnchorPhase.installTick depth x time window policy).pending ⊆ grid := by
+  obtain ⟨hb, hq⟩ := (activePrices_grid_iff grid _ _).mp h
+  exact (activePrices_grid_iff grid _ _).mpr (tick_grid hb depth _ hq time window policy)
+
+theorem staged_queue_grid (cfg : QueueAnchor.Config) (boundary offset : ℝ) (window : ℕ)
+    (gs : List BurstStaging.SourceGroup) {result : List ScheduledGroup}
+    (h : BurstStaging.stageBurst cfg boundary offset window gs = some result) :
+    QueueOnGrid cfg.grid result := (queueOnGrid_iff _ _).mpr
+  (BurstStaging.stageBurst_spec cfg boundary offset window gs result h).1
+
+theorem append_staged_grid (cfg : QueueAnchor.Config) (s : Ledger) (queue : List ScheduledGroup)
+    (h : activePrices s queue ⊆ cfg.grid) (boundary offset : ℝ) (window : ℕ)
+    (gs : List BurstStaging.SourceGroup) {result : List ScheduledGroup}
+    (hr : BurstStaging.stageBurst cfg boundary offset window gs = some result) :
+    activePrices s (queue ++ result) ⊆ cfg.grid := by
+  obtain ⟨hb, hq⟩ := (activePrices_grid_iff cfg.grid s queue).mp h
+  apply (activePrices_grid_iff cfg.grid s (queue ++ result)).mpr
+  refine ⟨hb, ?_⟩
+  intro g hg
+  rcases List.mem_append.mp hg with hold | hnew
+  · exact hq g hold
+  · exact staged_queue_grid cfg boundary offset window gs hr g hnew
+
+end Thesis.Intraday.ReplayGridInvariant

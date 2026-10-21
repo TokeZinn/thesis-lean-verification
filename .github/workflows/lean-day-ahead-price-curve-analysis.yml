@@ -1,0 +1,25 @@
+name: Price-curve analysis
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part II, Ch. 4 (price-curve analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.DayAhead.PriceCurveAnalysis.EmpiricalCoordinates
+            Thesis.DayAhead.PriceCurveAnalysis.PriceScale

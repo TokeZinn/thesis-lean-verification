@@ -1,0 +1,170 @@
+import Intraday.MacroPath
+import Intraday.HistoricalFitGuards
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+
+/-! # Adaptive variance: multiplicative update and finite-bank log growth
+
+Intraday chapter 4, lines 690–704. The bank is fixed throughout these results.
+Unit empirical second moment is an explicit hypothesis, not a consequence of
+centring or of replacing a negligible residual scale by one. Strict positivity
+is derived from a positive initial variance, including the guarded full-day
+initialisation. The log conclusion concerns the variance multiplier, not prices.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroVariance
+
+open MeasureTheory MacroPath
+open scoped BigOperators
+
+def factor (rho u : ℝ) : ℝ := rho + (1 - rho) * u ^ 2
+
+theorem factor_pos (rho u : ℝ) (hr : 0 < rho) (hr1 : rho ≤ 1) :
+    0 < factor rho u :=
+  add_pos_of_pos_of_nonneg hr (mul_nonneg (sub_nonneg.mpr hr1) (sq_nonneg _))
+
+theorem advance_variance (cfg : Coefficients) (state : State) (residual : Row)
+    (hv : ∀ c, 0 ≤ state.variance c) (c : Fin 7) :
+    (advance cfg state residual).variance c = state.variance c * factor decay (residual c) := by
+  change decay * state.variance c + (1 - decay) *
+    (innovation state.variance residual c) ^ 2 = _
+  rw [innovation_sq _ _ hv]
+  unfold factor
+  ring
+
+theorem run_variance_pos (cfg : Coefficients) (initial : State) (draw : ℕ → Row)
+    (hv : ∀ c, 0 < initial.variance c) (n : ℕ) :
+    ∀ c, 0 < (run cfg initial draw n).variance c := by
+  induction n with
+  | zero => exact hv
+  | succ n ih =>
+    intro c
+    rw [run, advance_variance cfg _ _ (fun c => (ih c).le)]
+    exact mul_pos (ih c) (factor_pos _ _ decay_pos decay_lt_one.le)
+
+theorem guarded_fullDay_positive (previous current scale : Row) (tolerance : ℝ)
+    (ht : 0 ≤ tolerance) (hs : ∀ c, 0 ≤ scale c) :
+    ∀ c, 0 < (fullDayInitial previous current
+      (fun c => HistoricalFitGuards.replaceNegligible tolerance (scale c))).variance c := by
+  intro c
+  exact sq_pos_of_pos (HistoricalFitGuards.replaceNegligible_pos _ _ ht (hs c))
+
+theorem run_variance_zero (cfg : Coefficients) (initial : State) (draw : ℕ → Row)
+    (hv : ∀ c, 0 ≤ initial.variance c) (c : Fin 7) (hz : initial.variance c = 0) (n : ℕ) :
+    (run cfg initial draw n).variance c = 0 := by
+  induction n with
+  | zero => exact hz
+  | succ n ih =>
+    rw [run, advance_variance cfg _ _ (run_variance_nonneg cfg initial draw hv n), ih,
+      zero_mul]
+
+theorem advance_ratio (cfg : Coefficients) (state : State) (residual : Row)
+    (hv : ∀ c, 0 ≤ state.variance c) (c : Fin 7) (hc : 0 < state.variance c) :
+    (advance cfg state residual).variance c / state.variance c = factor decay (residual c) := by
+  rw [advance_variance cfg state residual hv c]
+  exact mul_div_cancel_left₀ _ hc.ne'
+
+theorem advance_log_difference (cfg : Coefficients) (state : State) (residual : Row)
+    (hv : ∀ c, 0 ≤ state.variance c) (c : Fin 7) (hc : 0 < state.variance c) :
+    Real.log ((advance cfg state residual).variance c) - Real.log (state.variance c) =
+      Real.log (factor decay (residual c)) := by
+  rw [advance_variance cfg state residual hv c,
+    Real.log_mul hc.ne' (factor_pos _ _ decay_pos decay_lt_one.le).ne']
+  ring
+
+section Bank
+variable {ι : Type*} [Fintype ι] [Nonempty ι]
+
+def mean (f : ι → ℝ) : ℝ := (Fintype.card ι : ℝ)⁻¹ * ∑ i, f i
+
+def secondMoment (bank : ι → Row) (c : Fin 7) : ℝ := mean (fun i => (bank i c) ^ 2)
+
+theorem card_pos : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+
+theorem mean_const (a : ℝ) : mean (fun _ : ι => a) = a := by
+  simp [mean, (card_pos (ι := ι)).ne']
+
+omit [Nonempty ι] in
+theorem mean_add (f g : ι → ℝ) : mean (fun i => f i + g i) = mean f + mean g := by
+  simp only [mean, Finset.sum_add_distrib, mul_add]
+
+omit [Nonempty ι] in
+theorem mean_mul (a : ℝ) (f : ι → ℝ) : mean (fun i => a * f i) = a * mean f := by
+  simp only [mean, ← Finset.mul_sum]
+  ring
+
+omit [Nonempty ι] in
+theorem mean_sub (f g : ι → ℝ) : mean (fun i => f i - g i) = mean f - mean g := by
+  simp only [mean, Finset.sum_sub_distrib, mul_sub]
+
+theorem mean_factor (rho : ℝ) (bank : ι → Row) (c : Fin 7) :
+    mean (fun i => factor rho (bank i c)) = rho + (1 - rho) * secondMoment bank c := by
+  simp only [factor, mean_add, mean_const, mean_mul, secondMoment]
+
+theorem mean_factor_unit (rho : ℝ) (bank : ι → Row) (c : Fin 7)
+    (hm : secondMoment bank c = 1) : mean (fun i => factor rho (bank i c)) = 1 := by
+  rw [mean_factor, hm]
+  ring
+
+theorem mean_mono (f g : ι → ℝ) (h : ∀ i, f i ≤ g i) : mean f ≤ mean g :=
+  mul_le_mul_of_nonneg_left (Finset.sum_le_sum (fun i _ => h i)) (inv_nonneg.mpr card_pos.le)
+
+theorem mean_lt (f g : ι → ℝ) (h : ∀ i, f i ≤ g i) (hs : ∃ i, f i < g i) :
+    mean f < mean g := by
+  apply mul_lt_mul_of_pos_left _ (inv_pos.mpr card_pos)
+  exact Finset.sum_lt_sum (fun i _ => h i) (by simpa using hs)
+
+theorem mean_log_factor_nonpos (rho : ℝ) (hr : 0 < rho) (hr1 : rho ≤ 1)
+    (bank : ι → Row) (c : Fin 7) (hm : secondMoment bank c = 1) :
+    mean (fun i => Real.log (factor rho (bank i c))) ≤ 0 := by
+  have h := mean_mono (fun i => Real.log (factor rho (bank i c)))
+    (fun i => factor rho (bank i c) - 1)
+    (fun i => Real.log_le_sub_one_of_pos (factor_pos rho _ hr hr1))
+  rwa [mean_sub, mean_factor_unit rho bank c hm, mean_const, sub_self] at h
+
+theorem mean_log_factor_neg (rho : ℝ) (hr : 0 < rho) (hr1 : rho < 1)
+    (bank : ι → Row) (c : Fin 7) (hm : secondMoment bank c = 1)
+    (hn : ∃ i j, (bank i c) ^ 2 ≠ (bank j c) ^ 2) :
+    mean (fun i => Real.log (factor rho (bank i c))) < 0 := by
+  have hex : ∃ i, factor rho (bank i c) ≠ 1 := by
+    by_contra! h
+    obtain ⟨i, j, hij⟩ := hn
+    have hi := h i
+    have hj := h j
+    unfold factor at hi hj
+    apply hij
+    nlinarith
+  have h := mean_lt (fun i => Real.log (factor rho (bank i c)))
+    (fun i => factor rho (bank i c) - 1)
+    (fun i => Real.log_le_sub_one_of_pos (factor_pos rho _ hr hr1.le))
+    (by obtain ⟨i, hi⟩ := hex
+        exact ⟨i, Real.log_lt_sub_one_of_pos (factor_pos rho _ hr hr1.le) hi⟩)
+  rwa [mean_sub, mean_factor_unit rho bank c hm, mean_const, sub_self] at h
+
+variable [MeasurableSpace ι] [MeasurableSingletonClass ι]
+
+theorem integral_uniform (f : ι → ℝ) :
+    ∫ i, f i ∂(PMF.uniformOfFintype ι).toMeasure = mean f := by
+  rw [PMF.integral_eq_sum]
+  simp only [PMF.uniformOfFintype_apply, ENNReal.toReal_inv, ENNReal.toReal_natCast,
+    smul_eq_mul, ← Finset.mul_sum, mean]
+
+theorem uniform_variance_mean (cfg : Coefficients) (state : State)
+    (hv : ∀ c, 0 ≤ state.variance c) (bank : ι → Row) (c : Fin 7) :
+    ∫ i, (advance cfg state (bank i)).variance c ∂(PMF.uniformOfFintype ι).toMeasure =
+      state.variance c * (decay + (1 - decay) * secondMoment bank c) := by
+  simp_rw [advance_variance cfg state _ hv c]
+  rw [integral_uniform, mean_mul, mean_factor]
+
+theorem uniform_log_growth_negative (cfg : Coefficients) (state : State)
+    (hv : ∀ c, 0 ≤ state.variance c) (bank : ι → Row) (c : Fin 7)
+    (hc : 0 < state.variance c) (hm : secondMoment bank c = 1)
+    (hn : ∃ i j, (bank i c) ^ 2 ≠ (bank j c) ^ 2) :
+    (∫ i, Real.log ((advance cfg state (bank i)).variance c) - Real.log (state.variance c)
+      ∂(PMF.uniformOfFintype ι).toMeasure) < 0 := by
+  simp_rw [advance_log_difference cfg state _ hv c hc]
+  rw [integral_uniform]
+  exact mean_log_factor_neg decay decay_pos decay_lt_one bank c hm hn
+
+end Bank
+end Thesis.Intraday.MacroVariance

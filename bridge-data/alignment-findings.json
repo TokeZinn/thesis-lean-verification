@@ -1,0 +1,616 @@
+{
+  "authoritativeSource": "C:\\Users\\tokez\\Desktop\\Doctoral Thesis",
+  "byLabel": {
+    "defn:fixed-grid-representative": {
+      "correction": "Make a selected pointwise representative part of the input or require a continuous quantity representative, uniquely determined on the compact interval.",
+      "issue": "DA26-06",
+      "kind": "representative-dependence",
+      "line": 13,
+      "proofSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "A - appendices/day-ahead-numerical-implementation.tex",
+      "statementSha256": "6ec05a230bbd0b4f399b08ad7c8d39cc4b248170d5599353cc5b3185165a6978",
+      "status": "incorrect-statement",
+      "summary": "A(F) is defined on generic L2 classes whenever the first coordinate is defined pointwise at the grid nodes."
+    },
+    "defn:identifier-clearing-operator": {
+      "correction": "Use exactly (x,i)=(y,j) OR h(x)<h(y) OR (h(x)=h(y) AND i<j), as in the cited foundation proposition; define h as the side-price-time key. Alternatively restrict the domain to distinct identifiers and define priority-key ties explicitly.",
+      "issue": "ID03",
+      "kind": "undefined-and-inconsistent-relation",
+      "line": 368,
+      "proofSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "3 - intraday/2_lobs_and_tuples.tex",
+      "statementSha256": "5fa3f0deb24e86109cd24ec0102dcf81d68f8ab3b5400ff4f425cc50508951fd",
+      "status": "incorrect-statement",
+      "summary": "The displayed identifier relation is the partial order from prop:identifier-tie-breaking."
+    },
+    "prop:monotone-decoding-nonexpansive": {
+      "correction": "Assume E[||W||]<infinity (or square integrability).",
+      "issue": "DA26-05",
+      "kind": "missing-integrability-hypothesis",
+      "line": 703,
+      "proofSha256": "d648c132762d310ae021915f07261202a032c0f858248bc41568e5858986bc71",
+      "source": "2 - day-ahead/5_forecasting_impact.tex",
+      "statementSha256": "1ee0a75d05da7bbe265909de798a79da60f5580b5b1d06afb357717b5dbc9ab8",
+      "status": "incorrect-statement",
+      "summary": "Every random W valued in the quantity/price monotonicity product admits the stated conditional expectation."
+    },
+    "prop:pl-encoding-measurable": {
+      "correction": "Add Q(m)>0 to L, or define generalized-inverse curves for every state and separately restrict their trading interpretation.",
+      "issue": "DA26-01",
+      "kind": "ill-defined-domain",
+      "line": 497,
+      "proofSha256": "de9ed40ef31737ce10129f6c3cf91cf21e5565ab91ef96a09e1956d51ffe80c8",
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+      "statementSha256": "5d510acf2191977a55c025c34bef9b05bd0b08b889fa99c4a44cc26261dff97a",
+      "status": "incorrect-statement",
+      "summary": "Positive maximal buy/sell cumulative volumes in L guarantee the positively matched input required by P_m."
+    }
+  },
+  "issues": [
+    {
+      "claim": "Positive maximal buy/sell cumulative volumes in L guarantee the positively matched input required by P_m.",
+      "classification": "ill-defined-domain",
+      "correction": "Add Q(m)>0 to L, or define generalized-inverse curves for every state and separately restrict their trading interpretation.",
+      "evidence": "Sell cumulative list ((10,0),(20,1)); buy cumulative list ((3000,0),(-10,0),(-20,1)); upper=3000. Both maximal volumes are 1, all prices admissible, combined max price=3000. For q in (0,1], supply=10+10q and demand=-10-10q, so no positive matched quantity exists.",
+      "evidenceFiles": [
+        "Thesis/DayAhead/ClearingOperatorPriceCurves/InterpolatedSide.lean",
+        "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
+      ],
+      "id": "DA26-01",
+      "line": 497,
+      "severity": "high",
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "claim": "The exact sided L2 encoding determines both one-sided limits at zero but loses the midpoint crossing price.",
+      "classification": "false-information-loss-claim",
+      "correction": "Distinguish arbitrary point values from the deterministically selected midpoint and distinguish exact Hilbert encoding from subsequent grid approximation.",
+      "evidence": "Under the chosen midpoint inverse, P_m(0)=(P_m(0-)+P_m(0+))/2. Thus the retained limits determine the selected crossing price. Repeated at line579 and numerical appendix22.",
+      "evidenceFiles": [],
+      "id": "DA26-02",
+      "line": 347,
+      "severity": "medium",
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "claim": "At u=0 an ambient L2 conditional expectation gives the scalar conditional expectation of P(0+).",
+      "classification": "undefined-point-evaluation",
+      "correction": "State a separate scalar conditional target or construct a measurable regular representative of the conditional mean and prove the commutation.",
+      "evidence": "Point evaluation is not an operation on an L2 equivalence class: 0 and the indicator of {0} are the same Lebesgue L2 class and have distinct values at zero. Selected input representatives do not define a chosen output representative.",
+      "evidenceFiles": [
+        "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
+      ],
+      "id": "DA26-03",
+      "line": 197,
+      "severity": "medium",
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "claim": "For arbitrary chosen conditional versions and every predictor point x, sum_s phi_s(V_x)=f(x)-E[f(X)].",
+      "classification": "null-point-conditional-version-error",
+      "correction": "Explicitly define V_x(full)=f(x) and V_x(empty)=E[f(X)], or qualify the substitution almost surely.",
+      "evidence": "Finite Shapley efficiency gives V_x(full)-V_x(empty). A full conditional version equals f(x) only almost everywhere. Existing Lean counterexample has predictor=0 almost surely, a null outcome with predictor1, prediction0, and a valid chosen full-information version taking value1 there.",
+      "evidenceFiles": [
+        "Thesis/DayAhead/ForecastingImpact/AttributionVersions.lean"
+      ],
+      "id": "DA26-04",
+      "line": 417,
+      "severity": "high",
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "claim": "Every random W valued in the quantity/price monotonicity product admits the stated conditional expectation.",
+      "classification": "missing-integrability-hypothesis",
+      "correction": "Assume E[||W||]<infinity (or square integrability).",
+      "evidence": "The quantity cone is unbounded. Set all its entries equal to a nonnegative nonintegrable scalar random variable, and take bounded constant prices. The cone hypothesis holds but the Bochner conditional expectation of W is undefined.",
+      "evidenceFiles": [],
+      "id": "DA26-05",
+      "line": 703,
+      "severity": "high",
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "claim": "A(F) is defined on generic L2 classes whenever the first coordinate is defined pointwise at the grid nodes.",
+      "classification": "representative-dependence",
+      "correction": "Make a selected pointwise representative part of the input or require a continuous quantity representative, uniquely determined on the compact interval.",
+      "evidence": "Changing a representative at a single grid node does not change its L2 class but changes a sampled quantity entry. A representative being pointwise defined does not make the sampling invariant.",
+      "evidenceFiles": [
+        "Thesis/Appendices/DayAheadNumerical/NumericalRepresentation.lean",
+        "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
+      ],
+      "id": "DA26-06",
+      "line": 13,
+      "severity": "medium",
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "claim": "Lower held-out empirical MSE implies closer population conditional mean by the regression identity.",
+      "classification": "empirical-population-inference",
+      "correction": "Describe the result as empirical evidence; justify population conclusions with an uncertainty argument and its assumptions.",
+      "evidence": "The Pythagorean identity compares population risks. Empirical and population MSE rankings can reverse on a two-point distribution, e.g. constant0 versus constant1 when the test realization is the less probable point.",
+      "evidenceFiles": [
+        "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
+      ],
+      "id": "DA26-07",
+      "line": 864,
+      "severity": "medium",
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "claim": "Frozen opposite-touch translation defines additions in the same bounded order space, with no rounding or clipping and no specified rejection rule.",
+      "classification": "domain-error",
+      "correction": "State an admissibility guard and rejection/drop policy for translated out-of-domain additions, or enlarge the simulator price domain and explicitly separate it from O. Do not restore the obsolete anchor or silently clip prices.",
+      "evidence": "A source buy at p=0 below a source ask of 5000, transferred to a live ask of -6000, is priced at -11000. Every input price is in [-9999,9999]; the output is not. The buy can be interior to its source side, so removal of extreme orders does not enforce the missing domain condition.",
+      "evidenceFiles": [
+        "Thesis/Intraday/Simulation/PriceTranslation.lean"
+      ],
+      "id": "ID01",
+      "line": 705,
+      "relatedSources": [
+        {
+          "line": 17,
+          "source": "A - appendices/intraday-simulator-details.tex"
+        },
+        {
+          "line": 9,
+          "source": "3 - intraday/2_lobs_and_tuples.tex"
+        }
+      ],
+      "severity": "high",
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "claim": "Every reconstructed active order ((p_i,q_i,theta_i),kappa_i) belongs to O, although accepted broadcast times extend to 1.05 and priority is renewed to a positive update's broadcast time.",
+      "classification": "domain-error",
+      "correction": "Use an order priority-time domain containing the reconstruction horizon, or explicitly restrict the O-valued book to records at or before time 1 and specify post-close handling.",
+      "evidence": "A positive new or price-changing update at normalized time 1.02 is accepted by the record schema and algorithm, and assigns priority time 1.02. O requires the time coordinate in [0,1]. No post-close clipping, truncation, or separate priority-time domain is stated.",
+      "evidenceFiles": [
+        "Thesis/Intraday/LOBsAndTuples/CurrentSourceIssues.lean"
+      ],
+      "id": "ID02",
+      "line": 276,
+      "relatedSources": [
+        {
+          "line": 232,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 9,
+          "source": "3 - intraday/2_lobs_and_tuples.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "claim": "The displayed identifier relation is the partial order from prop:identifier-tie-breaking.",
+      "classification": "undefined-and-inconsistent-relation",
+      "correction": "Use exactly (x,i)=(y,j) OR h(x)<h(y) OR (h(x)=h(y) AND i<j), as in the cited foundation proposition; define h as the side-price-time key. Alternatively restrict the domain to distinct identifiers and define priority-key ties explicitly.",
+      "evidence": "The symbol x sim_precedence y is not defined anywhere in the snapshot. If it means equality of priority keys, the use of i<=j compares distinct orders with the same key and the same identifier in both directions, violating antisymmetry. If it means equivalence under the partial order, it is equality and fails to resolve quantity ties. The referenced foundation proposition instead uses equality of the complete tagged order OR strict lexicographic inequality of (priority key, identifier).",
+      "evidenceFiles": [
+        "Thesis/Intraday/LOBsAndTuples/CurrentSourceIssues.lean"
+      ],
+      "id": "ID03",
+      "line": 368,
+      "relatedSources": [
+        {
+          "line": 191,
+          "source": "1 - theoretical foundations/3_market_actions.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "claim": "Ideal h-step PIT values are in general (h-1)-dependent.",
+      "classification": "mathematical-overstatement",
+      "correction": "Replace the strong finite-dependence claim by the conditional-uniformity and h-spaced independence statements, or add a finite-memory innovation assumption sufficient for block independence. Define the intended dependence notion.",
+      "evidence": "This is false for the usual strong definition of m-dependence (independence of separated blocks). Let a fair regime S be known at time zero, and let iid innovations epsilon_n be uniform on {0,1,2,3}. Define the binary outcome at n+2 to be zero on A_n: in regime 0, epsilon_(n+1)<2; in regime 1, epsilon_(n+1)=0 or epsilon_(n+2)=0 or both are 1. Both regimes give P(A_n|F_n)=1/2, so the ideal two-step forecast is Bernoulli(1/2). Independent randomized PITs are uniform, and their lower-half events are A_n. The adjacent-pair probability is 16/64 in regime 0 and 22/64 in regime 1. Distant adjacent pairs use disjoint innovations conditional on S but share S: their intersection probability exceeds the product by 9/4096. Thus the ideal PIT sequence is not 1-dependent. Single PITs at sufficiently separated origins, and each h-spaced subsequence, can still be independent; that is weaker than block independence.",
+      "evidenceFiles": [
+        "Thesis/Appendices/ExtendedResearch/PITCounterexample.lean"
+      ],
+      "formalEvidenceScope": "Finite counts and dependence arithmetic only; the infinite product probability construction and randomized PIT bridge are the explicit mathematical argument above.",
+      "id": "RD01",
+      "line": 142,
+      "severity": "medium",
+      "source": "A - appendices/extended-research-directions.tex"
+    },
+    {
+      "claim": "The simulator uses a 0.25 window-continuation probability.",
+      "classification": "internal-inconsistency",
+      "correction": "Update the conclusion to 1/2, after checking the archived run configuration.",
+      "evidence": "The simulator definition, figure caption and implementation appendix consistently specify probability 1/2. The reported continuation rate of 49.8% also agrees with that specification.",
+      "id": "CN01",
+      "line": 109,
+      "relatedSources": [
+        {
+          "line": 722,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 33,
+          "source": "A - appendices/intraday-simulator-details.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The library and whole-session experiment cover the final three hours, 08:00-11:00 UTC, in fifteen 12-minute windows.",
+      "classification": "internal-inconsistency",
+      "correction": "Use the current full observed-session horizon and day-dependent window count throughout summaries; retain a three-hour claim only for a separately specified experiment.",
+      "evidence": "The actual library chapter specifies observed sessions lasting 21-22 hours from 15:00 local time, with 105-110 windows. Whole-session paths start at the opening book and run to normalized time 0.99. The abstract, introduction and later conclusion sentences repeat the obsolete three-hour description.",
+      "id": "CN02",
+      "line": 65,
+      "relatedSources": [
+        {
+          "line": 524,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 765,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 9,
+          "source": "incl/misc/abstract.tex"
+        },
+        {
+          "line": 28,
+          "source": "0 - introduction/4_problemstatement.tex"
+        },
+        {
+          "line": 69,
+          "source": "4 - conclusion/conclusion.tex"
+        },
+        {
+          "line": 135,
+          "source": "4 - conclusion/conclusion.tex"
+        }
+      ],
+      "severity": "high",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The intraday feature sequence is scaled by causal median coordinate scales.",
+      "classification": "internal-inconsistency",
+      "correction": "Describe the actual fixed feature transformations and remove the obsolete median-scaling statement.",
+      "evidence": "The current feature construction explicitly states that no coordinate is standardized by library statistics; it uses logarithm and inverse hyperbolic sine transformations.",
+      "id": "CN03",
+      "line": 65,
+      "relatedSources": [
+        {
+          "line": 559,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The encoder uses multi-head self-attention.",
+      "classification": "internal-inconsistency",
+      "correction": "Say single-head self-attention, unless the formal encoder and run configuration are intentionally changed together.",
+      "evidence": "Definition defn:aa-encoder specifies one set of key/query/value matrices and one attention head; the actual encoder is single-head.",
+      "id": "CN04",
+      "line": 65,
+      "relatedSources": [
+        {
+          "line": 571,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "A learned inverse temperature scales retrieval distances, and training estimates temperature tau.",
+      "classification": "internal-inconsistency",
+      "correction": "Describe the two learned bias vectors and fixed-temperature attention identity. Do not omit the key-norm bias when stating the equivalence.",
+      "evidence": "The current score is minus squared embedding distance plus window and age biases, with no learned temperature. The equivalent attention expression has fixed temperature 1/2 and an essential additive key-norm bias.",
+      "id": "CN05",
+      "line": 65,
+      "relatedSources": [
+        {
+          "line": 603,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 618,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 67,
+          "source": "4 - conclusion/conclusion.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "Training outcomes and scored displacement vectors have 41 coordinates.",
+      "classification": "internal-inconsistency",
+      "correction": "Keep 41 encoder positions and 33 outcome/score coordinates distinct throughout.",
+      "evidence": "The current encoder inputs have 41 grid positions, but training outcomes and evaluation scores use a distinct 33-point grid. The conclusion conflates these grids.",
+      "id": "CN06",
+      "line": 67,
+      "relatedSources": [
+        {
+          "line": 637,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 769,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        },
+        {
+          "line": 69,
+          "source": "4 - conclusion/conclusion.tex"
+        },
+        {
+          "line": 133,
+          "source": "4 - conclusion/conclusion.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "Buy and sell submissions shift by best-bid and best-ask offsets, respectively.",
+      "classification": "internal-inconsistency",
+      "correction": "Name the opposite-touch shifts explicitly.",
+      "evidence": "The current side-wise translation is opposite-touch: buys shift with the best ask, sells with the best bid. The wording in the conclusion reverses the pairing.",
+      "id": "CN07",
+      "line": 67,
+      "relatedSources": [
+        {
+          "line": 699,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The simulator replays sequential composite actions through the chapter's clearing and visible-book truncation operators.",
+      "classification": "internal-inconsistency",
+      "correction": "Describe the actual batch/visibility/waiting convention and state the mathematical relation to the idealized tuple transition.",
+      "evidence": "The current implementation appendix explicitly distinguishes its simulator from that transition: actions are batched by type, visibility follows arrival, a finite waiting queue is used, and promoted/reduced orders are cleared only in a later batch.",
+      "id": "CN08",
+      "line": 67,
+      "relatedSources": [
+        {
+          "line": 27,
+          "source": "A - appendices/intraday-simulator-details.tex"
+        }
+      ],
+      "severity": "high",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The 298 evaluation days start on 9 March 2022.",
+      "classification": "internal-inconsistency",
+      "correction": "Use 1 March 2022, consistently with the evaluation chapter.",
+      "evidence": "The evaluation chapter starts on 1 March: 306 calendar days through 31 December minus eight inadmissible days equals 298. Starting on 9 March would leave only 298 calendar days before exclusions.",
+      "id": "CN09",
+      "line": 69,
+      "relatedSources": [
+        {
+          "line": 761,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "Encoder parameters are refitted monthly.",
+      "classification": "internal-inconsistency",
+      "correction": "Use the actual weekly rolling chain.",
+      "evidence": "The training chapter specifies 44 weekly cutoffs from 1 March to 27 December, with each later fit initialized from the previous fit.",
+      "id": "CN10",
+      "line": 69,
+      "relatedSources": [
+        {
+          "line": 660,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "Nowcasts start every 20 minutes and use 50 simulated paths per origin.",
+      "classification": "internal-inconsistency",
+      "correction": "State the twelve-breakpoint design and 250-path ensemble.",
+      "evidence": "The current design uses twelve sampled breakpoints per day and B=250 paths per start; it records 3575 starts after one one-sided-book exclusion.",
+      "id": "CN11",
+      "line": 69,
+      "relatedSources": [
+        {
+          "line": 765,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "The bounded monotone numerical decoder is proved non-expansive in L2.",
+      "classification": "wrong-norm-conclusion",
+      "correction": "State contraction in the declared quantity node norm and price-cell norm. Do not describe it as contraction in the exact ambient L2 norm without an additional compatible projection or error bound.",
+      "evidence": "The cited proposition distinguishes the quantity node norm from the exact L2 norm of the quantity's affine interpolant. They cannot be interchanged. Take all quantity nodes zero except the final two, whose values are 2 and 1, and use the zero target. The trapezoidal node fit pools them to 5/3 and 5/3 (weights 1 and 1/2). On the last two cells the original exact squared interpolant L2 norm is (11/3)h; after fitting it is (100/27)h, strictly larger by h/27. This embeds in the actual 1001-node grid with every preceding node zero and the origin unchanged.",
+      "evidenceFiles": [
+        "Thesis/Appendices/ExtendedResearch/NumericalNormCounterexample.lean"
+      ],
+      "formalEvidenceScope": "Kernel checks the weighted two-node pool optimum and exact affine-cell arithmetic; embedding the final two-node block in the full grid is the explicit argument above.",
+      "id": "CN15",
+      "line": 48,
+      "relatedSources": [
+        {
+          "line": 695,
+          "source": "2 - day-ahead/5_forecasting_impact.tex"
+        },
+        {
+          "line": 28,
+          "source": "A - appendices/day-ahead-numerical-implementation.tex"
+        }
+      ],
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex"
+    },
+    {
+      "claim": "Monotonicity of hourly price impact implies a concave hourly battery revenue objective.",
+      "classification": "false-mathematical-inference",
+      "correction": "Remove the inference or add a genuine concavity hypothesis on the revenue map; monotonicity alone supplies the scaling comparison, not concavity.",
+      "evidence": "Let P(q)=min(q,1), a continuous monotone piecewise-affine impact curve, and charging revenue R(q)=-q P(q). Then R(1)=-1, whereas (R(1/2)+R(3/2))/2=-7/8. This violates midpoint concavity, even on [0,2]. The finite-state dynamic program and the sublinear scaling argument do not require this concavity claim.",
+      "evidenceFiles": [
+        "Thesis/Appendices/ExtendedResearch/RevenueConcavity.lean"
+      ],
+      "id": "CN14",
+      "line": 76,
+      "severity": "high",
+      "source": "4 - conclusion/conclusion.tex"
+    }
+  ],
+  "qualifications": [
+    {
+      "claim": "High persistence indicates integration or strong nonstationarity.",
+      "classification": "unsupported-diagnostic-inference",
+      "correction": "Say high persistence motivates investigating differencing, and avoid treating persistence as evidence that rules out stationarity.",
+      "evidence": "A stationary AR(1) with coefficient0.99 has high persistence yet is neither integrated nor nonstationary.",
+      "evidenceFiles": [],
+      "id": "DA26-08",
+      "line": 189,
+      "severity": "low",
+      "source": "2 - day-ahead/4_price_curve_analysis.tex"
+    },
+    {
+      "claim": "The book-path definition assumes a total preorder while reusing the preceding chapter's partial priority relation.",
+      "classification": "assumption-applicability-gap",
+      "correction": "Require the actual partial order (or a supplied measurable sorted action space), or explicitly introduce the total priority-key preorder and explain the change.",
+      "evidence": "The preceding chapter explicitly notes that equal-side equal-price equal-time orders of different quantities are incomparable. Such a relation is not a total preorder. The path recursion itself does not need totality.",
+      "evidenceFiles": [
+        "Thesis/Intraday/LOBsAndTuples/Clearing.lean"
+      ],
+      "id": "ID04",
+      "line": 10,
+      "relatedSources": [
+        {
+          "line": 91,
+          "source": "3 - intraday/2_lobs_and_tuples.tex"
+        }
+      ],
+      "severity": "low",
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    }
+  ],
+  "report": "audit/doctoral-2026-10-20/THESIS_ERRORS.md",
+  "resolvedIssues": [
+    {
+      "claim": "Nowcast energy scores are 2.10/2.28/2.58 and whole-session scores are 3.58/3.66 EUR/MWh.",
+      "classification": "internal-inconsistency",
+      "correction": "Copy the correctly defined score values and units from the current results table, after confirming the archived experiment.",
+      "evidence": "The referenced current table gives 64.72/70.27/79.39 for nowcasts and 250.33/255.97/448.80 for whole sessions. The percentage gains remain 7.9% and 2.2%, but do not make the inconsistent absolute values interchangeable.",
+      "id": "CN12",
+      "line": 69,
+      "relatedSources": [
+        {
+          "line": 797,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "resolution": "The user's revision during the audit updates both table and conclusion to 63.64/69.33/78.85 and 243.50/250.66/446.02. This specific numerical inconsistency is resolved; source-revision-2 preserves it.",
+      "severity": "high",
+      "source": "4 - conclusion/conclusion.tex",
+      "status": "resolved-during-user-edits"
+    },
+    {
+      "claim": "Analogue-Attention wins 183 of 298 whole-session days against uniform drawing.",
+      "classification": "internal-inconsistency",
+      "correction": "Replace 183 by 199 if the main results table is the intended run.",
+      "evidence": "The current results paragraph and table both report 199 of 298 days.",
+      "id": "CN13",
+      "line": 69,
+      "relatedSources": [
+        {
+          "line": 806,
+          "source": "3 - intraday/4_simulation_of_the_lob.tex"
+        }
+      ],
+      "resolution": "The user's revision during the audit updates both table and conclusion to 195/298. This specific win-count inconsistency is resolved; source-revision-2 preserves it.",
+      "severity": "medium",
+      "source": "4 - conclusion/conclusion.tex",
+      "status": "resolved-during-user-edits"
+    }
+  ],
+  "schemaVersion": 4,
+  "scope": "full-thesis-source-scan",
+  "sourceHashes": {
+    "0 - introduction/1_climatechange.tex": "64dc4a332fafbef1f322b735af65fa8e3d029cc2f7112ca78fe11fae0781125d",
+    "0 - introduction/2_description.tex": "c0b2ae08e757402738d9b70868894ea13879aba2b984be20bcfa4a9600b02903",
+    "0 - introduction/3_finance.tex": "8fbcd1ad9099373d618dc675cee6d64cf26ad2584336a51a0ae2151c2951483e",
+    "0 - introduction/4_problemstatement.tex": "fb8bd18c61cef75885ac3b0555e6fa88655bc271a5d35d30d24b5aa1ace82010",
+    "1 - theoretical foundations/1_economics.tex": "6b876e87a16e1bd3f7caf5775cdd40849d35290810682930c5cf7f7a016cff01",
+    "1 - theoretical foundations/2_chapter_market_representations.tex": "1ee103fcb3cd542fe3822050dad3e4834413ac26ad0e5a641c2a8966940d7a50",
+    "1 - theoretical foundations/3_market_actions.tex": "b83497af3d11bf19f6cc5b2deb0e74267944123e29c6d2836c686c2fd999b4f2",
+    "1 - theoretical foundations/4_market_clearing.tex": "257cc6548aeda8175fd72ca7c2b63f5f031d3e45e6c12a67da4b34ffaef89ddb",
+    "1 - theoretical foundations/5_stochastic_markets.tex": "a02b093976dcb14937ea0fa52c56882ef1c5ceded7ed3e33824ba8bff2815112",
+    "2 - day-ahead/1_introduction.tex": "0e35fc0f1cc7d8d25752c8dde3f645c051ed6e8bccbea03650739ac432307937",
+    "2 - day-ahead/2_clearing_operator_price_curves.tex": "d4e57157598bf86bf00f0ead05a2750d48899529d09e2ce1ef0e0eea2a2d07fe",
+    "2 - day-ahead/3_functional_data_analysis.tex": "72f165a00e4e5c388571dddd4abe531ef2d9b9b95c11c641e366bf6f91bc7882",
+    "2 - day-ahead/4_price_curve_analysis.tex": "85b324d3718e150e2b8132f45de062c70fd56adbb757303137a2aec8a16bbc42",
+    "2 - day-ahead/5_forecasting_impact.tex": "f37d82b3aecadba4c11ee57d3bc46bab794c363d8b0e2fc1047779616ca1c5c5",
+    "2 - day-ahead/6_applications.tex": "818f9b85955ad4674ea6027cc7cbc01d7199544899dd86abd520008d604bd7a0",
+    "3 - intraday/1_introduction.tex": "a19aa509aefd24edabdc60e968ef72b82b99697331811fe689fd9fa9d49678c3",
+    "3 - intraday/2_lobs_and_tuples.tex": "29b057655bec4997e29a54183007efae7484ec731598a510e2cc2a04f1035dca",
+    "3 - intraday/3_inference_for_point_processes.tex": "deec4fa438dd1a5f738eff53ae1c0e2d2362df4e4297e16d00e60517ebb25b78",
+    "3 - intraday/4_simulation_of_the_lob.tex": "d4277d795bdbf30a20eb7ea8ecb889c1316a5ddf0a2b444448a37fb107c893e1",
+    "3 - intraday/5_applications.tex": "3dadbaae03f5b0946941dbe6d026c836b1e043c22d68c9b797e63ae5923fba93",
+    "4 - conclusion/conclusion.tex": "d396aa6eac18ca1902158237e9edcc948f9c273895ac6765965c1ef87c2d5506",
+    "A - appendices/algebra.tex": "edd104db54c54c63c4799ca8fa5824ce058e6719fb0e1f1e50453f25c4588e08",
+    "A - appendices/analysis.tex": "b61b8180119afa0157e488e285dc624118a50fceef845a20f3c846ea02859575",
+    "A - appendices/day-ahead-battery-panels.tex": "dbea55d8241947ae00d4e406eee183649cfc8e1b838fe7a106578d12ebb1841c",
+    "A - appendices/day-ahead-numerical-implementation.tex": "5b258d95e96c18f2264bf640539a3326a4c3c90dad6e594d6b06153f2e5f9f29",
+    "A - appendices/extended-research-directions.tex": "20465836909471e012da679216150ca9befe9427434824c082562bdf4f89fcf7",
+    "A - appendices/functional-analysis.tex": "6f77914a39ef9f37ca938f4df3997d79c345bbd2dee7f46bfab12db2b4070cb6",
+    "A - appendices/intraday-policy-details.tex": "c21d71c8b80deb16989e6a937eae0bf8cf579f212d39125f0d86dbe82b2b2e90",
+    "A - appendices/intraday-reconstruction-details.tex": "7c7a52fea2de46babd1d92fcfce144e8c685f643ccdf7de12c7ed203929de29c",
+    "A - appendices/intraday-simulator-details.tex": "823ed5964120c60f1101e18986e2e0faaa3008576e47129ffab482e3ea13c141",
+    "A - appendices/intraday-technical-implementation.tex": "349ce28818863f2b20ac0f2cb6bb813cef8c647e8bbccb804c9f5cb2bac4b67c",
+    "A - appendices/measure.tex": "8139e0af1c8f4ca9301be286cfe848505c0e03b5a7de9bcc6e6b5ab640d4866c",
+    "A - appendices/sets.tex": "12240e16b2970e8d9363342d73742aa3160f59fc78b4ffb6432565c4bd977e2c",
+    "fig/theory/addition.tex": "159fe729ea991595ae67d99ea1d5782fc31d2379b5ebb87e1f7cfd1deeeae606",
+    "fig/theory/composite-action.tex": "95934e66a0bb9f4f0e3d7e7e322738ab9b4d30d50c0d73f2c6c160dfbd6ac864",
+    "fig/theory/distance-to-set.tex": "8ad5966c62e73f98a54819bff6475b65d47cf8712cea23143066d734ecd1b61e",
+    "fig/theory/hausdorff.tex": "9db1e5682d2aa5d5d372ae5aa0db9d57bb6fdd4fb9a269f49bc31d03dca83304",
+    "fig/theory/modification.tex": "ee3fe97aeaa779ec595bbaa435d44dca231ccdb9e97e65c01c9bce5aeae5937e",
+    "fig/theory/removal.tex": "4288a40dd959b1942f6b9017d0ea654a05afc50c187f9507d29873fe109bf08e",
+    "fig/theory/separation-of-points.tex": "cb4bfd367755ed6f208045d86a89d6a1948644aa888db1bd362cf47f12a4e5da",
+    "fig/theory/sorting.tex": "8c7ac1d9fde8c274830e5928322705bd96952e7badb5dedd5aba197a9ee0912e",
+    "fig/theory/topology-space.tex": "208c26d539944c53d7b485f9df9059c17a85c1fc7359cbddf488c6f520f910b7",
+    "fig/theory/tuple-style.tex": "f52310d5e2f0d3e5755d0fd785177667c2d18f4ab8d92252a6f77090a970c88b",
+    "fig/theory/tuplefilter.tex": "b8b727beff41ccc15d9968b0aa7da239dddcfc928ca1bfa9361d3a9f9d7eea79",
+    "fig/tikz/aau-badge.tex": "2b9685568a7fca40f843eb15810af77deb41e3e4b698c25bb3a79c91ee5d37a2",
+    "fig/tuplehausdorff-corrected.tex": "b5c656199f69eb795eac8d846ff0638972a537eaa2a580a7a0c5ae7fb63410e7",
+    "incl/misc/abstract.tex": "4c83cf9b7ef67506b807248a43ca5f4eaa59abaea3c2320506eb9a04cbb2ad33",
+    "incl/misc/contents.tex": "b46d0abea24a4067f0f6b60942ed6e456c9e92e10d5b02013827fdac27c14a69",
+    "incl/misc/frontpage.tex": "9e2c1052ec3d2920a08273296b72c7220e48829376e739209e6774cee4775392",
+    "incl/misc/notation.tex": "bcb2eb6e04f44dda0ac232b7d92588addd3ce978fe6f7e1412342d01a29a4c16",
+    "incl/misc/preface.tex": "01fcac383f81604bd0a25a7c7db7d00ba0995cfc3e833e912ed197fcbf943fc0",
+    "incl/misc/resume.tex": "604165063ab29d564dfdd78bac33a91a66d3e592a2abbb808ec9a8b07c12196c",
+    "incl/misc/titlepage.tex": "55a2d92f45c0eff30264e978f2e03395e3fb07420b2eb122c3059052b64afee6",
+    "master.tex": "8bc95974e87d98d84bda4ef63751ede8f108278846383406aa2a67193435f749",
+    "parts/0-introduction.tex": "b229573967733fe04894b179f84c492c9de80eb401a171c9c246fb1fa6dcc5b2",
+    "parts/1-foundations.tex": "9a8465253f584b61b562c5007283ad30f5072bb5df94ddb1ff80e6085ee79eee",
+    "parts/2-day-ahead.tex": "5d8c2117c755c0ac6dba92b68ae2f80a151e4fd7bbc55e98b174cfae19feb0d1",
+    "parts/3-intraday.tex": "15f99577e6de4891ddb05918873aa1a104e9033bfbd449b654154b644f4bcae6",
+    "parts/4-conclusion.tex": "3482e25dae50492459f0e0a0dd59ce256db33c5615f59d8c20188a62f23391e9",
+    "parts/appendices.tex": "180924ca93a4e6e5f9b53e01bbb3391b392353dca66d7c5a6eef68ea5b8aab0b",
+    "parts/bibliography.tex": "92d09184e63dd4cfa54f6cff5419681fe1854e84051cf727b277f06f46d2017e",
+    "parts/closing.tex": "8eed1529598db475f47d7411ad9c0c1a6accaff3ee37f2789e362300a06efbe8",
+    "parts/index.tex": "0b0c0be12c34080df6872eb231c8dd24646a119f3f047210106d9337206b5106"
+  },
+  "sourceRoot": "Doctoral Thesis",
+  "status": "formal-review-complete"
+}

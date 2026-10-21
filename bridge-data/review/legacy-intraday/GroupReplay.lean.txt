@@ -1,0 +1,251 @@
+import Intraday.LedgerVisibility
+
+/-! # Visible-state feedback and stopping after each source group
+
+Simulator appendix, lines 159 and 188–195. Each group is resolved against the
+previous retained representative, compiled into the actual composite action,
+then sorted and projected with its lifecycle metadata. Failure is tested only
+after the complete source group. The failed snapshot and all preceding logs
+are kept; remaining groups are returned without being consumed.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.GroupReplay
+
+open LiveLedger LifecycleResolver BilateralReplay TypedReplay CompiledReplay
+open LedgerVisibility Clearing Foundations.MarketActions.Composite
+
+structure ScheduledGroup where
+  dueTime : ℝ
+  window : ℕ
+  sourceKey : ℕ
+  records : List SourceRecord
+
+structure GroupOutput where
+  resolved : FillResult
+  retained : Ledger
+
+def process (depth : ℕ) (s : Ledger) (g : ScheduledGroup) : GroupOutput :=
+  let result := resolveRecords s g.records
+  ⟨result, refresh depth result.after⟩
+
+theorem process_valid {s : Ledger} (hs : Valid s) (depth : ℕ) (g : ScheduledGroup) :
+    Valid (process depth s g).retained := refresh_valid (resolveRecords_valid hs _) _
+
+theorem process_market {s : Ledger} (hs : Valid s) (depth : ℕ) (g : ScheduledGroup) :
+    market (process depth s g).retained =
+      Visibility.visible depth (MarketSorting.sortMarket
+        (applyCompositeAction (market s)
+          (compileScript s (resolveRecords s g.records).events))) := by
+  rw [resolveRecords_composite hs]
+  exact refresh_market _ _
+
+theorem process_sorted (depth : ℕ) (s : Ledger) (g : ScheduledGroup) :
+    SortedMarket (market (process depth s g).retained) := refresh_sorted _ _
+
+theorem process_counter (depth : ℕ) (s : Ledger) (g : ScheduledGroup) :
+    s.nextId ≤ (process depth s g).retained.nextId := by
+  change s.nextId ≤ (resolveRecords s g.records).after.nextId
+  rw [← resolveRecords_events]
+  exact replayEvents_counter_monotone _ _
+
+def TwoSided (s : Ledger) : Prop :=
+  0 < (side true (market s)).1 ∧ 0 < (side false (market s)).1
+
+instance (s : Ledger) : Decidable (TwoSided s) := inferInstanceAs (Decidable (_ ∧ _))
+
+inductive Failure where
+  | initialisation
+  | oneSided
+  | retrieval
+  deriving DecidableEq
+
+structure LogEntry where
+  group : ScheduledGroup
+  output : GroupOutput
+
+structure State where
+  book : Ledger
+  log : List LogEntry
+  failure : Option Failure
+
+def tape (s : State) : List Transaction := s.log.flatMap (fun x => x.output.resolved.tape)
+
+def statuses (s : State) : List Status := s.log.flatMap (fun x => x.output.resolved.statuses)
+
+def path (s : State) : List Ledger := s.log.map (fun x => x.output.retained)
+
+def step (depth : ℕ) (s : State) (g : ScheduledGroup) : State := by
+  classical
+  exact if s.failure.isSome then s else
+    let output := process depth s.book g
+    ⟨output.retained, s.log ++ [⟨g, output⟩],
+      if TwoSided output.retained then none else some .oneSided⟩
+
+theorem step_failed (depth : ℕ) (s : State) (g : ScheduledGroup)
+    (hf : s.failure.isSome = true) : step depth s g = s := by simp [step, hf]
+
+theorem step_active (depth : ℕ) (s : State) (g : ScheduledGroup)
+    (hf : s.failure = none) :
+    step depth s g =
+      ⟨(process depth s.book g).retained, s.log ++ [⟨g, process depth s.book g⟩],
+        if TwoSided (process depth s.book g).retained then none else some .oneSided⟩ := by
+  simp [step, hf]
+
+theorem step_valid (depth : ℕ) {s : State} (hs : Valid s.book) (g : ScheduledGroup) :
+    Valid (step depth s g).book := by
+  unfold step
+  split
+  · exact hs
+  · exact process_valid hs _ _
+
+theorem step_counter (depth : ℕ) (s : State) (g : ScheduledGroup) :
+    s.book.nextId ≤ (step depth s g).book.nextId := by
+  unfold step
+  split
+  · exact le_rfl
+  · exact process_counter _ _ _
+
+theorem step_failure_iff (depth : ℕ) (s : State) (g : ScheduledGroup)
+    (hf : s.failure = none) :
+    (step depth s g).failure = some .oneSided ↔ ¬ TwoSided (process depth s.book g).retained := by
+  classical
+  rw [step_active _ _ _ hf]
+  simp only
+  split <;> simp_all
+
+theorem step_success_twoSided (depth : ℕ) (s : State) (g : ScheduledGroup)
+    (hf : s.failure = none) (h : (step depth s g).failure = none) :
+    TwoSided (step depth s g).book := by
+  rw [step_active _ _ _ hf] at h ⊢
+  split at h <;> simp_all
+
+theorem step_tape (depth : ℕ) (s : State) (g : ScheduledGroup) (hf : s.failure = none) :
+    tape (step depth s g) = tape s ++ (resolveRecords s.book g.records).tape := by
+  simp [step_active _ _ _ hf, tape, process]
+
+theorem step_statuses (depth : ℕ) (s : State) (g : ScheduledGroup) (hf : s.failure = none) :
+    statuses (step depth s g) = statuses s ++ (resolveRecords s.book g.records).statuses := by
+  simp [step_active _ _ _ hf, statuses, process]
+
+theorem step_path (depth : ℕ) (s : State) (g : ScheduledGroup) (hf : s.failure = none) :
+    path (step depth s g) = path s ++ [(process depth s.book g).retained] := by
+  simp [step_active _ _ _ hf, path]
+
+structure RunOutput where
+  state : State
+  consumed : List ScheduledGroup
+  pending : List ScheduledGroup
+
+def run (depth : ℕ) : State → List ScheduledGroup → RunOutput
+  | s, [] => ⟨s, [], []⟩
+  | s, g :: gs =>
+    if s.failure.isSome then ⟨s, [], g :: gs⟩ else
+      let rest := run depth (step depth s g) gs
+      ⟨rest.state, g :: rest.consumed, rest.pending⟩
+
+theorem run_failed (depth : ℕ) (s : State) (gs : List ScheduledGroup)
+    (hf : s.failure.isSome = true) : run depth s gs = ⟨s, [], gs⟩ := by
+  cases gs <;> simp [run, hf]
+
+theorem run_partition (depth : ℕ) (s : State) (gs : List ScheduledGroup) :
+    (run depth s gs).consumed ++ (run depth s gs).pending = gs := by
+  induction gs generalizing s with
+  | nil => rfl
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · rfl
+    · exact congrArg (g :: ·) (ih (step depth s g))
+
+theorem run_valid (depth : ℕ) {s : State} (hs : Valid s.book) (gs : List ScheduledGroup) :
+    Valid (run depth s gs).state.book := by
+  induction gs generalizing s with
+  | nil => exact hs
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · exact hs
+    · exact ih (step_valid depth hs g)
+
+theorem run_counter (depth : ℕ) (s : State) (gs : List ScheduledGroup) :
+    s.book.nextId ≤ (run depth s gs).state.book.nextId := by
+  induction gs generalizing s with
+  | nil => exact le_rfl
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · exact le_rfl
+    · exact (step_counter depth s g).trans (ih (step depth s g))
+
+theorem run_pending_implies_failure (depth : ℕ) (s : State) (gs : List ScheduledGroup)
+    (hp : (run depth s gs).pending ≠ []) : (run depth s gs).state.failure.isSome = true := by
+  induction gs generalizing s with
+  | nil => exact False.elim (hp rfl)
+  | cons g gs ih =>
+    by_cases hf : s.failure.isSome = true
+    · simpa only [run, if_pos hf] using hf
+    · simp only [run, if_neg hf] at hp ⊢
+      exact ih (step depth s g) hp
+
+theorem run_success_complete (depth : ℕ) (s : State) (gs : List ScheduledGroup)
+    (hf : (run depth s gs).state.failure = none) :
+    (run depth s gs).consumed = gs ∧ (run depth s gs).pending = [] := by
+  have hp : (run depth s gs).pending = [] := by
+    by_contra h
+    have := run_pending_implies_failure depth s gs h
+    simp [hf] at this
+  exact ⟨by simpa [hp] using run_partition depth s gs, hp⟩
+
+theorem run_log (depth : ℕ) (s : State) (gs : List ScheduledGroup) :
+    (run depth s gs).state.log.map LogEntry.group =
+      s.log.map LogEntry.group ++ (run depth s gs).consumed := by
+  induction gs generalizing s with
+  | nil => simp [run]
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · simp
+    · rename_i hf
+      have hn : s.failure = none := by simpa using hf
+      simpa [step_active _ _ _ hn, List.map_append, List.append_assoc] using ih (step depth s g)
+
+theorem run_log_prefix (depth : ℕ) (s : State) (gs : List ScheduledGroup) :
+    ∃ extra, (run depth s gs).state.log = s.log ++ extra := by
+  induction gs generalizing s with
+  | nil => exact ⟨[], (List.append_nil _).symm⟩
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · exact ⟨[], (List.append_nil _).symm⟩
+    · rename_i hf
+      have hn : s.failure = none := by simpa using hf
+      obtain ⟨extra, he⟩ := ih (step depth s g)
+      refine ⟨⟨g, process depth s.book g⟩ :: extra, ?_⟩
+      simpa [step_active _ _ _ hn, List.append_assoc] using he
+
+/-- A failed state may be one-sided, but its actual ledger remains valid and
+sorted. Every successful state has both sides. -/
+def Invariant (s : State) : Prop :=
+  Valid s.book ∧ SortedMarket (market s.book) ∧ (s.failure = none → TwoSided s.book)
+
+theorem step_invariant (depth : ℕ) {s : State} (hs : Invariant s) (g : ScheduledGroup) :
+    Invariant (step depth s g) := by
+  by_cases hf : s.failure.isSome = true
+  · rwa [step_failed _ _ _ hf]
+  · have hn : s.failure = none := by simpa using hf
+    refine ⟨step_valid depth hs.1 g, ?_, step_success_twoSided depth s g hn⟩
+    rw [step_active _ _ _ hn]
+    exact process_sorted _ _ _
+
+theorem run_invariant (depth : ℕ) {s : State} (hs : Invariant s) (gs : List ScheduledGroup) :
+    Invariant (run depth s gs).state := by
+  induction gs generalizing s with
+  | nil => exact hs
+  | cons g gs ih =>
+    simp only [run]
+    split
+    · exact hs
+    · exact ih (step_invariant depth hs g)
+
+end Thesis.Intraday.GroupReplay

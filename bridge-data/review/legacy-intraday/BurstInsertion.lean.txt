@@ -1,0 +1,129 @@
+import Intraday.RetrievalPhase
+
+/-! # Stage a selected library transition using the actual midpoint offset
+
+The selection law maps directly to the checked staging operation. Its outcome
+retains an explicit `none` when conservative rounding is unavailable; this
+domain failure is not silently replaced by an empty burst. Random bit streams
+and a configured response to that domain failure remain outside this module.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.BurstInsertion
+
+open LiveLedger GroupReplay QueueAnchor AnchorPhase StagedQueuePrices ReplayGridInvariant
+open RetrievalPhase
+
+def offset {cfg : Config} (x : EventReplay.State cfg) (transition : Transition) : ℝ :=
+  midpoint x.session.replay.book - GeometrySweep.midpoint (Clearing.splitMarket transition.book)
+
+def stageTransition {cfg : Config} (x : EventReplay.State cfg) (boundary : ℝ) (window : ℕ)
+    (transition : Transition) : Option (EventReplay.State cfg) :=
+  if x.session.replay.failure.isSome then some x else
+    match h : BurstStaging.stageBurst cfg boundary (offset x transition)
+        window transition.burst with
+    | none => none
+    | some staged => some
+      ⟨{ x.session with pending := x.session.pending ++ staged }, x.events, x.invariant,
+        append_staged_grid cfg x.session.replay.book x.session.pending x.grid
+          boundary (offset x transition) window transition.burst h⟩
+
+theorem stageTransition_failed_state {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition)
+    (hf : x.session.replay.failure.isSome = true) :
+    stageTransition x boundary window transition = some x := by simp [stageTransition, hf]
+
+theorem stageTransition_empty {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) (he : transition.burst = []) :
+    stageTransition x boundary window transition = some x := by
+  rcases transition with ⟨book, start, destination, entryTime, burst⟩
+  dsimp only at he
+  subst burst
+  unfold stageTransition
+  split
+  · rfl
+  · simp only [BurstStaging.stageBurst, List.append_nil]
+
+theorem stageTransition_missing_grid {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) (hf : x.session.replay.failure = none) :
+    stageTransition x boundary window transition = none ↔
+      BurstStaging.stageBurst cfg boundary (offset x transition) window transition.burst =
+        none := by
+  simp only [stageTransition, hf, Option.isSome_none, Bool.false_eq_true, ↓reduceIte]
+  split <;> simp_all
+
+theorem stageTransition_book_unchanged {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) {result : EventReplay.State cfg}
+    (h : stageTransition x boundary window transition = some result) :
+    result.session.replay = x.session.replay ∧ result.session.anchors = x.session.anchors ∧
+      result.events = x.events := by
+  unfold stageTransition at h
+  split at h
+  · have he := Option.some.inj h
+    subst result
+    exact ⟨rfl, rfl, rfl⟩
+  · split at h
+    · contradiction
+    · have he := Option.some.inj h
+      subst result
+      exact ⟨rfl, rfl, rfl⟩
+
+theorem stageTransition_queue {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) {result : EventReplay.State cfg}
+    (hf : x.session.replay.failure = none)
+    (h : stageTransition x boundary window transition = some result) :
+    ∃ staged, BurstStaging.stageBurst cfg boundary (offset x transition) window transition.burst =
+      some staged ∧ result.session.pending = x.session.pending ++ staged := by
+  simp only [stageTransition, hf, Option.isSome_none, Bool.false_eq_true, ↓reduceIte] at h
+  split at h
+  · contradiction
+  · rename_i staged hs
+    have he := Option.some.inj h
+    subst result
+    exact ⟨staged, hs, rfl⟩
+
+def sampleAndStage {cfg : Config} (x : EventReplay.State cfg) (boundary : ℝ) (window : ℕ)
+    (library : ℕ → Transition) (law : SelectedLaw) : PMF (Option (EventReplay.State cfg)) :=
+  law.distribution.map (fun j => stageTransition x boundary window (library j))
+
+theorem sampled_staging_failure_iff {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (law : SelectedLaw) :
+    none ∈ (sampleAndStage x boundary window library law).support ↔
+      ∃ j ∈ law.distribution.support, stageTransition x boundary window (library j) = none :=
+  PMF.mem_support_map_iff _ _ _
+
+theorem sampled_staging_success {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (law : SelectedLaw)
+    (h : ∀ j ∈ law.distribution.support, stageTransition x boundary window (library j) ≠ none) :
+    none ∉ (sampleAndStage x boundary window library law).support := by
+  rw [sampled_staging_failure_iff]
+  rintro ⟨j, hj, he⟩
+  exact h j hj he
+
+theorem sampled_empty_burst {cfg : Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (law : SelectedLaw)
+    {j : ℕ} (hj : j ∈ law.distribution.support) (he : (library j).burst = []) :
+    some x ∈ (sampleAndStage x boundary window library law).support := by
+  rw [sampleAndStage, PMF.mem_support_map_iff]
+  exact ⟨j, hj, stageTransition_empty x boundary window (library j) he⟩
+
+def retrievalFailure {cfg : Config} (x : EventReplay.State cfg) : EventReplay.State cfg :=
+  if x.session.replay.failure.isSome then x else
+    ⟨{ x.session with replay := { x.session.replay with failure := some .retrieval } },
+      x.events, ⟨x.invariant.1, x.invariant.2.1, by intro h; cases h⟩, x.grid⟩
+
+theorem retrievalFailure_preserves_state {cfg : Config} (x : EventReplay.State cfg) :
+    (retrievalFailure x).session.replay.book = x.session.replay.book ∧
+      (retrievalFailure x).session.replay.log = x.session.replay.log ∧
+      (retrievalFailure x).session.pending = x.session.pending ∧
+      (retrievalFailure x).session.anchors = x.session.anchors ∧
+      (retrievalFailure x).events = x.events := by
+  unfold retrievalFailure
+  split <;> exact ⟨rfl, rfl, rfl, rfl, rfl⟩
+
+theorem retrievalFailure_status {cfg : Config} (x : EventReplay.State cfg)
+    (hf : x.session.replay.failure = none) :
+    (retrievalFailure x).session.replay.failure = some .retrieval := by
+  simp [retrievalFailure, hf]
+
+end Thesis.Intraday.BurstInsertion

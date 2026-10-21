@@ -1,0 +1,161 @@
+import Intraday.CommonAnchor
+
+/-! # Apply the common correction to the actual bounded-price book
+
+Tuple indices, sides, logarithmic quantities and priority times are retained.
+The grid-membership certificate from `CommonAnchor` supplies each shifted
+price's bounds. Staged additions use the very same correction; their provenance
+and due times are preserved by `PriceGrid.shiftStaged_preserves`.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.AnchoredBooks
+
+open Execution Conservation GeometrySweep CommonAnchor
+open scoped BigOperators
+
+def shiftOrder (o : Order) (s : ℝ) (h : price o + s ∈ Set.Icc (-9999 : ℝ) 9999) : Order :=
+  WithLp.toLp 1 (⟨price o + s, h⟩, o.snd)
+
+@[simp] theorem shiftOrder_price (o : Order) (s : ℝ) (h) :
+    price (shiftOrder o s h) = price o + s := rfl
+
+@[simp] theorem shiftOrder_quantity (o : Order) (s : ℝ) (h) :
+    quantity (shiftOrder o s h) = quantity o := rfl
+
+@[simp] theorem shiftOrder_time (o : Order) (s : ℝ) (h) :
+    time (shiftOrder o s h) = time o := rfl
+
+theorem priority_order_unchanged (buy : Bool) (o p : Order) (s : ℝ) (ho hp) :
+    priorityKey buy (shiftOrder o s ho) ≤ priorityKey buy (shiftOrder p s hp) ↔
+      priorityKey buy o ≤ priorityKey buy p := by
+  cases buy with
+  | false => simp [priorityKey, Prod.Lex.le_iff]
+  | true =>
+    change (toLex (-(price o + s), time o) : ℝ ×ₗ ℝ) ≤ toLex (-(price p + s), time p) ↔
+      (toLex (-price o, time o) : ℝ ×ₗ ℝ) ≤ toLex (-price p, time p)
+    rw [Prod.Lex.toLex_le_toLex, Prod.Lex.toLex_le_toLex]
+    constructor <;> rintro (h | ⟨h, ht⟩)
+    · left; linarith
+    · exact Or.inr ⟨by linarith, ht⟩
+    · left; linarith
+    · exact Or.inr ⟨by linarith, ht⟩
+
+def shiftBook (b : Book) (s : ℝ)
+    (h : ∀ i, price (b.2 i) + s ∈ Set.Icc (-9999 : ℝ) 9999) : Book :=
+  ⟨b.1, fun i => shiftOrder (b.2 i) s (h i)⟩
+
+@[simp] theorem shiftBook_length (b : Book) (s : ℝ) (h) : (shiftBook b s h).1 = b.1 := rfl
+
+theorem shiftBook_sorted (buy : Bool) (b : Book) (s : ℝ) (h) :
+    Sorted buy (shiftBook b s h) ↔ Sorted buy b := by
+  constructor <;> intro hs i j hij
+  · exact (priority_order_unchanged buy _ _ s _ _).mp (hs hij)
+  · exact (priority_order_unchanged buy _ _ s _ _).mpr (hs hij)
+
+@[simp] theorem shiftBook_quantity (b : Book) (s : ℝ) (h) :
+    bookQuantity (shiftBook b s h) = bookQuantity b := rfl
+
+theorem shiftBook_best (b : Book) (s : ℝ) (h) (hb : 0 < b.1) :
+    best 0 (shiftBook b s h) = best 0 b + s := by
+  rcases b with ⟨n, b⟩
+  cases n with
+  | zero => exact False.elim (Nat.not_lt_zero _ hb)
+  | succ n => rfl
+
+def shiftState (b : State) (s : ℝ)
+    (hb : ∀ i, price (b.1.2 i) + s ∈ Set.Icc (-9999 : ℝ) 9999)
+    (hs : ∀ i, price (b.2.2 i) + s ∈ Set.Icc (-9999 : ℝ) 9999) : State :=
+  (shiftBook b.1 s hb, shiftBook b.2 s hs)
+
+theorem shiftState_sorted (b : State) (s : ℝ) (hb hs) :
+    SortedState (shiftState b s hb hs) ↔ SortedState b := by
+  exact and_congr (shiftBook_sorted true b.1 s hb) (shiftBook_sorted false b.2 s hs)
+
+theorem shiftState_midpoint (b : State) (s : ℝ) (hb hs)
+    (hbuy : 0 < b.1.1) (hsell : 0 < b.2.1) :
+    GeometrySweep.midpoint (shiftState b s hb hs) = GeometrySweep.midpoint b + s := by
+  simp only [GeometrySweep.midpoint, shiftState,
+    shiftBook_best _ _ _ hbuy, shiftBook_best _ _ _ hsell]
+  ring
+
+theorem shiftState_spread (b : State) (s : ℝ) (hb hs)
+    (hbuy : 0 < b.1.1) (hsell : 0 < b.2.1) :
+    best 0 (shiftState b s hb hs).2 - best 0 (shiftState b s hb hs).1 =
+      best 0 b.2 - best 0 b.1 := by
+  simp [shiftState, shiftBook_best _ _ _ hbuy, shiftBook_best _ _ _ hsell]
+
+theorem shiftState_referenceVolume (b : State) (s : ℝ) (hb hs) :
+    referenceVolume (shiftState b s hb hs) = referenceVolume b := by
+  simp [referenceVolume, shiftState]
+
+def bookPrices (b : Book) : Finset ℝ := by
+  classical
+  exact Finset.univ.image (fun i => price (b.2 i))
+
+theorem mem_bookPrices (b : Book) (i : Fin b.1) : price (b.2 i) ∈ bookPrices b := by
+  classical
+  exact Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩
+
+def activePrices (b : State) (staged : List PriceGrid.StagedAddition) : Finset ℝ := by
+  classical
+  exact bookPrices b.1 ∪ bookPrices b.2 ∪ (staged.map (·.limit)).toFinset
+
+theorem buy_mem_active (b : State) (staged : List PriceGrid.StagedAddition) (i : Fin b.1.1) :
+    price (b.1.2 i) ∈ activePrices b staged := by
+  classical
+  exact Finset.mem_union_left _ (Finset.mem_union_left _ (mem_bookPrices b.1 i))
+
+theorem sell_mem_active (b : State) (staged : List PriceGrid.StagedAddition) (i : Fin b.2.1) :
+    price (b.2.2 i) ∈ activePrices b staged := by
+  classical
+  exact Finset.mem_union_left _ (Finset.mem_union_right _ (mem_bookPrices b.2 i))
+
+theorem staged_mem_active (b : State) (staged : List PriceGrid.StagedAddition)
+    {a : PriceGrid.StagedAddition} (ha : a ∈ staged) : a.limit ∈ activePrices b staged := by
+  classical
+  exact Finset.mem_union_right _ (List.mem_toFinset.mpr (List.mem_map.mpr ⟨a, ha, rfl⟩))
+
+theorem activePrices_nonempty (b : State) (staged : List PriceGrid.StagedAddition)
+    (hb : 0 < b.1.1) : (activePrices b staged).Nonempty :=
+  ⟨price (b.1.2 ⟨0, hb⟩), buy_mem_active b staged ⟨0, hb⟩⟩
+
+/-- Apply one feasible shift to both actual sides. The finite grid may be
+stricter than the order type's ambient bounds. -/
+def applyGridShift (grid : Finset ℝ) (b : State) (staged : List PriceGrid.StagedAddition) (s : ℝ)
+    (hbound : ∀ p ∈ grid, p ∈ Set.Icc (-9999 : ℝ) 9999)
+    (hshift : ∀ p ∈ activePrices b staged, p + s ∈ grid) : State :=
+  shiftState b s
+    (fun i => hbound _ (hshift _ (buy_mem_active b staged i)))
+    (fun i => hbound _ (hshift _ (sell_mem_active b staged i)))
+
+theorem applyGridShift_sorted (grid : Finset ℝ) (b : State)
+    (staged : List PriceGrid.StagedAddition) (s : ℝ) (hbound hshift) :
+    SortedState (applyGridShift grid b staged s hbound hshift) ↔ SortedState b :=
+  shiftState_sorted b s _ _
+
+theorem applyGridShift_staged_in_grid (grid : Finset ℝ) (b : State)
+    (staged : List PriceGrid.StagedAddition) (s : ℝ)
+    (hshift : ∀ p ∈ activePrices b staged, p + s ∈ grid)
+    {a : PriceGrid.StagedAddition} (ha : a ∈ staged) :
+    (PriceGrid.shiftStaged s a).limit ∈ grid := hshift _ (staged_mem_active b staged ha)
+
+/-- The actual bounded-price book after the optimizer; its shift includes the
+staged addition prices in the feasibility test. -/
+def anchoredState (grid : Finset ℝ) (b : State) (staged : List PriceGrid.StagedAddition)
+    (cap target : ℝ) (positiveFirst : Bool) (hb : 0 < b.1.1)
+    (hbound : ∀ p ∈ grid, p ∈ Set.Icc (-9999 : ℝ) 9999)
+    (hcurrent : activePrices b staged ⊆ grid) (hc : 0 ≤ cap) : State :=
+  applyGridShift grid b staged
+    (correction grid (activePrices b staged) cap target positiveFirst
+      (activePrices_nonempty b staged hb) hcurrent hc) hbound
+    (correction_feasible grid (activePrices b staged) cap target positiveFirst
+      (activePrices_nonempty b staged hb) hcurrent hc).2
+
+theorem anchoredState_sorted (grid : Finset ℝ) (b : State)
+    (staged : List PriceGrid.StagedAddition) (cap target : ℝ) (positiveFirst : Bool)
+    (hb : 0 < b.1.1) (hbound hcurrent hc) :
+    SortedState (anchoredState grid b staged cap target positiveFirst hb hbound hcurrent hc) ↔
+      SortedState b := applyGridShift_sorted _ _ _ _ _ _
+
+end Thesis.Intraday.AnchoredBooks

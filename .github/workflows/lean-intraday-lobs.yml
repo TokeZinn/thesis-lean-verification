@@ -1,0 +1,33 @@
+name: Limit order books and tuples
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part III, Ch. 2 (limit order books and tuples)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Intraday.LOBsAndTuples.Clearing
+            Thesis.Intraday.LOBsAndTuples.CurrentSourceIssues
+            Thesis.Intraday.LOBsAndTuples.Execution
+            Thesis.Intraday.LOBsAndTuples.IdentifierClearing
+            Thesis.Intraday.LOBsAndTuples.IdentifierMarket
+            Thesis.Intraday.LOBsAndTuples.MarketSorting
+            Thesis.Intraday.LOBsAndTuples.Orders
+            Thesis.Intraday.LOBsAndTuples.Replay
+            Thesis.Intraday.LOBsAndTuples.Retagging
+            Thesis.Intraday.LOBsAndTuples.Visibility

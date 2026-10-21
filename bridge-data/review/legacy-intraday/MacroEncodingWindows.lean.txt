@@ -1,0 +1,228 @@
+import Intraday.MacroEncoding
+import Intraday.ReferenceCalendar
+
+/-! # Window assignment, causal carry-forward and guarded day encoding
+
+Use the literal reference calendar and preserve the accepted composite-operation
+order within each left-open, right-closed window. Operations outside (0,H] are
+outside this encoding. A required one-sided book rejects the whole day. There
+are 99 retained window-level vectors and 98 macro rows, indexed by windows 2–99.
+This is an exact mathematical encoder on reconstructed operation inputs, not a
+claim that the unavailable historical feed pipeline has been reproduced.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroEncodingWindows
+
+open MacroEncoding Clearing
+
+def window (os : List Operation) (w : ℕ) : List Operation :=
+  os.filter (fun o => decide (ReferenceCalendar.time (w - 1) < o.eventTime ∧
+    o.eventTime ≤ ReferenceCalendar.time w))
+
+theorem mem_window (os : List Operation) (w : ℕ) (o : Operation) :
+    o ∈ window os w ↔ o ∈ os ∧ ReferenceCalendar.time (w - 1) < o.eventTime ∧
+      o.eventTime ≤ ReferenceCalendar.time w := by
+  simp [window]
+
+theorem window_preserves_order (os : List Operation) (w : ℕ) : (window os w).Sublist os :=
+  List.filter_sublist
+
+theorem window_zero (os : List Operation) : window os 0 = [] := by
+  simp [window]
+
+theorem window_right_boundary (os : List Operation) (w : ℕ) (hw : 0 < w)
+    (o : Operation) (ht : o.eventTime = ReferenceCalendar.time w) :
+    o ∈ window os w ↔ o ∈ os := by
+  have h := ReferenceCalendar.time_strictMono (show w - 1 < w by omega)
+  simp [mem_window, ht, h]
+
+theorem window_left_boundary (os : List Operation) (w : ℕ) (o : Operation)
+    (ht : o.eventTime = ReferenceCalendar.time (w - 1)) : o ∉ window os w := by
+  simp [mem_window, ht]
+
+theorem window_disjoint (os : List Operation) {i j : ℕ} (hij : i < j) :
+    List.Disjoint (window os i) (window os j) := by
+  apply List.disjoint_left.mpr
+  intro o hi hj
+  have ha := ((mem_window os i o).mp hi).2.2
+  have hb := ((mem_window os j o).mp hj).2.1
+  have hc := ReferenceCalendar.time_strictMono.monotone (show i ≤ j - 1 by omega)
+  exact not_lt_of_ge (ha.trans hc) hb
+
+def required (os : List Operation) : List Operation :=
+  os.filter (fun o => decide (0 < o.eventTime ∧ o.eventTime ≤ ReferenceCalendar.horizon))
+
+theorem mem_required (os : List Operation) (o : Operation) :
+    o ∈ required os ↔ o ∈ os ∧ 0 < o.eventTime ∧
+      o.eventTime ≤ ReferenceCalendar.horizon := by simp [required]
+
+theorem window_required (os : List Operation) {w : ℕ} (hw : w ≤ 99)
+    (o : Operation) (ho : o ∈ window os w) : o ∈ required os := by
+  obtain ⟨hm, hl, hr⟩ := (mem_window os w o).mp ho
+  have h0 : 0 ≤ ReferenceCalendar.time (w - 1) := by
+    unfold ReferenceCalendar.time
+    positivity
+  have h99 : ReferenceCalendar.time w ≤ ReferenceCalendar.horizon := by
+    rw [← ReferenceCalendar.time_terminal]
+    exact ReferenceCalendar.time_strictMono.monotone hw
+  exact (mem_required os o).mpr ⟨hm, h0.trans_lt hl, hr.trans h99⟩
+
+theorem required_unique_window (os : List Operation) (o : Operation)
+    (ho : o ∈ required os) : ∃! w : ℕ, 1 ≤ w ∧ w ≤ 99 ∧ o ∈ window os w := by
+  obtain ⟨hm, h0, h99⟩ := (mem_required os o).mp ho
+  have he : ∃ w : ℕ, o.eventTime ≤ ReferenceCalendar.time w :=
+    ⟨99, by simpa only [ReferenceCalendar.time_terminal] using h99⟩
+  let w := Nat.find he
+  have hr : o.eventTime ≤ ReferenceCalendar.time w := Nat.find_spec he
+  have hw : w ≤ 99 := Nat.find_min' he (by
+    simpa only [ReferenceCalendar.time_terminal] using h99)
+  have hw0 : 0 < w := by
+    by_contra h
+    have hz : w = 0 := by omega
+    rw [hz] at hr
+    norm_num [ReferenceCalendar.time] at hr
+    linarith
+  have hl : ReferenceCalendar.time (w - 1) < o.eventTime :=
+    lt_of_not_ge (Nat.find_min he (show w - 1 < w by omega))
+  have hom : o ∈ window os w := (mem_window os w o).mpr ⟨hm, hl, hr⟩
+  refine ⟨w, ⟨hw0, hw, hom⟩, ?_⟩
+  intro v hv
+  rcases lt_trichotomy v w with h | h | h
+  · exact False.elim (List.disjoint_left.mp (window_disjoint os h) hv.2.2 hom)
+  · exact h
+  · exact False.elim (List.disjoint_left.mp (window_disjoint os h) hom hv.2.2)
+
+def levels (opening : Market) (os : List Operation) : ℕ → Levels
+  | 0 => emptyLevels (quotes opening)
+  | w + 1 => summarise (levels opening os w).ending (window os (w + 1))
+
+theorem levels_empty (opening : Market) (os : List Operation) (w : ℕ)
+    (hw : window os (w + 1) = []) :
+    levels opening os (w + 1) = emptyLevels (levels opening os w).ending := by
+  rw [levels, hw, summarise_empty]
+
+theorem levels_count (opening : Market) (os : List Operation) (w : ℕ) :
+    (levels opening os (w + 1)).count = (window os (w + 1)).length := rfl
+
+theorem levels_final_midpoint (opening : Market) (os : List Operation) (w : ℕ)
+    (xs : List Operation) (o : Operation) (hw : window os (w + 1) = xs ++ [o]) :
+    (levels opening os (w + 1)).ending.midpoint = (quotes o.post).midpoint := by
+  rw [levels, hw]
+  exact summarise_final_midpoint _ xs o
+
+theorem levels_equal_of_windows (opening : Market) (xs ys : List Operation) (n : ℕ)
+    (h : ∀ w, w ≤ n → window xs w = window ys w) :
+    levels opening xs n = levels opening ys n := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    rw [levels, levels, ih (fun w hw => h w (by omega)), h (n + 1) le_rfl]
+
+def observedThrough (os : List Operation) (n : ℕ) : List Operation :=
+  os.filter (fun o => decide (o.eventTime ≤ ReferenceCalendar.time n))
+
+theorem window_prefix (os : List Operation) {w n : ℕ} (hw : w ≤ n) :
+    window (observedThrough os n) w = window os w := by
+  unfold window observedThrough
+  rw [List.filter_filter]
+  apply List.filter_congr
+  intro o _
+  have ht := ReferenceCalendar.time_strictMono.monotone hw
+  by_cases h : ReferenceCalendar.time (w - 1) < o.eventTime ∧
+      o.eventTime ≤ ReferenceCalendar.time w
+  · simp [h, h.2.trans ht]
+  · simp [h]
+
+theorem levels_prefix (opening : Market) (os : List Operation) (n : ℕ) :
+    levels opening (observedThrough os n) n = levels opening os n :=
+  levels_equal_of_windows opening _ _ n (fun _ hw => window_prefix os hw)
+
+theorem levels_causal (opening : Market) (xs ys : List Operation) (n : ℕ)
+    (h : observedThrough xs n = observedThrough ys n) :
+    levels opening xs n = levels opening ys n := by
+  rw [← levels_prefix opening xs n, h, levels_prefix]
+
+theorem levels_causal_le (opening : Market) (xs ys : List Operation) {m n : ℕ} (hm : m ≤ n)
+    (h : observedThrough xs n = observedThrough ys n) :
+    levels opening xs m = levels opening ys m := by
+  apply levels_equal_of_windows
+  intro w hw
+  rw [← window_prefix xs (hw.trans hm), h, window_prefix ys (hw.trans hm)]
+
+def Eligible (opening : Market) (os : List Operation) : Prop :=
+  TwoSided opening ∧ ∀ o ∈ required os, TwoSided o.post
+
+def rows (u : Units) (opening : Market) (os : List Operation) : Fin 98 → MacroPath.Row :=
+  fun i => row u (levels opening os (i.val + 1)) (levels opening os (i.val + 2))
+
+theorem rows_causal (u : Units) (opening : Market) (xs ys : List Operation) (i : Fin 98)
+    (h : observedThrough xs (i.val + 2) = observedThrough ys (i.val + 2)) :
+    rows u opening xs i = rows u opening ys i := by
+  unfold rows
+  rw [levels_causal_le opening xs ys (show i.val + 1 ≤ i.val + 2 by omega) h,
+    levels_causal opening xs ys (i.val + 2) h]
+
+def encode (u : Units) (opening : Market) (os : List Operation) :
+    Option (Fin 98 → MacroPath.Row) := by
+  classical
+  exact if Eligible opening os then some (rows u opening os) else none
+
+theorem encode_none_iff (u : Units) (opening : Market) (os : List Operation) :
+    encode u opening os = none ↔ ¬TwoSided opening ∨
+      ∃ o ∈ required os, ¬TwoSided o.post := by
+  classical
+  simp only [encode, ite_eq_right_iff, Option.some_ne_none, imp_false, Eligible]
+  push Not
+  tauto
+
+theorem encode_some_iff (u : Units) (opening : Market) (os : List Operation)
+    (output : Fin 98 → MacroPath.Row) :
+    encode u opening os = some output ↔ Eligible opening os ∧ output = rows u opening os := by
+  classical
+  simp only [encode]
+  split <;> simp_all [eq_comm]
+
+theorem encoded_required_books (u : Units) (opening : Market) (os : List Operation)
+    (output : Fin 98 → MacroPath.Row) (he : encode u opening os = some output)
+    {w : ℕ} (hw : w ≤ 99) (o : Operation) (ho : o ∈ window os w) : TwoSided o.post :=
+  ((encode_some_iff u opening os output).mp he).1.2 o (window_required os hw o ho)
+
+theorem rows_log_arguments_positive (u : Units) (opening : Market) (os : List Operation)
+    (i : Fin 98) :
+    let previous := levels opening os (i.val + 1)
+    let current := levels opening os (i.val + 2)
+    0 < volatilityRatio u current ∧ 0 < countRatio previous current ∧
+      0 < addedRatio u previous current ∧ 0 < tradedRatio u previous current :=
+  log_arguments_positive u _ _
+
+theorem rows_empty_window (u : Units) (opening : Market) (os : List Operation) (i : Fin 98)
+    (hw : window os (i.val + 2) = []) :
+    rows u opening os i = row u (levels opening os (i.val + 1))
+      (emptyLevels (levels opening os (i.val + 1)).ending) := by
+  unfold rows
+  rw [show i.val + 2 = (i.val + 1) + 1 by omega, levels_empty opening os _ hw]
+
+/-- A retained level vector, with the same coordinate order as the source. -/
+def retained (opening : Market) (os : List Operation) (i : Fin 99) : MacroPath.Row :=
+  let x := levels opening os (i.val + 1)
+  ![ReferenceCalendar.time (i.val + 1), x.count, x.added, traded x,
+    imbalance x, x.meanSpread, x.ending.midpoint]
+
+theorem rows_imbalance_bounds (u : Units) (opening : Market) (os : List Operation) (i : Fin 98) :
+    -1 ≤ rows u opening os i 5 ∧ rows u opening os i 5 ≤ 1 :=
+  imbalance_bounds _
+
+/-- Historical scaling is applied to these actual rows. -/
+def standardised (u : Units) (opening : Market) (os : List Operation)
+    (scale : MacroPath.Row) (climatology : ℕ → MacroPath.Row) : Fin 98 → MacroPath.Row :=
+  fun i => MacroPath.standardise scale (climatology (i.val + 2)) (rows u opening os i)
+
+theorem restore_standardised (u : Units) (opening : Market) (os : List Operation)
+    (scale : MacroPath.Row) (climatology : ℕ → MacroPath.Row) (hs : ∀ c, scale c ≠ 0)
+    (i : Fin 98) :
+    MacroPath.inverseStandardise scale (climatology (i.val + 2))
+      (standardised u opening os scale climatology i) = rows u opening os i :=
+  MacroPath.inverseStandardise_standardise scale _ _ hs
+
+end Thesis.Intraday.MacroEncodingWindows

@@ -1,0 +1,43 @@
+name: Functional data analysis
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part II, Ch. 3 (functional data analysis)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.DayAhead.FunctionalDataAnalysis.CompactCovariance
+            Thesis.DayAhead.FunctionalDataAnalysis.CompactSpectralExpansion
+            Thesis.DayAhead.FunctionalDataAnalysis.ConditionalBasisSource
+            Thesis.DayAhead.FunctionalDataAnalysis.Covariance
+            Thesis.DayAhead.FunctionalDataAnalysis.FunctionalData
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLT
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTBasic
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTInfinite
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTMoments
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTTightness
+            Thesis.DayAhead.FunctionalDataAnalysis.HilbertSchmidtCovariance
+            Thesis.DayAhead.FunctionalDataAnalysis.LimitTheorems
+            Thesis.DayAhead.FunctionalDataAnalysis.ProcessStationarity
+            Thesis.DayAhead.FunctionalDataAnalysis.RegressionCounterexample
+            Thesis.DayAhead.FunctionalDataAnalysis.RegressionMeanSquare
+            Thesis.DayAhead.FunctionalDataAnalysis.ScoreInformationSource
+            Thesis.DayAhead.FunctionalDataAnalysis.ScoreLevyL2Source
+            Thesis.DayAhead.FunctionalDataAnalysis.SpectralAmbiguity
+            Thesis.DayAhead.FunctionalDataAnalysis.SpectralBasis
+            Thesis.DayAhead.FunctionalDataAnalysis.SpectralTheorem

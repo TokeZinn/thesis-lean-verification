@@ -1,0 +1,157 @@
+import Intraday.RolloutHorizon
+import Mathlib.Order.Interval.Finset.Nat
+
+/-! # The 99-window reference calendar and completed adaptive rollout
+
+Simulator appendix, lines 8, 39–51, 122 and 175–221. The source fixes W = 0.01,
+H = 0.99, L = 99, full-day origin 3 and nowcast origins 3 ≤ k < 99. Every
+admissible source burst has strictly increasing offsets in (0,W]. The reference
+wrapper installs these calendar constants in the actual adaptive rollout.
+
+The initial two-sided book/lifecycle state and anchor/macro fit are still
+supplied. Constructing those records from historical data is initialisation,
+separate from the complete calendar/replay/retrieval loop proved here.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.ReferenceCalendar
+
+open SimulatorTrajectory AdaptiveRollout QueueChronology RolloutChronology RolloutHorizon
+open StochasticQueueBounds
+
+def width : ℝ := 1 / 100
+def horizon : ℝ := 99 / 100
+def time (w : ℕ) : ℝ := (w : ℝ) / 100
+
+theorem width_pos : 0 < width := by norm_num [width]
+
+theorem time_strictMono : StrictMono time := by
+  intro i j hij
+  unfold time
+  exact div_lt_div_of_pos_right (by exact_mod_cast hij) (by norm_num)
+
+theorem time_succ (w : ℕ) : time (w + 1) = time w + width := by
+  simp only [time, width, Nat.cast_add, Nat.cast_one]
+  ring
+
+theorem time_terminal : time 99 = horizon := by norm_num [time, horizon]
+
+def EligibleOrigin (origin : ℕ) : Prop := 3 ≤ origin ∧ origin < 99
+
+theorem fullDay_eligible : EligibleOrigin 3 := by norm_num [EligibleOrigin]
+
+def remaining (origin : ℕ) : Finset ℕ := Finset.Icc origin 99
+
+theorem remaining_card (origin : ℕ) : (remaining origin).card = 100 - origin := by
+  simp [remaining, Nat.card_Icc]
+
+theorem remaining_in_horizon (origin : ℕ) : ∀ w ∈ remaining origin, time w ≤ horizon := by
+  intro w hw
+  rw [← time_terminal]
+  exact time_strictMono.monotone (Finset.mem_Icc.mp hw).2
+
+theorem remaining_after_previous (origin : ℕ) (he : EligibleOrigin origin) :
+    ∀ w ∈ remaining origin, time (origin - 1) < time w := by
+  intro w hw
+  apply time_strictMono
+  have h := (Finset.mem_Icc.mp hw).1
+  have : 3 ≤ origin := he.1
+  omega
+
+def schedule (policy : ℕ → EventQueue.BoundaryPolicy) : Schedule :=
+  ⟨time, horizon, policy⟩
+
+def parameters (p : Parameters) : Parameters := { p with horizon := 99 }
+
+theorem parameters_burstBound (p : Parameters) : burstBound (parameters p) = burstBound p := rfl
+
+def AdmissibleBursts (p : Parameters) : Prop :=
+  ∀ j ∈ p.primary ∪ p.fallback,
+    (p.library j).burst.Pairwise (fun a b => a.relativeTime < b.relativeTime) ∧
+      ∀ g ∈ (p.library j).burst, 0 < g.relativeTime ∧ g.relativeTime ≤ width
+
+theorem admissible_positive (p : Parameters) (h : AdmissibleBursts p) :
+    PositiveOffsets (parameters p) := fun j hj g hg => ((h j hj).2 g hg).1
+
+theorem admissible_horizon (p : Parameters) (h : AdmissibleBursts p)
+    (policy : ℕ → EventQueue.BoundaryPolicy) :
+    WithinHorizon (parameters p) (schedule policy) := by
+  intro w hw j hj g hg
+  have hwidth := ((h j hj).2 g hg).2
+  change time w + g.relativeTime ≤ horizon
+  have hnext : time (w + 1) ≤ horizon := by
+    rw [← time_terminal]
+    exact time_strictMono.monotone (by change w < 99 at hw; omega)
+  rw [time_succ] at hnext
+  linarith
+
+def initial {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (origin : ℕ) : Frame cfg :=
+  ⟨SimulatorTrajectory.begin x, remaining origin⟩
+
+theorem initial_future (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (origin : ℕ)
+    (he : EligibleOrigin origin) (hq : x.session.pending = []) :
+    Future (schedule policy) (time (origin - 1)) (initial x origin) := by
+  refine ⟨remaining_after_previous origin he, ?_⟩
+  intro _ g hg
+  change g ∈ x.session.pending at hg
+  simp [hq] at hg
+
+def rollout (p : Parameters) (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (origin : ℕ)
+    (_eligible : EligibleOrigin origin) : PMF (Frame cfg) :=
+  AdaptiveRollout.run (parameters p) (schedule policy) (initial x origin)
+
+def fullDay (p : Parameters) (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) : PMF (Frame cfg) :=
+  rollout p policy x 3 fullDay_eligible
+
+theorem rollout_terminal (p : Parameters) (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (origin : ℕ)
+    (he : EligibleOrigin origin) (z : Frame cfg) (hz : z ∈ (rollout p policy x origin he).support) :
+    AdaptiveRollout.select (schedule policy) z = none :=
+  (run_complete (parameters p) (schedule policy) (initial x origin) z hz).1
+
+theorem rollout_chronological (p : Parameters) (hp : AdmissibleBursts p)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin)
+    (hq : x.session.pending = []) (z : Frame cfg)
+    (hz : z ∈ (rollout p policy x origin he).support) :
+    z.path.history.Pairwise (fun a b => a.event.time < b.event.time) ∧
+      ∀ entry ∈ z.path.history,
+        time (origin - 1) < entry.event.time ∧ entry.event.time ≤ horizon :=
+  run_from_empty_history_chronological (parameters p) (admissible_positive p hp)
+    (schedule policy) (initial x origin) z (time (origin - 1))
+    (initial_future policy x origin he hq) rfl hz
+
+theorem rollout_event_bound (p : Parameters) (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (origin : ℕ)
+    (he : EligibleOrigin origin) (hq : x.session.pending = []) (z : Frame cfg)
+    (hz : z ∈ (rollout p policy x origin he).support) :
+    z.path.history.length ≤ (burstBound p + 1) * (100 - origin) := by
+  have h := (run_complete (parameters p) (schedule policy) (initial x origin) z hz).2.2
+  simpa only [initial, SimulatorTrajectory.begin, rank, parameters_burstBound,
+    remaining_card, hq, List.length_nil, zero_add, add_zero] using h
+
+theorem fullDay_event_bound (p : Parameters) (policy : ℕ → EventQueue.BoundaryPolicy)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (hq : x.session.pending = [])
+    (z : Frame cfg) (hz : z ∈ (fullDay p policy x).support) :
+    z.path.history.length ≤ 97 * (burstBound p + 1) := by
+  simpa only [Nat.reduceSub, Nat.mul_comm] using
+    rollout_event_bound p policy x 3 fullDay_eligible hq z hz
+
+theorem successful_rollout_empty (p : Parameters) (hp : AdmissibleBursts p)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin)
+    (hq : x.session.pending = []) (z : Frame cfg)
+    (hz : z ∈ (rollout p policy x origin he).support) (hh : halted z.path = false) :
+    z.remaining = ∅ ∧ z.path.current.session.pending = [] := by
+  refine ⟨successful_calendar_empty (parameters p) (schedule policy)
+    (initial x origin) z hz hh (remaining_in_horizon origin), ?_⟩
+  apply successful_queue_empty (parameters p) (schedule policy) (admissible_horizon p hp policy)
+    (initial x origin) z _ hz hh
+  intro g hg
+  change g ∈ x.session.pending at hg
+  simp [hq] at hg
+
+end Thesis.Intraday.ReferenceCalendar

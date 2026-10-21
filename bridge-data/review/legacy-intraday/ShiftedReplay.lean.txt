@@ -1,0 +1,66 @@
+import Intraday.AnchorPhase
+
+/-! # Due-time lifecycle resolution after a common anchor correction
+
+Cancellations still target the same live IDs. A quantity reduction keeps its
+mapped entry and old priority even after the price has moved. A matched fill
+uses unchanged quantities and the shifted resting price, without re-anchoring
+the incoming instruction at its due time.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.ShiftedReplay
+
+open LiveLedger LifecycleResolver BilateralReplay LedgerMap AnchoredLedger MappedQuantityUpdate
+
+theorem shifted_lookup {s : Ledger} {key : ℕ} {a : Entry}
+    (ha : lookup s key = some a) (shift : ℝ) :
+    lookup (shiftLedger shift s) key = some (mapEntry (boundedShift shift) a) := by
+  rw [shiftLedger_lookup, ha]
+  rfl
+
+theorem cancellation_same_events (s : Ledger) (key : ℕ) (shift : ℝ) :
+    (cancellation (shiftLedger shift s) key).events = (cancellation s key).events ∧
+      (cancellation (shiftLedger shift s) key).statuses = (cancellation s key).statuses := by
+  cases h : lookup s key <;> simp [cancellation, shiftLedger_lookup, h, unchanged, mapEntry]
+
+theorem reduction_same_live_id {s : Ledger} {key : ℕ} {a : Entry}
+    (ha : lookup s key = some a) (shift : ℝ) (q : PositiveQuantity) (priority : Time)
+    (hq : q.val ≤ quantity a.order) :
+    (resolveQuantity (shiftLedger shift s) key q priority).after =
+      resizeId (shiftLedger shift s) a.liveId q ∧
+      (resolveQuantity (shiftLedger shift s) key q priority).events = [.resized a.liveId q] ∧
+      (resolveQuantity (shiftLedger shift s) key q priority).statuses = [.accepted] := by
+  have hq' : q.val ≤ quantity (mapEntry (boundedShift shift) a).order := by
+    simpa [mapEntry] using hq
+  exact resolveQuantity_reduction _ key q priority (a := mapEntry (boundedShift shift) a)
+    (shifted_lookup ha shift) hq'
+
+theorem reduction_same_priorities {s : Ledger} {key : ℕ} {a : Entry}
+    (ha : lookup s key = some a) (shift : ℝ) (q : PositiveQuantity) (priority : Time)
+    (hq : q.val ≤ quantity a.order) :
+    (resolveQuantity (shiftLedger shift s) key q priority).after.live.map (fun e => time e.order) =
+      s.live.map (fun e => time e.order) := by
+  rw [(reduction_same_live_id ha shift q priority hq).1]
+  simp only [resizeId, List.map_map, Function.comp_def, resized_time]
+  exact shiftLedger_times shift s
+
+theorem replacement_uses_live_price {s : Ledger} {key : ℕ} {a : Entry}
+    (ha : lookup s key = some a) (shift : ℝ) (hb : InBounds shift s)
+    (q : PositiveQuantity) (priority : Time) :
+    price (replacementOrder (mapEntry (boundedShift shift) a) q priority) =
+      price a.order + shift := boundedShift_price shift a.order (hb a (lookup_some_mem ha))
+
+theorem fill_shifted_resting_price (s : Ledger) (incomingKey restingKey : ℕ)
+    {incoming resting : Entry} (hi : lookup s incomingKey = some incoming)
+    (hr : lookup s restingKey = some resting) (hopposite : incoming.isBuy ≠ resting.isBuy)
+    (shift : ℝ) (hb : InBounds shift s) (immediate : Bool) :
+    (fill (shiftLedger shift s) incomingKey restingKey immediate).tape =
+      [⟨incoming.liveId, resting.liveId, incoming.isBuy,
+        ⟨filled incoming resting, filled_pos incoming resting⟩, price resting.order + shift⟩] := by
+  rw [fill_matched _ _ _ _ (shifted_lookup hi shift) (shifted_lookup hr shift) hopposite,
+    settlePair_tape]
+  simp only [mapEntry, filled, boundedShift_quantity]
+  rw [boundedShift_price shift resting.order (hb resting (lookup_some_mem hr))]
+
+end Thesis.Intraday.ShiftedReplay

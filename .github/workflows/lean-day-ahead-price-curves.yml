@@ -1,0 +1,115 @@
+name: Clearing operator and price curves
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part II, Ch. 2 (clearing operator and price curves)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedCertificate
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedEncoding
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedExample
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedGeometry
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLaws
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLp
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedNonconvexity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedObstruction
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedSourceExclusion
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedWitnesses
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CompletedInverse
+            Thesis.DayAhead.ClearingOperatorPriceCurves.CurrentCounterexamples
+            Thesis.DayAhead.ClearingOperatorPriceCurves.EquilibriumQuantity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.EssentialEncodingInjectivity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.EssentialPriceCurve
+            Thesis.DayAhead.ClearingOperatorPriceCurves.EssentialPriceSampling
+            Thesis.DayAhead.ClearingOperatorPriceCurves.EssentialSidedCertificate
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ExcessSupply
+            Thesis.DayAhead.ClearingOperatorPriceCurves.FiniteNodeEnumeration
+            Thesis.DayAhead.ClearingOperatorPriceCurves.FinitePolygonInverse
+            Thesis.DayAhead.ClearingOperatorPriceCurves.FinitePolygonInverseAffinity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.FinitePricePathSource
+            Thesis.DayAhead.ClearingOperatorPriceCurves.GraphAdmissibleCone
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactBaseline
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactBooks
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactClearing
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactJoin
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactMarginals
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactMonotonicity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactThresholds
+            Thesis.DayAhead.ClearingOperatorPriceCurves.ImpactVolumeBounds
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedAcceptanceFormula
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedAcceptanceLimits
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedImpactCurve
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedMarket
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedOffered
+            Thesis.DayAhead.ClearingOperatorPriceCurves.InterpolatedSide
+            Thesis.DayAhead.ClearingOperatorPriceCurves.LinearParametrisation
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketCurve
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketCurveEncoding
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketCurveKnots
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketCurveMeasurability
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketHilbertMeasurability
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MarketImpact
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MergedPriceNodes
+            Thesis.DayAhead.ClearingOperatorPriceCurves.MinimalRepresentationUnique
+            Thesis.DayAhead.ClearingOperatorPriceCurves.OfferedPartition
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLBreakpointCollinearity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLBreakpointGrid
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLCanonicalEncoding
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLCanonicalEndpointAssembly
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLCanonicalFiniteAffinity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLCanonicalPieceAffinity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLCellEndpointEncoding
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLGraphTracing
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLGraphTracingContinuity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLJoinComparison
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLLinearCone
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLParameterMeasure
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLParametrisation
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PLSourceRepresentative
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PiecewiseAffinePriceCurves
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PolygonalInverse
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurveBlockCounts
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurveCuts
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurveGraph
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurveHilbert
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurveLp
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceCurves
+            Thesis.DayAhead.ClearingOperatorPriceCurves.PriceNodeGaps
+            Thesis.DayAhead.ClearingOperatorPriceCurves.SelectedGraphAdmissible
+            Thesis.DayAhead.ClearingOperatorPriceCurves.SidedCertificate
+            Thesis.DayAhead.ClearingOperatorPriceCurves.SidedCurveLp
+            Thesis.DayAhead.ClearingOperatorPriceCurves.SidedInterpolation
+            Thesis.DayAhead.ClearingOperatorPriceCurves.SidedParametrisation
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLBorel
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLBreakpoints
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLCanonicalNodes
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLCanonicalPieces
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLMidpoint
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLMoment
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLParser
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLPositiveDepth
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLPriceCells
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLPriceEvaluation
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLProposition
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLQuantityAffinity
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLQuantityCells
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLSourceCarrier
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLSourceTheorem
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLTupleCarrier
+            Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLVertices

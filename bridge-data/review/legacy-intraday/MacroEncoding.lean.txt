@@ -1,0 +1,236 @@
+import Intraday.MacroPath
+import Intraday.Clearing
+
+/-! # Seven-coordinate encoding of accepted intraday operations
+
+Simulation chapter, equation `eq:intraday-macro-row`; simulator appendix,
+lines 8–27. Each input is one complete accepted composite operation, carrying
+its actual post-operation visible book and reconstructed nonnegative volume
+metadata. Reconstructing those per-operation volumes from the raw feed is an
+upstream task. Counts, quotes, increments, population volatility, imbalance and
+window volume sums below are calculated, not supplied as window statistics.
+
+The day-level wrapper in `MacroEncodingWindows` rejects one-sided required
+books. Total quote helpers here use zero only as an unused empty-side sentinel.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroEncoding
+
+open Execution Clearing
+open scoped NNReal
+
+structure Quotes where
+  bid : ℝ
+  ask : ℝ
+  deriving DecidableEq
+
+def Quotes.midpoint (q : Quotes) : ℝ := (q.bid + q.ask) / 2
+def Quotes.spread (q : Quotes) : ℝ := q.ask - q.bid
+
+def quotes (m : Market) : Quotes := ⟨best 0 (side true m), best 0 (side false m)⟩
+
+def TwoSided (m : Market) : Prop := 0 < (side true m).1 ∧ 0 < (side false m).1
+
+structure Operation where
+  eventTime : ℝ
+  post : Market
+  added : ℝ≥0
+  buyTraded : ℝ≥0
+  sellTraded : ℝ≥0
+
+def finalQuotes (opening : Quotes) : List Operation → Quotes
+  | [] => opening
+  | o :: os => finalQuotes (quotes o.post) os
+
+def increments (opening : Quotes) : List Operation → List ℝ
+  | [] => []
+  | o :: os => ((quotes o.post).midpoint - opening.midpoint) :: increments (quotes o.post) os
+
+theorem increments_length (opening : Quotes) (os : List Operation) :
+    (increments opening os).length = os.length := by
+  induction os generalizing opening with
+  | nil => rfl
+  | cons o os ih => simp [increments, ih]
+
+theorem increments_sum (opening : Quotes) (os : List Operation) :
+    (increments opening os).sum = (finalQuotes opening os).midpoint - opening.midpoint := by
+  induction os generalizing opening with
+  | nil => simp [increments, finalQuotes]
+  | cons o os ih => simp only [increments, List.sum_cons, ih, finalQuotes]; ring
+
+theorem finalQuotes_append (opening : Quotes) (xs ys : List Operation) :
+    finalQuotes opening (xs ++ ys) = finalQuotes (finalQuotes opening xs) ys := by
+  induction xs generalizing opening with
+  | nil => rfl
+  | cons o xs ih => exact ih _
+
+theorem increments_append (opening : Quotes) (xs ys : List Operation) :
+    increments opening (xs ++ ys) =
+      increments opening xs ++ increments (finalQuotes opening xs) ys := by
+  induction xs generalizing opening with
+  | nil => rfl
+  | cons o xs ih => simp [increments, finalQuotes, ih]
+
+theorem finalQuotes_last (opening : Quotes) (xs : List Operation) (o : Operation) :
+    finalQuotes opening (xs ++ [o]) = quotes o.post := by
+  rw [finalQuotes_append]; rfl
+
+def mean (xs : List ℝ) : ℝ := xs.sum / xs.length
+
+def populationVariance (xs : List ℝ) : ℝ :=
+  (xs.map (fun x => (x - mean xs)^2)).sum / xs.length
+
+theorem populationVariance_nonneg (xs : List ℝ) : 0 ≤ populationVariance xs := by
+  apply div_nonneg
+  · exact List.sum_nonneg (by intro x hx; obtain ⟨y, _, rfl⟩ := List.mem_map.mp hx; positivity)
+  · positivity
+
+def sd₀ (xs : List ℝ) : ℝ :=
+  if xs.length < 2 then 0 else Real.sqrt (populationVariance xs)
+
+theorem sd₀_nonneg (xs : List ℝ) : 0 ≤ sd₀ xs := by
+  unfold sd₀
+  split <;> positivity
+
+theorem sd₀_short (xs : List ℝ) (hx : xs.length < 2) : sd₀ xs = 0 := by
+  simp [sd₀, hx]
+
+theorem sd₀_sq (xs : List ℝ) (hx : 2 ≤ xs.length) :
+    sd₀ xs ^ 2 = (xs.map (fun x => (x - mean xs)^2)).sum / xs.length := by
+  rw [sd₀, if_neg (by omega), Real.sq_sqrt (populationVariance_nonneg xs)]
+  rfl
+
+structure Levels where
+  ending : Quotes
+  meanSpread : ℝ
+  count : ℕ
+  added : ℝ≥0
+  buyTraded : ℝ≥0
+  sellTraded : ℝ≥0
+  volatility : ℝ≥0
+
+def emptyLevels (opening : Quotes) : Levels :=
+  ⟨opening, opening.spread, 0, 0, 0, 0, 0⟩
+
+def summarise (opening : Quotes) (os : List Operation) : Levels where
+  ending := finalQuotes opening os
+  meanSpread := if os = [] then opening.spread else mean (os.map (fun o => (quotes o.post).spread))
+  count := os.length
+  added := (os.map Operation.added).sum
+  buyTraded := (os.map Operation.buyTraded).sum
+  sellTraded := (os.map Operation.sellTraded).sum
+  volatility := ⟨sd₀ (increments opening os), sd₀_nonneg _⟩
+
+theorem summarise_empty (opening : Quotes) : summarise opening [] = emptyLevels opening := by
+  simp [summarise, finalQuotes, increments, sd₀, emptyLevels]
+  rfl
+
+theorem summarise_count (opening : Quotes) (os : List Operation) :
+    (summarise opening os).count = os.length := rfl
+
+theorem summarise_volumes (opening : Quotes) (os : List Operation) :
+    (summarise opening os).added = (os.map Operation.added).sum ∧
+    (summarise opening os).buyTraded = (os.map Operation.buyTraded).sum ∧
+    (summarise opening os).sellTraded = (os.map Operation.sellTraded).sum := ⟨rfl, rfl, rfl⟩
+
+theorem summarise_final_midpoint (opening : Quotes) (xs : List Operation) (o : Operation) :
+    (summarise opening (xs ++ [o])).ending.midpoint = (quotes o.post).midpoint := by
+  exact congrArg Quotes.midpoint (finalQuotes_last opening xs o)
+
+theorem summarise_spread_nonempty (opening : Quotes) (os : List Operation) (ho : os ≠ []) :
+    (summarise opening os).meanSpread =
+      (os.map (fun o => (quotes o.post).spread)).sum / os.length := by
+  simp [summarise, ho, mean]
+
+theorem summarise_short_volatility (opening : Quotes) (os : List Operation)
+    (ho : os.length < 2) : (summarise opening os).volatility = 0 := by
+  apply Subtype.ext
+  exact sd₀_short _ (by simpa only [increments_length] using ho)
+
+def traded (x : Levels) : ℝ := x.buyTraded + x.sellTraded
+
+theorem traded_nonneg (x : Levels) : 0 ≤ traded x := add_nonneg x.buyTraded.2 x.sellTraded.2
+
+def imbalance (x : Levels) : ℝ :=
+  if 0 < traded x then ((x.buyTraded : ℝ) - x.sellTraded) / traded x else 0
+
+theorem imbalance_zero (x : Levels) (hx : traded x = 0) : imbalance x = 0 := by
+  simp [imbalance, hx]
+
+theorem imbalance_bounds (x : Levels) : -1 ≤ imbalance x ∧ imbalance x ≤ 1 := by
+  unfold imbalance
+  split
+  · rename_i h
+    constructor
+    · apply (le_div_iff₀ h).mpr
+      dsimp [traded]
+      nlinarith [x.buyTraded.2]
+    · apply (div_le_iff₀ h).mpr
+      dsimp [traded]
+      nlinarith [x.sellTraded.2]
+  · norm_num
+
+structure Units where
+  price : ℝ
+  volume : ℝ
+  price_pos : 0 < price
+  volume_pos : 0 < volume
+
+def epsilon (u : Units) : ℝ := (1 / 1000000 : ℝ) * u.price
+
+theorem epsilon_pos (u : Units) : 0 < epsilon u := mul_pos (by norm_num) u.price_pos
+
+def volatilityRatio (u : Units) (x : Levels) : ℝ := (x.volatility + epsilon u) / u.price
+def countRatio (previous current : Levels) : ℝ := (1 + (current.count : ℝ)) / (1 + previous.count)
+def addedRatio (u : Units) (previous current : Levels) : ℝ :=
+  (u.volume + current.added) / (u.volume + previous.added)
+def tradedRatio (u : Units) (previous current : Levels) : ℝ :=
+  (u.volume + traded current) / (u.volume + traded previous)
+
+theorem log_arguments_positive (u : Units) (previous current : Levels) :
+    0 < volatilityRatio u current ∧ 0 < countRatio previous current ∧
+      0 < addedRatio u previous current ∧ 0 < tradedRatio u previous current := by
+  refine ⟨div_pos (add_pos_of_nonneg_of_pos current.volatility.2 (epsilon_pos u)) u.price_pos,
+    ?_, ?_, ?_⟩
+  · unfold countRatio
+    positivity
+  · exact div_pos (add_pos_of_pos_of_nonneg u.volume_pos current.added.2)
+      (add_pos_of_pos_of_nonneg u.volume_pos previous.added.2)
+  · exact div_pos (add_pos_of_pos_of_nonneg u.volume_pos (traded_nonneg current))
+      (add_pos_of_pos_of_nonneg u.volume_pos (traded_nonneg previous))
+
+/-- Original label: `eq:intraday-macro-row`. The indices are zero-based. -/
+def row (u : Units) (previous current : Levels) : MacroPath.Row :=
+  ![current.ending.midpoint - previous.ending.midpoint,
+    Real.log (volatilityRatio u current), Real.log (countRatio previous current),
+    Real.log (addedRatio u previous current), Real.log (tradedRatio u previous current),
+    imbalance current, current.meanSpread - previous.meanSpread]
+
+theorem row_midpoint (u : Units) (previous current : Levels) :
+    row u previous current 0 = current.ending.midpoint - previous.ending.midpoint := rfl
+
+theorem row_imbalance (u : Units) (previous current : Levels) :
+    row u previous current 5 = imbalance current := rfl
+
+theorem row_spread (u : Units) (previous current : Levels) :
+    row u previous current 6 = current.meanSpread - previous.meanSpread := rfl
+
+theorem row_empty_after (u : Units) (previous : Levels) :
+    row u previous (summarise previous.ending []) =
+      ![0, Real.log (1 / 1000000), Real.log (1 / (1 + previous.count)),
+        Real.log (u.volume / (u.volume + previous.added)),
+        Real.log (u.volume / (u.volume + traded previous)),
+        0, previous.ending.spread - previous.meanSpread] := by
+  rw [summarise_empty]
+  have hu := ne_of_gt u.price_pos
+  simp [row, emptyLevels, volatilityRatio, countRatio, addedRatio, tradedRatio,
+    traded, imbalance, epsilon, hu]
+
+theorem row_two_empty (u : Units) (opening : Quotes) :
+    row u (emptyLevels opening) (emptyLevels opening) =
+      ![0, Real.log (1 / 1000000), 0, 0, 0, 0, 0] := by
+  have h := row_empty_after u (emptyLevels opening)
+  simpa [summarise_empty, emptyLevels, traded, ne_of_gt u.volume_pos] using h
+
+end Thesis.Intraday.MacroEncoding

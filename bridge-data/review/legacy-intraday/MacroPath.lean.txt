@@ -1,0 +1,159 @@
+import Mathlib.LinearAlgebra.Matrix.ToLin
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Probability.Distributions.Uniform
+import Mathlib.Probability.ProbabilityMassFunction.Integrals
+import Mathlib.Tactic
+
+/-! # The seven-coordinate adaptive intraday macro recursion
+
+Simulator appendix, lines 31–59. Indices in `run` count steps after the supplied
+origin: the initial state's previous/current rows are those at w₀−1 and w₀.
+Each step uses one whole residual-bank vector. The recursion creates proposals;
+it imposes no unsupported claim that inverse-standardised rows are attainable
+order-book summaries. Historical fitting and its guards are separate.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroPath
+
+open MeasureTheory
+open scoped BigOperators Matrix
+
+abbrev Row := Fin 7 → ℝ
+
+structure Coefficients where
+  intercept : Row
+  lagOne : Matrix (Fin 7) (Fin 7) ℝ
+  lagTwo : Matrix (Fin 7) (Fin 7) ℝ
+
+def matrixMap (A : Matrix (Fin 7) (Fin 7) ℝ) : Row →L[ℝ] Row :=
+  A.mulVecLin.toContinuousLinearMap
+
+theorem matrixMap_apply (A : Matrix (Fin 7) (Fin 7) ℝ) (z : Row) :
+    matrixMap A z = A *ᵥ z := rfl
+
+def predict (cfg : Coefficients) (previous current : Row) : Row :=
+  cfg.intercept + matrixMap cfg.lagOne current + matrixMap cfg.lagTwo previous
+
+def decay : ℝ := (2 : ℝ) ^ (-(1 / 6 : ℝ))
+
+theorem decay_pos : 0 < decay := Real.rpow_pos_of_pos (by norm_num) _
+
+theorem decay_lt_one : decay < 1 :=
+  Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num)
+
+def innovation (variance residual : Row) : Row :=
+  fun c => Real.sqrt (variance c) * residual c
+
+def varianceUpdate (rho : ℝ) (variance shock : Row) : Row :=
+  fun c => rho * variance c + (1 - rho) * (shock c)^2
+
+theorem varianceUpdate_nonneg (rho : ℝ) (hrho : 0 ≤ rho) (hrho1 : rho ≤ 1)
+    (variance shock : Row) (hv : ∀ c, 0 ≤ variance c) :
+    ∀ c, 0 ≤ varianceUpdate rho variance shock c := by
+  intro c
+  exact add_nonneg (mul_nonneg hrho (hv c))
+    (mul_nonneg (sub_nonneg.mpr hrho1) (sq_nonneg _))
+
+theorem innovation_sq (variance residual : Row) (hv : ∀ c, 0 ≤ variance c) (c : Fin 7) :
+    (innovation variance residual c)^2 = variance c * (residual c)^2 := by
+  rw [innovation, mul_pow, Real.sq_sqrt (hv c)]
+
+structure State where
+  previous : Row
+  current : Row
+  variance : Row
+
+def advance (cfg : Coefficients) (state : State) (residual : Row) : State where
+  previous := state.current
+  current := predict cfg state.previous state.current + innovation state.variance residual
+  variance := varianceUpdate decay state.variance (innovation state.variance residual)
+
+def run (cfg : Coefficients) (initial : State) (draw : ℕ → Row) : ℕ → State
+  | 0 => initial
+  | n + 1 => advance cfg (run cfg initial draw n) (draw n)
+
+theorem run_previous (cfg : Coefficients) (initial : State) (draw : ℕ → Row) (n : ℕ) :
+    (run cfg initial draw (n + 1)).previous = (run cfg initial draw n).current := rfl
+
+theorem run_current (cfg : Coefficients) (initial : State) (draw : ℕ → Row) (n : ℕ) :
+    (run cfg initial draw (n + 1)).current =
+      cfg.intercept + cfg.lagOne *ᵥ (run cfg initial draw n).current +
+      cfg.lagTwo *ᵥ (run cfg initial draw n).previous +
+      innovation (run cfg initial draw n).variance (draw n) := rfl
+
+theorem run_variance_nonneg (cfg : Coefficients) (initial : State) (draw : ℕ → Row)
+    (hv : ∀ c, 0 ≤ initial.variance c) (n : ℕ) :
+    ∀ c, 0 ≤ (run cfg initial draw n).variance c := by
+  induction n with
+  | zero => exact hv
+  | succ n ih =>
+    exact varianceUpdate_nonneg decay decay_pos.le decay_lt_one.le _ _ ih
+
+def fullDayInitial (previous current residualScale : Row) : State :=
+  ⟨previous, current, fun c => (residualScale c)^2⟩
+
+theorem fullDay_variance_nonneg (previous current residualScale : Row) :
+    ∀ c, 0 ≤ (fullDayInitial previous current residualScale).variance c :=
+  fun _ => sq_nonneg _
+
+def inverseStandardise (scale climatology row : Row) : Row :=
+  fun c => scale c * row c + climatology c
+
+def standardise (scale climatology row : Row) : Row :=
+  fun c => (row c - climatology c) / scale c
+
+theorem inverseStandardise_standardise (scale climatology row : Row)
+    (hscale : ∀ c, scale c ≠ 0) :
+    inverseStandardise scale climatology (standardise scale climatology row) = row := by
+  funext c
+  simp only [inverseStandardise, standardise]
+  field_simp [hscale c]
+  ring
+
+section Bank
+
+variable {ι : Type*} [Fintype ι]
+
+def bankMean (bank : ι → Row) : Row :=
+  (Fintype.card ι : ℝ)⁻¹ • ∑ i, bank i
+
+def centredBank (bank : ι → Row) (i : ι) : Row := bank i - bankMean bank
+
+def standardisedBank (residual : ι → Row) (scale : Row) : ι → Row :=
+  centredBank (fun i c => residual i c / scale c)
+
+theorem sum_centredBank [Nonempty ι] (bank : ι → Row) : ∑ i, centredBank bank i = 0 := by
+  have hn : (Fintype.card ι : ℝ) ≠ 0 := by exact_mod_cast Fintype.card_ne_zero
+  simp only [centredBank, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ,
+    ← Nat.cast_smul_eq_nsmul ℝ, bankMean, smul_smul, mul_inv_cancel₀ hn, one_smul, sub_self]
+
+theorem sum_innovation_centredBank [Nonempty ι] (bank : ι → Row) (variance : Row) :
+    ∑ i, innovation variance (centredBank bank i) = 0 := by
+  funext c
+  have hc := congrFun (sum_centredBank bank) c
+  simp only [Finset.sum_apply, Pi.zero_apply] at hc ⊢
+  simp only [innovation, ← Finset.mul_sum, hc, mul_zero]
+
+variable [Nonempty ι] [MeasurableSpace ι] [MeasurableSingletonClass ι]
+
+/-- This conditional-on-state identity samples whole vectors uniformly. It
+does not replace contemporaneous coordinates by independently drawn values. -/
+theorem uniform_innovation_mean (bank : ι → Row) (variance : Row) :
+    ∫ i, innovation variance (centredBank bank i) ∂(PMF.uniformOfFintype ι).toMeasure = 0 := by
+  rw [PMF.integral_eq_sum]
+  simp only [PMF.uniformOfFintype_apply, ENNReal.toReal_inv, ENNReal.toReal_natCast]
+  rw [← Finset.smul_sum, sum_innovation_centredBank, smul_zero]
+
+theorem uniform_nextRow_mean (cfg : Coefficients) (state : State) (bank : ι → Row) :
+    ∫ i, (advance cfg state (centredBank bank i)).current
+      ∂(PMF.uniformOfFintype ι).toMeasure = predict cfg state.previous state.current := by
+  change (∫ i, predict cfg state.previous state.current +
+    innovation state.variance (centredBank bank i) ∂(PMF.uniformOfFintype ι).toMeasure) = _
+  rw [integral_add (integrable_const _) Integrable.of_finite,
+    integral_const, uniform_innovation_mean]
+  simp
+
+end Bank
+end Thesis.Intraday.MacroPath

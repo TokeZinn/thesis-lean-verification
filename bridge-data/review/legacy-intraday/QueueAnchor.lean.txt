@@ -1,0 +1,136 @@
+import Intraday.StagedQueuePrices
+
+/-! # Apply the selected common correction to live and staged orders together
+
+The optimizer sees every live price and every staged addition/replacement
+price in the actual typed queue. Its target is the interpolated anchor value
+minus the current midpoint. The same selected shift changes both structures.
+The input grid invariant is a required guard, not an assumed empirical fact.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.QueueAnchor
+
+open LiveLedger GroupReplay AnchoredLedger StagedQueuePrices Clearing
+
+structure Config where
+  grid : Finset ℝ
+  cap : ℝ
+  cap_pos : 0 < cap
+  gridBounds : ∀ p ∈ grid, p ∈ Set.Icc (-9999 : ℝ) 9999
+  positiveFirst : Bool
+
+def midpoint (s : Ledger) : ℝ := GeometrySweep.midpoint (splitMarket (market s))
+
+def selectedShift (cfg : Config) (s : Ledger) (queue : List ScheduledGroup) (value : ℝ)
+    (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) : ℝ :=
+  CommonAnchor.correction cfg.grid (activePrices s queue) cfg.cap (value - midpoint s)
+    cfg.positiveFirst (activePrices_nonempty s queue hs) hg cfg.cap_pos.le
+
+theorem selectedShift_feasible (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    |selectedShift cfg s queue value hs hg| ≤ cfg.cap ∧
+      ∀ p ∈ activePrices s queue, p + selectedShift cfg s queue value hs hg ∈ cfg.grid :=
+  CommonAnchor.correction_feasible _ _ _ _ _ _ _ _
+
+theorem selectedShift_bounds (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    ∀ p ∈ activePrices s queue,
+      p + selectedShift cfg s queue value hs hg ∈ Set.Icc (-9999 : ℝ) 9999 :=
+  fun p hp => cfg.gridBounds _ ((selectedShift_feasible cfg s queue value hs hg).2 p hp)
+
+theorem selectedShift_liveBounds (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    InBounds (selectedShift cfg s queue value hs hg) s :=
+  fun _ ha => selectedShift_bounds cfg s queue value hs hg _ (live_mem_active s queue ha)
+
+structure Output where
+  shift : ℝ
+  book : Ledger
+  pending : List ScheduledGroup
+
+def applyAnchor (cfg : Config) (s : Ledger) (queue : List ScheduledGroup) (value : ℝ)
+    (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) : Output :=
+  let shift := selectedShift cfg s queue value hs hg
+  ⟨shift, shiftLedger shift s, shiftQueue shift queue⟩
+
+theorem applyAnchor_valid (cfg : Config) {s : Ledger} (hv : Valid s)
+    (queue : List ScheduledGroup) (value : ℝ) (hs : TwoSided s)
+    (hg : activePrices s queue ⊆ cfg.grid) : Valid (applyAnchor cfg s queue value hs hg).book :=
+  shiftLedger_valid _ hv
+
+theorem applyAnchor_sorted (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    SortedMarket (market (applyAnchor cfg s queue value hs hg).book) ↔ SortedMarket (market s) :=
+  shiftLedger_sorted _ s (selectedShift_liveBounds cfg s queue value hs hg)
+
+theorem applyAnchor_twoSided (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    TwoSided (applyAnchor cfg s queue value hs hg).book := (shiftLedger_twoSided _ s).mpr hs
+
+theorem applyAnchor_grid (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    activePrices (applyAnchor cfg s queue value hs hg).book
+      (applyAnchor cfg s queue value hs hg).pending ⊆ cfg.grid := by
+  change activePrices (shiftLedger _ s) (shiftQueue _ queue) ⊆ cfg.grid
+  rw [activePrices_shift _ _ _ (selectedShift_bounds cfg s queue value hs hg)]
+  exact CommonAnchor.shiftedPrices_subset (selectedShift_feasible cfg s queue value hs hg).2
+
+theorem applyAnchor_midpoint (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    midpoint (applyAnchor cfg s queue value hs hg).book =
+      midpoint s + (applyAnchor cfg s queue value hs hg).shift :=
+  shiftLedger_midpoint _ s (selectedShift_liveBounds cfg s queue value hs hg) hs
+
+theorem applyAnchor_error (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    |midpoint (applyAnchor cfg s queue value hs hg).book - value| ≤ |midpoint s - value| := by
+  rw [applyAnchor_midpoint]
+  have h := CommonAnchor.correction_improves_target cfg.grid (activePrices s queue) cfg.cap
+    (value - midpoint s) cfg.positiveFirst (activePrices_nonempty s queue hs) hg cfg.cap_pos.le
+  change |selectedShift cfg s queue value hs hg - (value - midpoint s)| ≤ |value - midpoint s| at h
+  rw [abs_sub_comm value (midpoint s)] at h
+  dsimp only [applyAnchor]
+  convert h using 1
+  congr 1
+  ring
+
+theorem applyAnchor_optimal (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) {shift : ℝ}
+    (hshift : |shift| ≤ cfg.cap ∧ ∀ p ∈ activePrices s queue, p + shift ∈ cfg.grid) :
+    |midpoint (applyAnchor cfg s queue value hs hg).book - value| ≤
+      |midpoint s + shift - value| := by
+  rw [applyAnchor_midpoint]
+  have h := CommonAnchor.correction_optimal cfg.grid (activePrices s queue) cfg.cap
+    (value - midpoint s) cfg.positiveFirst (activePrices_nonempty s queue hs)
+    hg cfg.cap_pos.le hshift
+  change |selectedShift cfg s queue value hs hg - (value - midpoint s)| ≤
+    |shift - (value - midpoint s)| at h
+  dsimp only [applyAnchor]
+  convert h using 1 <;> congr 1 <;> ring
+
+theorem applyAnchor_ids (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    (applyAnchor cfg s queue value hs hg).book.live.map Entry.liveId = s.live.map Entry.liveId ∧
+      (applyAnchor cfg s queue value hs hg).book.live.map Entry.localKey =
+        s.live.map Entry.localKey :=
+  ⟨(shiftLedger_metadata _ s).1, (shiftLedger_metadata _ s).2.1⟩
+
+theorem applyAnchor_counter (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    (applyAnchor cfg s queue value hs hg).book.nextId = s.nextId := rfl
+
+theorem applyAnchor_queue_metadata (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    (applyAnchor cfg s queue value hs hg).pending.map
+      (fun g => (g.dueTime, g.window, g.sourceKey)) =
+      queue.map (fun g => (g.dueTime, g.window, g.sourceKey)) := shiftQueue_metadata _ queue
+
+theorem applyAnchor_spread (cfg : Config) (s : Ledger) (queue : List ScheduledGroup)
+    (value : ℝ) (hs : TwoSided s) (hg : activePrices s queue ⊆ cfg.grid) :
+    Execution.best 0 (side false (market (applyAnchor cfg s queue value hs hg).book)) -
+      Execution.best 0 (side true (market (applyAnchor cfg s queue value hs hg).book)) =
+        Execution.best 0 (side false (market s)) - Execution.best 0 (side true (market s)) :=
+  shiftLedger_spread _ s (selectedShift_liveBounds cfg s queue value hs hg) hs
+
+end Thesis.Intraday.QueueAnchor

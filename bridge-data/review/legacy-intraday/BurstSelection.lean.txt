@@ -1,0 +1,87 @@
+import Intraday.RetrievalPhase
+import Mathlib.Probability.Distributions.Uniform
+
+/-! # Uniform selection in the reference Burst branch
+
+Simulator appendix, line 173, and simulation chapter 4, lines 796–806. The
+configured eligible support is an event-dependent subset of a fixed finite
+historical pool. It may use time or a preselected home-day policy; the actual
+uniform law uses every eligible index, without a live-book/macro/gauge query,
+nearest-neighbour truncation, distance weighting or an invented fallback.
+The earlier random-duration home-path construction is a separate specification.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.BurstSelection
+
+open RetrievalPhase
+open scoped ENNReal
+
+structure Support (pool : Finset ℕ) where
+  eligible : EventReplay.EventInput → Finset ℕ
+  subset : ∀ event, eligible event ⊆ pool
+
+def prepare (support : Finset ℕ) {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (hasNextWindow : Bool) : Preparation :=
+  if x.session.replay.failure.isSome || !hasNextWindow then .skipped else
+    if h : support.Nonempty then .ready ⟨PMF.uniformOfFinset support h, false⟩ else .failed false
+
+theorem prepare_failed_state (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hasNextWindow : Bool)
+    (h : x.session.replay.failure.isSome = true) : prepare support x hasNextWindow = .skipped := by
+  simp [prepare, h]
+
+theorem prepare_final_boundary (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) : prepare support x false = .skipped := by simp [prepare]
+
+theorem prepare_active_nonempty (support : Finset ℕ) (hs : support.Nonempty)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (hx : x.session.replay.failure = none) :
+    prepare support x true = .ready ⟨PMF.uniformOfFinset support hs, false⟩ := by
+  simp [prepare, hx, hs]
+
+theorem prepare_active_empty {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (hx : x.session.replay.failure = none) : prepare ∅ x true = .failed false := by
+  simp [prepare, hx]
+
+theorem ready_law (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hasNextWindow : Bool) (law : SelectedLaw)
+    (h : prepare support x hasNextWindow = .ready law) :
+    ∃ hs : support.Nonempty, law.distribution = PMF.uniformOfFinset support hs ∧
+      law.usedFallback = false := by
+  unfold prepare at h
+  split at h
+  · contradiction
+  · split at h
+    · rename_i hs
+      cases h
+      exact ⟨hs, rfl, rfl⟩
+    · contradiction
+
+theorem ready_support (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hasNextWindow : Bool) (law : SelectedLaw)
+    (h : prepare support x hasNextWindow = .ready law) (j : ℕ) :
+    j ∈ law.distribution.support ↔ j ∈ support := by
+  obtain ⟨hs, he, _⟩ := ready_law support x hasNextWindow law h
+  rw [he]
+  exact PMF.mem_support_uniformOfFinset_iff hs j
+
+theorem ready_probability (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hasNextWindow : Bool) (law : SelectedLaw)
+    (h : prepare support x hasNextWindow = .ready law) (j : ℕ) :
+    law.distribution j = if j ∈ support then (support.card : ℝ≥0∞)⁻¹ else 0 := by
+  obtain ⟨hs, he, _⟩ := ready_law support x hasNextWindow law h
+  rw [he]
+  simp [PMF.uniformOfFinset_apply]
+
+theorem ready_no_fallback (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hasNextWindow : Bool) (law : SelectedLaw)
+    (h : prepare support x hasNextWindow = .ready law) : law.usedFallback = false := by
+  obtain ⟨_, _, hf⟩ := ready_law support x hasNextWindow law h
+  exact hf
+
+theorem empty_failure_iff (support : Finset ℕ) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (hx : x.session.replay.failure = none) :
+    prepare support x true = .failed false ↔ support = ∅ := by
+  simp [prepare, hx]
+
+end Thesis.Intraday.BurstSelection

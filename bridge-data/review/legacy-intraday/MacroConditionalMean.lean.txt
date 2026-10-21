@@ -1,0 +1,235 @@
+import Intraday.MacroPath
+import Mathlib.MeasureTheory.Function.ConditionalExpectation.PullOut
+import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
+
+/-! # Conditional means of the actual macro recursion
+
+Simulator appendix, lines 63–84. Conditional means are taken given the declared
+initial information and fixed fitted coefficients. The conditional centering
+assumption concerns each innovation after its adapted variance multiplier.
+`innovation_conditionally_centred` derives it from centred residual draws and
+an adapted variance state; the tower law transfers it to the initial information.
+First moments are explicit. They are automatic for fixed finite-horizon draws
+from finite historical libraries and a finite set of initial states.
+Only the auxiliary anchor is demeaned; no replayed-midprice martingale is asserted.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroConditionalMean
+
+open MeasureTheory MacroPath
+open scoped BigOperators
+
+variable {Ω : Type*} {m m₀ : MeasurableSpace Ω} (μ : Measure[m₀] Ω)
+
+theorem innovation_conditionally_centred (variance residual : Ω → Row)
+    (hv : ∀ c, Measurable[m] (fun ω => variance ω c))
+    (hr : Integrable residual μ)
+    (he : Integrable (fun ω => innovation (variance ω) (residual ω)) μ)
+    (hmean : μ[residual | m] =ᵐ[μ] 0) :
+    μ[fun ω => innovation (variance ω) (residual ω) | m] =ᵐ[μ] 0 := by
+  have hcoord (c : Fin 7) :
+      ∀ᵐ ω ∂μ, μ[fun ω => innovation (variance ω) (residual ω) | m] ω c = 0 := by
+    let T : Row →L[ℝ] ℝ := ContinuousLinearMap.proj c
+    have hrcomp := T.comp_condExp_comm (m := m) hr
+    have hecomp := T.comp_condExp_comm (m := m) he
+    have hmult := condExp_mul_of_aestronglyMeasurable_left
+      ((hv c).sqrt.stronglyMeasurable.aestronglyMeasurable)
+      (T.integrable_comp he) (T.integrable_comp hr)
+    filter_upwards [hrcomp, hecomp, hmult, hmean] with ω hrω heω hmω hzω
+    change μ[fun ω => innovation (variance ω) (residual ω) | m] ω c = _ at heω
+    rw [heω]
+    change μ[fun ω => Real.sqrt (variance ω c) * residual ω c | m] ω = 0
+    change μ[fun ω => Real.sqrt (variance ω c) * residual ω c | m] ω =
+      Real.sqrt (variance ω c) * μ[fun ω => residual ω c | m] ω at hmω
+    rw [hmω]
+    have hrc : μ[fun ω => residual ω c | m] ω = 0 := by
+      change μ[residual | m] ω c = μ[fun ω => residual ω c | m] ω at hrω
+      rw [← hrω, hzω]
+      rfl
+    rw [hrc, mul_zero]
+  filter_upwards [ae_all_iff.mpr hcoord] with ω hω
+  funext c
+  exact hω c
+
+theorem centred_tower {past : MeasurableSpace Ω} (hmp : m ≤ past) (hp : past ≤ m₀)
+    [SigmaFinite (μ.trim hp)] (f : Ω → Row) (hf : μ[f | past] =ᵐ[μ] 0) :
+    μ[f | m] =ᵐ[μ] 0 := by
+  have h := condExp_condExp_of_le (μ := μ) (f := f) hmp hp
+  exact h.symm.trans ((condExp_congr_ae hf).trans (by rw [condExp_zero]))
+
+variable [IsFiniteMeasure μ]
+
+theorem predict_integrable (cfg : Coefficients) (previous current : Ω → Row)
+    (hp : Integrable previous μ) (hc : Integrable current μ) :
+    Integrable (fun ω => predict cfg (previous ω) (current ω)) μ :=
+  ((integrable_const cfg.intercept).add ((matrixMap cfg.lagOne).integrable_comp hc)).add
+    ((matrixMap cfg.lagTwo).integrable_comp hp)
+
+theorem condExp_predict (hm : m ≤ m₀) (cfg : Coefficients) (previous current : Ω → Row)
+    (hp : Integrable previous μ) (hc : Integrable current μ) :
+    μ[fun ω => predict cfg (previous ω) (current ω) | m] =ᵐ[μ]
+      fun ω => predict cfg (μ[previous | m] ω) (μ[current | m] ω) := by
+  let L₁ := matrixMap cfg.lagOne
+  let L₂ := matrixMap cfg.lagTwo
+  have h₁ := L₁.comp_condExp_comm (m := m) hc
+  have h₂ := L₂.comp_condExp_comm (m := m) hp
+  have hadd₁ := condExp_add (integrable_const cfg.intercept) (L₁.integrable_comp hc) m
+  have hadd₂ := condExp_add
+    ((integrable_const cfg.intercept).add (L₁.integrable_comp hc)) (L₂.integrable_comp hp) m
+  filter_upwards [h₁, h₂, hadd₁, hadd₂] with ω h₁ω h₂ω ha₁ω ha₂ω
+  change μ[((fun _ => cfg.intercept) + (fun ω => L₁ (current ω))) +
+    (fun ω => L₂ (previous ω)) | m] ω = _
+  simp only [Function.comp_def] at h₁ω h₂ω
+  rw [ha₂ω]
+  simp only [Pi.add_apply]
+  rw [ha₁ω]
+  simp only [Pi.add_apply, condExp_const hm, ← h₁ω, ← h₂ω]
+  rfl
+
+def meanRun (cfg : Coefficients) (previous current : Row) : ℕ → Row × Row
+  | 0 => (previous, current)
+  | n + 1 => ((meanRun cfg previous current n).2,
+      predict cfg (meanRun cfg previous current n).1 (meanRun cfg previous current n).2)
+
+theorem run_integrable (cfg : Coefficients) (initial : Ω → State) (draw : ℕ → Ω → Row)
+    (hp : Integrable (fun ω => (initial ω).previous) μ)
+    (hc : Integrable (fun ω => (initial ω).current) μ)
+    (he : ∀ n, Integrable (fun ω =>
+      innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω)) μ) (n : ℕ) :
+    Integrable (fun ω => (run cfg (initial ω) (fun k => draw k ω) n).previous) μ ∧
+      Integrable (fun ω => (run cfg (initial ω) (fun k => draw k ω) n).current) μ := by
+  induction n with
+  | zero => exact ⟨hp, hc⟩
+  | succ n ih => exact ⟨ih.2, (predict_integrable μ cfg _ _ ih.1 ih.2).add (he n)⟩
+
+/-- The mean recursion agrees with conditional expectations of the actual
+adaptive-variance simulation, not a replacement process with fixed noise. -/
+theorem condExp_run_mean (hm : m ≤ m₀) (cfg : Coefficients)
+    (initial : Ω → State) (draw : ℕ → Ω → Row) (barPrevious barCurrent : Ω → Row)
+    (hp : Integrable (fun ω => (initial ω).previous) μ)
+    (hc : Integrable (fun ω => (initial ω).current) μ)
+    (he : ∀ n, Integrable (fun ω =>
+      innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω)) μ)
+    (hprev : μ[fun ω => (initial ω).previous | m] =ᵐ[μ] barPrevious)
+    (hcur : μ[fun ω => (initial ω).current | m] =ᵐ[μ] barCurrent)
+    (hnoise : ∀ n, μ[fun ω =>
+      innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω) | m] =ᵐ[μ] 0)
+    (n : ℕ) :
+    (μ[fun ω => (run cfg (initial ω) (fun k => draw k ω) n).previous | m] =ᵐ[μ]
+      fun ω => (meanRun cfg (barPrevious ω) (barCurrent ω) n).1) ∧
+    (μ[fun ω => (run cfg (initial ω) (fun k => draw k ω) n).current | m] =ᵐ[μ]
+      fun ω => (meanRun cfg (barPrevious ω) (barCurrent ω) n).2) := by
+  induction n with
+  | zero => exact ⟨hprev, hcur⟩
+  | succ n ih =>
+    refine ⟨ih.2, ?_⟩
+    have hint := run_integrable μ cfg initial draw hp hc he n
+    have hpred := condExp_predict μ hm cfg _ _ hint.1 hint.2
+    have hadd := condExp_add (predict_integrable μ cfg _ _ hint.1 hint.2) (he n) m
+    filter_upwards [ih.1, ih.2, hpred, hadd, hnoise n] with ω hpω hcω hprω haω hnω
+    change μ[(fun ω => predict cfg
+      (run cfg (initial ω) (fun k => draw k ω) n).previous
+      (run cfg (initial ω) (fun k => draw k ω) n).current) +
+      (fun ω => innovation (run cfg (initial ω) (fun k => draw k ω) n).variance
+        (draw n ω)) | m] ω = _
+    rw [haω]
+    simp only [Pi.add_apply]
+    rw [hprω, hpω, hcω, hnω]
+    simp only [Pi.zero_apply, add_zero, meanRun]
+
+/-- Every finite draw-history space has the required moments. This includes
+a finite residual library at a fixed finite horizon and finitely many initial
+historical states. The separate general theorem also permits infinite spaces. -/
+theorem finite_history_moments [Finite Ω] [MeasurableSingletonClass Ω]
+    (cfg : Coefficients) (initial : Ω → State) (draw : ℕ → Ω → Row) (n : ℕ) :
+    Integrable (fun ω => (run cfg (initial ω) (fun k => draw k ω) n).current) μ ∧
+      Integrable (fun ω =>
+        innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω)) μ :=
+  ⟨Integrable.of_finite, Integrable.of_finite⟩
+
+theorem condExp_demeaned_observable (hm : m ≤ m₀) (actual mean : Ω → Row)
+    (ha : Integrable actual μ) (hmean : μ[actual | m] =ᵐ[μ] mean)
+    (observable : Row →L[ℝ] ℝ) :
+    μ[fun ω => observable (actual ω - mean ω) | m] =ᵐ[μ] 0 := by
+  have hmi : Integrable mean μ := integrable_condExp.congr hmean
+  have hmc : μ[mean | m] =ᵐ[μ] mean :=
+    (condExp_congr_ae hmean.symm).trans
+      ((condExp_condExp_of_le (μ := μ) (f := actual) le_rfl hm).trans hmean)
+  have hsub := condExp_sub ha hmi m
+  have hobs := observable.comp_condExp_comm (m := m) (ha.sub hmi)
+  filter_upwards [hmean, hmc, hsub, hobs] with ω haω hmω hsω hoω
+  change μ[observable ∘ (actual - mean) | m] ω = 0
+  rw [← hoω]
+  change observable (μ[actual - mean | m] ω) = 0
+  rw [hsω]
+  simp only [Pi.sub_apply, haω, hmω, sub_self, map_zero]
+
+def priceObservable (scale : ℝ) : Row →L[ℝ] ℝ :=
+  scale • ContinuousLinearMap.proj 0
+
+theorem originalUnits_demeaning (scale climatology actual mean : Row) :
+    inverseStandardise scale climatology actual 0 -
+      inverseStandardise scale climatology mean 0 =
+      priceObservable (scale 0) (actual - mean) := by
+  simp only [inverseStandardise, priceObservable, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.proj_apply, Pi.sub_apply, smul_eq_mul]
+  ring
+
+def anchorChange (scale : ℝ) (actual mean : ℕ → Ω → Row) (N : ℕ) (ω : Ω) : ℝ :=
+  ∑ n ∈ Finset.range N, priceObservable scale (actual (n + 1) ω - mean (n + 1) ω)
+
+theorem condExp_anchorChange (hm : m ≤ m₀) (scale : ℝ) (actual mean : ℕ → Ω → Row)
+    (ha : ∀ n, Integrable (actual n) μ)
+    (hmean : ∀ n, μ[actual n | m] =ᵐ[μ] mean n) (N : ℕ) :
+    μ[anchorChange scale actual mean N | m] =ᵐ[μ] 0 := by
+  have hterm (n : ℕ) : Integrable
+      (fun ω => priceObservable scale (actual (n + 1) ω - mean (n + 1) ω)) μ :=
+    (priceObservable scale).integrable_comp
+      ((ha (n + 1)).sub (integrable_condExp.congr (hmean (n + 1))))
+  have hsum := condExp_finset_sum (s := Finset.range N) (fun n _ => hterm n) m
+  have hzero (n : ℕ) :=
+    condExp_demeaned_observable μ hm _ _ (ha (n + 1)) (hmean (n + 1)) (priceObservable scale)
+  have hpoint : anchorChange scale actual mean N =
+      ∑ n ∈ Finset.range N,
+        (fun ω => priceObservable scale (actual (n + 1) ω - mean (n + 1) ω)) := by
+    funext ω
+    simp only [anchorChange, Finset.sum_apply]
+  rw [hpoint]
+  apply hsum.trans
+  filter_upwards [ae_all_iff.mpr hzero] with ω hω
+  simp only [Finset.sum_apply, hω, Pi.zero_apply, Finset.sum_const_zero]
+
+theorem integral_anchorChange (hm : m ≤ m₀) (scale : ℝ) (actual mean : ℕ → Ω → Row)
+    (ha : ∀ n, Integrable (actual n) μ)
+    (hmean : ∀ n, μ[actual n | m] =ᵐ[μ] mean n) (N : ℕ) :
+    ∫ ω, anchorChange scale actual mean N ω ∂μ = 0 := by
+  rw [← integral_condExp hm (f := anchorChange scale actual mean N)]
+  exact (integral_congr_ae (condExp_anchorChange μ hm scale actual mean ha hmean N)).trans
+    (integral_zero Ω ℝ)
+
+/-- The appendix's terminal-mean conclusion for the actual macro path. Every
+generated window through N must be completed. Stopping after a failed replay
+or shifting the live book is outside this auxiliary-anchor statement. -/
+theorem actual_anchor_zero_mean (hm : m ≤ m₀) (cfg : Coefficients)
+    (initial : Ω → State) (draw : ℕ → Ω → Row) (barPrevious barCurrent : Ω → Row)
+    (hp : Integrable (fun ω => (initial ω).previous) μ)
+    (hc : Integrable (fun ω => (initial ω).current) μ)
+    (he : ∀ n, Integrable (fun ω =>
+      innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω)) μ)
+    (hprev : μ[fun ω => (initial ω).previous | m] =ᵐ[μ] barPrevious)
+    (hcur : μ[fun ω => (initial ω).current | m] =ᵐ[μ] barCurrent)
+    (hnoise : ∀ n, μ[fun ω =>
+      innovation (run cfg (initial ω) (fun k => draw k ω) n).variance (draw n ω) | m] =ᵐ[μ] 0)
+    (scale : ℝ) (N : ℕ) :
+    ∫ ω, anchorChange scale
+      (fun n ω => (run cfg (initial ω) (fun k => draw k ω) n).current)
+      (fun n ω => (meanRun cfg (barPrevious ω) (barCurrent ω) n).2) N ω ∂μ = 0 := by
+  apply integral_anchorChange μ hm
+  · intro n
+    exact (run_integrable μ cfg initial draw hp hc he n).2
+  · intro n
+    exact (condExp_run_mean μ hm cfg initial draw barPrevious barCurrent
+      hp hc he hprev hcur hnoise n).2
+
+end Thesis.Intraday.MacroConditionalMean

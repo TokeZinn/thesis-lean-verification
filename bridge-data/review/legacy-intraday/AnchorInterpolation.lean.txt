@@ -1,0 +1,207 @@
+import Intraday.MacroConditionalMean
+import Mathlib.Topology.Algebra.Order.Field
+
+/-! # Piecewise-linear interpolation of the demeaned anchor nodes
+
+The nodes are the origin midpoint plus cumulative demeaned price increments.
+On each supplied strictly increasing time interval the interpolant is exactly
+the affine connection of its endpoint nodes. A constant extension outside the
+node range makes the helper total; the rollout uses only the specified horizon.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.AnchorInterpolation
+
+open scoped BigOperators
+
+def node {n : ℕ} (origin : ℝ) (increment : Fin n → ℝ) (j : Fin (n + 1)) : ℝ :=
+  origin + ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < j.val), increment i
+
+def weight {n : ℕ} (times : Fin (n + 1) → ℝ) (i : Fin n) (t : ℝ) : ℝ :=
+  min 1 (max 0 ((t - times i.castSucc) / (times i.succ - times i.castSucc)))
+
+def interpolate {n : ℕ} (times : Fin (n + 1) → ℝ) (origin : ℝ)
+    (increment : Fin n → ℝ) (t : ℝ) : ℝ :=
+  origin + ∑ i, weight times i t * increment i
+
+theorem weight_continuous {n : ℕ} (times : Fin (n + 1) → ℝ) (i : Fin n) :
+    Continuous (weight times i) :=
+  continuous_const.min (continuous_const.max
+    ((continuous_id.sub continuous_const).div_const _))
+
+theorem interpolate_continuous {n : ℕ} (times : Fin (n + 1) → ℝ) (origin : ℝ)
+    (increment : Fin n → ℝ) : Continuous (interpolate times origin increment) :=
+  continuous_const.add (continuous_finset_sum _ (fun i _ =>
+    (weight_continuous times i).mul continuous_const))
+
+theorem time_gap_pos {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times) (i : Fin n) :
+    0 < times i.succ - times i.castSucc := sub_pos.mpr (ht (by simp))
+
+theorem weight_left {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (i : Fin n) {t : ℝ} (h : t ≤ times i.castSucc) : weight times i t = 0 := by
+  have hd := div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr h) (time_gap_pos ht i).le
+  simp only [weight, max_eq_left hd, min_eq_right (by norm_num : (0 : ℝ) ≤ 1)]
+
+theorem weight_right {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (i : Fin n) {t : ℝ} (h : times i.succ ≤ t) : weight times i t = 1 := by
+  have hd : (1 : ℝ) ≤ (t - times i.castSucc) / (times i.succ - times i.castSucc) :=
+    (le_div_iff₀ (time_gap_pos ht i)).mpr (by linarith)
+  simp only [weight, max_eq_right (le_trans (by norm_num : (0 : ℝ) ≤ 1) hd), min_eq_left hd]
+
+theorem weight_inside {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (i : Fin n) {t : ℝ} (hl : times i.castSucc ≤ t) (hr : t ≤ times i.succ) :
+    weight times i t = (t - times i.castSucc) / (times i.succ - times i.castSucc) := by
+  have h0 := div_nonneg (sub_nonneg.mpr hl) (time_gap_pos ht i).le
+  have h1 : (t - times i.castSucc) / (times i.succ - times i.castSucc) ≤ (1 : ℝ) :=
+    (div_le_iff₀ (time_gap_pos ht i)).mpr (by linarith)
+  simp only [weight, max_eq_right h0, min_eq_right h1]
+
+theorem weight_at_node {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (i : Fin n) (j : Fin (n + 1)) :
+    weight times i (times j) = if i.val < j.val then 1 else 0 := by
+  split
+  · rename_i h
+    apply weight_right ht i
+    apply ht.monotone
+    change i.val + 1 ≤ j.val
+    omega
+  · rename_i h
+    apply weight_left ht i
+    apply ht.monotone
+    change j.val ≤ i.val
+    omega
+
+theorem interpolate_node {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (origin : ℝ) (increment : Fin n → ℝ) (j : Fin (n + 1)) :
+    interpolate times origin increment (times j) = node origin increment j := by
+  simp only [interpolate, weight_at_node ht, node, Finset.sum_filter]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro i _
+  split <;> simp_all
+
+theorem node_origin {n : ℕ} (origin : ℝ) (increment : Fin n → ℝ) :
+    node origin increment 0 = origin := by simp [node]
+
+theorem node_terminal {n : ℕ} (origin : ℝ) (increment : Fin n → ℝ) :
+    node origin increment (Fin.last n) = origin + ∑ i, increment i := by
+  simp [node]
+
+theorem node_scoring_execution {n : ℕ} (origin : ℝ) (actual mean : Fin n → ℝ)
+    (j : Fin (n + 1)) :
+    node origin actual j - node origin (fun i => actual i - mean i) j =
+      ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < j.val), mean i := by
+  simp only [node, Finset.sum_sub_distrib]
+  ring
+
+theorem interpolate_scoring_execution {n : ℕ} (times : Fin (n + 1) → ℝ) (origin : ℝ)
+    (actual mean : Fin n → ℝ) (t : ℝ) :
+    interpolate times origin actual t - interpolate times origin (fun i => actual i - mean i) t =
+      interpolate times 0 mean t := by
+  simp only [interpolate, mul_sub, Finset.sum_sub_distrib, zero_add]
+  ring
+
+theorem integral_node_change {Ω : Type*} [MeasurableSpace Ω]
+    (μ : MeasureTheory.Measure Ω) {n : ℕ} (origin : Ω → ℝ) (increment : Fin n → Ω → ℝ)
+    (hi : ∀ i, MeasureTheory.Integrable (increment i) μ) (j : Fin (n + 1)) :
+    (∫ ω, node (origin ω) (fun i => increment i ω) j - origin ω ∂μ) =
+      ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < j.val), ∫ ω, increment i ω ∂μ := by
+  simp only [node, add_sub_cancel_left]
+  exact MeasureTheory.integral_finset_sum _ (fun i _ => hi i)
+
+theorem scoring_expected_change {Ω : Type*} [MeasurableSpace Ω]
+    (μ : MeasureTheory.Measure Ω) {n : ℕ} (origin : Ω → ℝ) (actual : Fin n → Ω → ℝ)
+    (mean : Fin n → ℝ) (hi : ∀ i, MeasureTheory.Integrable (actual i) μ)
+    (hm : ∀ i, (∫ ω, actual i ω ∂μ) = mean i) (j : Fin (n + 1)) :
+    (∫ ω, node (origin ω) (fun i => actual i ω) j - origin ω ∂μ) =
+      ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < j.val), mean i := by
+  rw [integral_node_change μ origin actual hi]
+  simp only [hm]
+
+theorem execution_expected_change {Ω : Type*} [MeasurableSpace Ω]
+    (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ] {n : ℕ}
+    (origin : Ω → ℝ) (actual : Fin n → Ω → ℝ) (mean : Fin n → ℝ)
+    (hi : ∀ i, MeasureTheory.Integrable (actual i) μ)
+    (hm : ∀ i, (∫ ω, actual i ω ∂μ) = mean i) (j : Fin (n + 1)) :
+    (∫ ω, node (origin ω) (fun i => actual i ω - mean i) j - origin ω ∂μ) = 0 := by
+  rw [integral_node_change μ origin (fun i ω => actual i ω - mean i)
+    (fun i => (hi i).sub (MeasureTheory.integrable_const _))]
+  simp only [MeasureTheory.integral_sub (hi _) (MeasureTheory.integrable_const _), hm,
+    MeasureTheory.integral_const, MeasureTheory.probReal_univ, smul_eq_mul, one_mul,
+    sub_self, Finset.sum_const_zero]
+
+theorem node_step {n : ℕ} (origin : ℝ) (increment : Fin n → ℝ) (j : Fin n) :
+    node origin increment j.succ = node origin increment j.castSucc + increment j := by
+  classical
+  have hf : Finset.univ.filter (fun i : Fin n => i.val < j.succ.val) =
+      insert j (Finset.univ.filter (fun i : Fin n => i.val < j.castSucc.val)) := by
+    ext i
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
+      Fin.val_succ, Fin.val_castSucc]
+    constructor
+    · intro h
+      by_cases he : i = j
+      · exact Or.inl he
+      · have hval : i.val ≠ j.val := fun h => he (Fin.ext h)
+        exact Or.inr (by omega)
+    · rintro (rfl | h) <;> omega
+  have hn : j ∉ Finset.univ.filter (fun i : Fin n => i.val < j.castSucc.val) := by simp
+  simp only [node, hf, Finset.sum_insert hn]
+  ring
+
+theorem interpolate_interval {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (origin : ℝ) (increment : Fin n → ℝ) (j : Fin n) {t : ℝ}
+    (hl : times j.castSucc ≤ t) (hr : t ≤ times j.succ) :
+    interpolate times origin increment t = node origin increment j.castSucc +
+      ((t - times j.castSucc) / (times j.succ - times j.castSucc)) * increment j := by
+  classical
+  let ratio := (t - times j.castSucc) / (times j.succ - times j.castSucc)
+  have hpoint (i : Fin n) : weight times i t * increment i =
+      (if i.val < j.val then increment i else 0) + (if i = j then ratio * increment j else 0) := by
+    by_cases he : i = j
+    · subst i
+      simp only [weight_inside ht j hl hr, lt_self_iff_false, ↓reduceIte, zero_add]
+      rfl
+    · by_cases hij : i.val < j.val
+      · have hright : times i.succ ≤ t := le_trans
+          (ht.monotone (by change i.val + 1 ≤ j.val; omega)) hl
+        simp [weight_right ht i hright, hij, he]
+      · have hleft : t ≤ times i.castSucc := le_trans hr
+          (ht.monotone (by
+            change j.val + 1 ≤ i.val
+            have hval : i.val ≠ j.val := fun h => he (Fin.ext h)
+            omega))
+        simp [weight_left ht i hleft, hij, he]
+  simp only [interpolate, hpoint, Finset.sum_add_distrib, node, Finset.sum_filter,
+    Fin.val_castSucc, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
+  dsimp only [ratio]
+  exact (add_assoc _ _ _).symm
+
+theorem interpolate_affine_endpoints {n : ℕ} {times : Fin (n + 1) → ℝ} (ht : StrictMono times)
+    (origin : ℝ) (increment : Fin n → ℝ) (j : Fin n) {t : ℝ}
+    (hl : times j.castSucc ≤ t) (hr : t ≤ times j.succ) :
+    interpolate times origin increment t =
+      (1 - (t - times j.castSucc) / (times j.succ - times j.castSucc)) *
+        node origin increment j.castSucc +
+      ((t - times j.castSucc) / (times j.succ - times j.castSucc)) *
+        node origin increment j.succ := by
+  rw [interpolate_interval ht origin increment j hl hr, node_step]
+  ring
+
+/-- Literal anchor increments: the same climatology term cancels. -/
+def demeanedIncrement (actual mean : ℕ → MacroPath.Row) (scale climatology : ℕ → MacroPath.Row)
+    (originIndex : ℕ) (n : ℕ) (i : Fin n) : ℝ :=
+  MacroPath.inverseStandardise (scale (originIndex + i.val + 1))
+    (climatology (originIndex + i.val + 1)) (actual (originIndex + i.val + 1)) 0 -
+  MacroPath.inverseStandardise (scale (originIndex + i.val + 1))
+    (climatology (originIndex + i.val + 1)) (mean (originIndex + i.val + 1)) 0
+
+theorem demeanedIncrement_formula (actual mean : ℕ → MacroPath.Row)
+    (scale climatology : ℕ → MacroPath.Row) (originIndex n : ℕ) (i : Fin n) :
+    demeanedIncrement actual mean scale climatology originIndex n i =
+      scale (originIndex + i.val + 1) 0 *
+        (actual (originIndex + i.val + 1) 0 - mean (originIndex + i.val + 1) 0) := by
+  simp only [demeanedIncrement, MacroPath.inverseStandardise]
+  ring
+
+end Thesis.Intraday.AnchorInterpolation

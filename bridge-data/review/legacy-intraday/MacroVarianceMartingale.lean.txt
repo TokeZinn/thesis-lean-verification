@@ -1,0 +1,224 @@
+import Intraday.MacroVariance
+import Mathlib.Probability.ConditionalExpectation
+import Mathlib.Probability.HasLaw
+import Mathlib.Probability.Martingale.Basic
+
+/-! # Conditional variance and the actual macro-path martingale
+
+Intraday chapter 4, lines 690–704. Given the fixed fitted bank and causal initial
+state, every draw is uniform and independent of the information preceding it.
+The filtration can contain that initial information. Adaptedness and finite
+moments of the actual recursion are proved below, not assumed in place of the
+recursion. A finite bank gives bounded moments at every finite time.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.MacroVarianceMartingale
+
+open MeasureTheory ProbabilityTheory MacroPath MacroVariance
+open scoped BigOperators
+
+variable {ι Ω : Type*} [Fintype ι] [Nonempty ι]
+  [mι : MeasurableSpace ι] [MeasurableSingletonClass ι] {mΩ : MeasurableSpace Ω}
+  (μ : Measure Ω) [IsProbabilityMeasure μ]
+
+omit [Fintype ι] [Nonempty ι] in
+theorem observable_integrable [Finite ι] (f : ι → ℝ) (index : Ω → ι) (hi : Measurable[mΩ] index) :
+    Integrable (fun ω => f (index ω)) μ := by
+  letI := Fintype.ofFinite ι
+  refine Integrable.of_bound ((measurable_of_countable f).comp hi).aestronglyMeasurable
+    (∑ i, |f i|) (ae_of_all _ fun ω => ?_)
+  rw [Real.norm_eq_abs]
+  exact Finset.single_le_sum (fun i _ => abs_nonneg (f i)) (Finset.mem_univ (index ω))
+
+theorem condExp_uniform (past : MeasurableSpace Ω) (hp : past ≤ mΩ)
+    (f : ι → ℝ) (index : Ω → ι) (hi : Measurable[mΩ] index)
+    (hlaw : HasLaw index (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : Indep (MeasurableSpace.comap index mι) past μ) :
+    μ[fun ω => f (index ω) | past] =ᵐ[μ] fun _ => mean f := by
+  have hf : StronglyMeasurable[MeasurableSpace.comap index mι]
+      (fun ω => f (index ω)) :=
+    ((measurable_of_countable f).comp
+      (show Measurable[MeasurableSpace.comap index mι] index from
+        Measurable.of_comap_le le_rfl)).stronglyMeasurable
+  have h := condExp_indep_eq hi.comap_le hp hf hind
+  have he : (∫ ω, f (index ω) ∂μ) = mean f := by
+    rw [show (fun ω => f (index ω)) = f ∘ index from rfl,
+      hlaw.integral_comp StronglyMeasurable.of_discrete.aestronglyMeasurable,
+      integral_uniform]
+  simpa only [he] using h
+
+def process (cfg : Coefficients) (initial : State) (bank : ι → Row)
+    (draw : ℕ → Ω → ι) (c : Fin 7) (n : ℕ) (ω : Ω) : ℝ :=
+  (run cfg initial (fun k => bank (draw k ω)) n).variance c
+
+omit [Fintype ι] [Nonempty ι] [MeasurableSpace ι] [MeasurableSingletonClass ι] in
+theorem process_succ (cfg : Coefficients) (initial : State) (bank : ι → Row)
+    (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c) (c : Fin 7) (n : ℕ) (ω : Ω) :
+    process cfg initial bank draw c (n + 1) ω =
+      process cfg initial bank draw c n ω * factor decay (bank (draw n ω) c) :=
+  advance_variance cfg _ _ (run_variance_nonneg cfg initial _ hv n) c
+
+def factorBound (bank : ι → Row) (c : Fin 7) : ℝ := ∑ i, factor decay (bank i c)
+
+omit [Nonempty ι] [MeasurableSpace ι] [MeasurableSingletonClass ι] in
+theorem factor_le_bound (bank : ι → Row) (c : Fin 7) (i : ι) :
+    factor decay (bank i c) ≤ factorBound bank c :=
+  Finset.single_le_sum (fun j _ => (factor_pos _ (bank j c) decay_pos decay_lt_one.le).le)
+    (Finset.mem_univ i)
+
+omit [MeasurableSpace ι] [MeasurableSingletonClass ι] in
+theorem factorBound_pos (bank : ι → Row) (c : Fin 7) : 0 < factorBound bank c :=
+  (factor_pos _ (bank (Classical.arbitrary ι) c) decay_pos decay_lt_one.le).trans_le
+    (factor_le_bound bank c _)
+
+omit [MeasurableSpace ι] [MeasurableSingletonClass ι] in
+theorem process_bound (cfg : Coefficients) (initial : State) (bank : ι → Row)
+    (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c) (c : Fin 7) (n : ℕ) (ω : Ω) :
+    |process cfg initial bank draw c n ω| ≤ initial.variance c * factorBound bank c ^ n := by
+  have hn : ∀ k, 0 ≤ process cfg initial bank draw c k ω :=
+    fun k => run_variance_nonneg cfg initial _ hv k c
+  rw [abs_of_nonneg (hn n)]
+  induction n with
+  | zero => simp [process, run]
+  | succ n ih =>
+    rw [process_succ cfg initial bank draw hv, pow_succ, ← mul_assoc]
+    exact mul_le_mul ih (factor_le_bound bank c _)
+      (factor_pos _ _ decay_pos decay_lt_one.le).le
+      (mul_nonneg (hv c) (pow_nonneg (factorBound_pos bank c).le n))
+
+omit [Fintype ι] [Nonempty ι] in
+theorem process_adapted [Finite ι] (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n)) (c : Fin 7) :
+    StronglyAdapted ℱ (process cfg initial bank draw c) := by
+  intro n
+  induction n with
+  | zero =>
+    change StronglyMeasurable[ℱ 0] (fun _ : Ω => initial.variance c)
+    exact stronglyMeasurable_const
+  | succ n ih =>
+    have he : process cfg initial bank draw c (n + 1) =
+        fun ω => process cfg initial bank draw c n ω * factor decay (bank (draw n ω) c) :=
+      funext (process_succ cfg initial bank draw hv c n)
+    rw [he]
+    exact (ih.mono (ℱ.mono (Nat.le_succ n))).mul
+      (((measurable_of_countable (fun i => factor decay (bank i c))).comp
+        (hd n)).stronglyMeasurable)
+
+omit [Fintype ι] in
+theorem process_integrable [Finite ι] (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n)) (c : Fin 7) (n : ℕ) :
+    Integrable (process cfg initial bank draw c n) μ := by
+  letI := Fintype.ofFinite ι
+  refine Integrable.of_bound
+    (((process_adapted ℱ cfg initial bank draw hv hd c n).mono (ℱ.le n)).aestronglyMeasurable)
+    (initial.variance c * factorBound bank c ^ n) (ae_of_all _ fun ω => ?_)
+  simpa only [Real.norm_eq_abs] using process_bound cfg initial bank draw hv c n ω
+
+theorem condExp_process_succ (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (n : ℕ) :
+    μ[process cfg initial bank draw c (n + 1) | ℱ n] =ᵐ[μ]
+      fun ω => process cfg initial bank draw c n ω *
+        (decay + (1 - decay) * secondMoment bank c) := by
+  have hmeas := (hd n).mono (ℱ.le (n + 1)) le_rfl
+  have hfact := condExp_uniform (mΩ := mΩ) μ (ℱ n) (ℱ.le n)
+    (fun i => factor decay (bank i c)) (draw n) hmeas (hlaw n) (hind n)
+  have he : process cfg initial bank draw c (n + 1) =
+      fun ω => process cfg initial bank draw c n ω * factor decay (bank (draw n ω) c) :=
+    funext (process_succ cfg initial bank draw hv c n)
+  have hprod : Integrable (fun ω => process cfg initial bank draw c n ω *
+      factor decay (bank (draw n ω) c)) μ := by
+    rw [← he]
+    exact
+      process_integrable μ ℱ cfg initial bank draw hv hd c (n + 1)
+  have hpull := condExp_mul_of_aestronglyMeasurable_left
+    (process_adapted ℱ cfg initial bank draw hv hd c n).aestronglyMeasurable hprod
+    (observable_integrable μ (fun i => factor decay (bank i c)) (draw n) hmeas)
+  rw [he]
+  filter_upwards [hpull, hfact] with ω hpω hfω
+  change μ[fun ω => process cfg initial bank draw c n ω *
+    factor decay (bank (draw n ω) c) | ℱ n] ω =
+    process cfg initial bank draw c n ω *
+      μ[fun ω => factor decay (bank (draw n ω) c) | ℱ n] ω at hpω
+  rw [hpω, hfω, mean_factor]
+
+theorem actual_variance_martingale (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (hm : secondMoment bank c = 1) :
+    Martingale (process cfg initial bank draw c) ℱ μ := by
+  apply martingale_nat (process_adapted ℱ cfg initial bank draw hv hd c)
+    (process_integrable μ ℱ cfg initial bank draw hv hd c)
+  intro n
+  have h := condExp_process_succ μ ℱ cfg initial bank draw hv hd hlaw hind c n
+  simp only [hm, mul_one, add_sub_cancel, mul_one] at h
+  exact h.symm
+
+theorem expected_variance (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (n : ℕ) :
+    (∫ ω, process cfg initial bank draw c n ω ∂μ) =
+      initial.variance c * (decay + (1 - decay) * secondMoment bank c) ^ n := by
+  induction n with
+  | zero => simp [process, run]
+  | succ n ih =>
+    rw [← integral_condExp (ℱ.le n),
+      integral_congr_ae (condExp_process_succ μ ℱ cfg initial bank draw hv hd hlaw hind c n),
+      integral_mul_const, ih, pow_succ, mul_assoc]
+
+theorem expected_variance_unit (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 ≤ initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (hm : secondMoment bank c = 1) (n : ℕ) :
+    (∫ ω, process cfg initial bank draw c n ω ∂μ) = initial.variance c := by
+  rw [expected_variance μ ℱ cfg initial bank draw hv hd hlaw hind, hm]
+  simp
+
+theorem condExp_log_growth (ℱ : Filtration ℕ mΩ) (cfg : Coefficients) (initial : State)
+    (bank : ι → Row) (draw : ℕ → Ω → ι) (hv : ∀ c, 0 < initial.variance c)
+    (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (n : ℕ) :
+    μ[fun ω => Real.log (process cfg initial bank draw c (n + 1) ω) -
+      Real.log (process cfg initial bank draw c n ω) | ℱ n] =ᵐ[μ]
+        fun _ => mean (fun i => Real.log (factor decay (bank i c))) := by
+  have he : (fun ω => Real.log (process cfg initial bank draw c (n + 1) ω) -
+      Real.log (process cfg initial bank draw c n ω)) =
+      fun ω => Real.log (factor decay (bank (draw n ω) c)) := by
+    funext ω
+    exact advance_log_difference cfg _ _
+      (run_variance_nonneg cfg initial _ (fun c => (hv c).le) n) c
+      (run_variance_pos cfg initial _ hv n c)
+  rw [he]
+  exact condExp_uniform (mΩ := mΩ) μ (ℱ n) (ℱ.le n)
+    (fun i => Real.log (factor decay (bank i c))) (draw n)
+    ((hd n).mono (ℱ.le (n + 1)) le_rfl) (hlaw n) (hind n)
+
+theorem conditional_log_growth_negative (ℱ : Filtration ℕ mΩ) (cfg : Coefficients)
+    (initial : State) (bank : ι → Row) (draw : ℕ → Ω → ι)
+    (hv : ∀ c, 0 < initial.variance c) (hd : ∀ n, Measurable[ℱ (n + 1)] (draw n))
+    (hlaw : ∀ n, HasLaw (draw n) (PMF.uniformOfFintype ι).toMeasure μ)
+    (hind : ∀ n, Indep (MeasurableSpace.comap (draw n) mι) (ℱ n) μ)
+    (c : Fin 7) (hm : secondMoment bank c = 1)
+    (hn : ∃ i j, (bank i c) ^ 2 ≠ (bank j c) ^ 2) (n : ℕ) :
+    ∀ᵐ ω ∂μ, μ[fun ω => Real.log (process cfg initial bank draw c (n + 1) ω) -
+      Real.log (process cfg initial bank draw c n ω) | ℱ n] ω < 0 := by
+  filter_upwards [condExp_log_growth μ ℱ cfg initial bank draw hv hd hlaw hind c n] with ω hω
+  rw [hω]
+  exact mean_log_factor_neg decay decay_pos decay_lt_one bank c hm hn
+
+end Thesis.Intraday.MacroVarianceMartingale

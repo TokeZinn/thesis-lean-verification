@@ -1,0 +1,248 @@
+import Foundations.MoorePenrose
+import Intraday.MacroEncodingWindows
+import Mathlib.Analysis.InnerProductSpace.PiL2
+
+/-! # Pooled VAR(2) estimation
+
+`eq:intraday-var-fit` and simulator appendix, historical fit guards. Each day
+supplies the 98 standardised rows for windows 2–99. The fit uses exactly windows
+4–99, with an intercept and two seven-coordinate lags. The Moore–Penrose
+construction works for singular designs as well as full-rank designs.
+
+The input day type must represent the eligible, strictly historical library.
+The encoded-input wrapper below connects estimation to reconstructed operations;
+raw-feed reconstruction, numerical evaluation and stability acceptance are separate.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.VARFit
+
+open scoped BigOperators Matrix
+
+abbrev Predictor := Unit ⊕ (Fin 7 ⊕ Fin 7)
+abbrev Parameters := EuclideanSpace ℝ Predictor
+abbrev Observation (Day : Type*) := Day × Fin 96
+abbrev Rows (Day : Type*) := Day → Fin 98 → MacroPath.Row
+
+theorem predictor_count : Fintype.card Predictor = 15 := by decide
+
+def previousIndex (w : Fin 96) : Fin 98 := ⟨w.val, by omega⟩
+def currentIndex (w : Fin 96) : Fin 98 := ⟨w.val + 1, by omega⟩
+def responseIndex (w : Fin 96) : Fin 98 := ⟨w.val + 2, by omega⟩
+
+theorem training_window_bounds (w : Fin 96) :
+    4 ≤ (responseIndex w).val + 2 ∧ (responseIndex w).val + 2 ≤ 99 := by
+  simp only [responseIndex]
+  omega
+
+theorem training_window_complete (w : ℕ) (hlo : 4 ≤ w) (hhi : w ≤ 99) :
+    ∃! i : Fin 96, (responseIndex i).val + 2 = w := by
+  refine ⟨⟨w - 4, by omega⟩, ?_, ?_⟩
+  · simp only [responseIndex]
+    omega
+  · intro i hi
+    apply Fin.ext
+    simp only [responseIndex] at hi
+    change i.val = w - 4
+    omega
+
+def designRow {Day : Type*} (z : Rows Day) (o : Observation Day) : Predictor → ℝ
+  | .inl _ => 1
+  | .inr (.inl c) => z o.1 (currentIndex o.2) c
+  | .inr (.inr c) => z o.1 (previousIndex o.2) c
+
+def design {Day : Type*} [Fintype Day] (z : Rows Day) :
+    Parameters →ₗ[ℝ] EuclideanSpace ℝ (Observation Day) where
+  toFun b := WithLp.toLp 2 fun o => ∑ p, designRow z o p * b p
+  map_add' b c := by
+    ext o
+    simp [mul_add, Finset.sum_add_distrib]
+  map_smul' r b := by
+    ext o
+    change (∑ p, designRow z o p * (r * b p)) = r * ∑ p, designRow z o p * b p
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro p _
+    ring
+
+def response {Day : Type*} [Fintype Day] (z : Rows Day) (c : Fin 7) :
+    EuclideanSpace ℝ (Observation Day) :=
+  WithLp.toLp 2 fun o => z o.1 (responseIndex o.2) c
+
+def pack (cfg : MacroPath.Coefficients) (c : Fin 7) : Parameters :=
+  WithLp.toLp 2 fun p => match p with
+    | .inl _ => cfg.intercept c
+    | .inr (.inl j) => cfg.lagOne c j
+    | .inr (.inr j) => cfg.lagTwo c j
+
+def unpack (b : Fin 7 → Parameters) : MacroPath.Coefficients where
+  intercept c := b c (.inl ())
+  lagOne c j := b c (.inr (.inl j))
+  lagTwo c j := b c (.inr (.inr j))
+
+theorem pack_unpack (b : Fin 7 → Parameters) (c : Fin 7) : pack (unpack b) c = b c := by
+  ext p
+  rcases p with _ | (j | j) <;> rfl
+
+theorem unpack_pack (cfg : MacroPath.Coefficients) : unpack (pack cfg) = cfg := by
+  cases cfg
+  rfl
+
+theorem design_pack {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) (c : Fin 7) (o : Observation Day) :
+    design z (pack cfg c) o =
+      MacroPath.predict cfg (z o.1 (previousIndex o.2)) (z o.1 (currentIndex o.2)) c := by
+  simp [design, designRow, pack, Fintype.sum_sum_type, MacroPath.predict,
+    MacroPath.matrixMap_apply, Matrix.mulVec, dotProduct, mul_comm, add_assoc]
+
+def fittedColumns {Day : Type*} [Fintype Day] (z : Rows Day) : Fin 7 → Parameters :=
+  fun c => MoorePenrose.inverse (design z) (response z c)
+
+def fit {Day : Type*} [Fintype Day] (z : Rows Day) : MacroPath.Coefficients :=
+  unpack (fittedColumns z)
+
+def loss {Day : Type*} [Fintype Day] (z : Rows Day) (cfg : MacroPath.Coefficients) : ℝ :=
+  ∑ d, ∑ w : Fin 96, ∑ c : Fin 7,
+    (z d (responseIndex w) c -
+      MacroPath.predict cfg (z d (previousIndex w)) (z d (currentIndex w)) c) ^ 2
+
+theorem loss_eq_thesis_objective {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) :
+    loss z cfg = ∑ d, ∑ w : Fin 96,
+      ‖(WithLp.toLp 2 (z d (responseIndex w) -
+        MacroPath.predict cfg (z d (previousIndex w)) (z d (currentIndex w))) :
+          EuclideanSpace ℝ (Fin 7))‖ ^ 2 := by
+  simp only [EuclideanSpace.real_norm_sq_eq, loss]
+  rfl
+
+theorem loss_eq_column_norms {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) :
+    loss z cfg = ∑ c, ‖response z c - design z (pack cfg c)‖ ^ 2 := by
+  simp only [EuclideanSpace.real_norm_sq_eq, PiLp.sub_apply, design_pack, response,
+    Fintype.sum_prod_type, loss]
+  symm
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [Finset.sum_comm]
+
+/-- Original label: `eq:intraday-var-fit`. -/
+theorem fit_minimizes {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) : loss z (fit z) ≤ loss z cfg := by
+  rw [loss_eq_column_norms, loss_eq_column_norms]
+  apply Finset.sum_le_sum
+  intro c _
+  simp only [fit, pack_unpack, fittedColumns]
+  exact MoorePenrose.least_squares_sq _ _ _
+
+def residual {Day : Type*} [Fintype Day] (z : Rows Day)
+    (o : Observation Day) : MacroPath.Row :=
+  z o.1 (responseIndex o.2) -
+    MacroPath.predict (fit z) (z o.1 (previousIndex o.2)) (z o.1 (currentIndex o.2))
+
+theorem residual_column {Day : Type*} [Fintype Day] (z : Rows Day)
+    (o : Observation Day) (c : Fin 7) :
+    residual z o c = (response z c - design z (fittedColumns z c)) o := by
+  change residual z o c = response z c o - design z (fittedColumns z c) o
+  rw [← pack_unpack (fittedColumns z) c, design_pack]
+  rfl
+
+theorem loss_decomposition {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) :
+    loss z cfg = loss z (fit z) +
+      ∑ c, ‖design z (fittedColumns z c) - design z (pack cfg c)‖ ^ 2 := by
+  rw [loss_eq_column_norms, loss_eq_column_norms, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro c _
+  simp only [fit, pack_unpack, fittedColumns]
+  exact MoorePenrose.loss_decomposition _ _ _
+
+theorem minimizer_iff {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) :
+    (∀ other, loss z cfg ≤ loss z other) ↔
+      ∀ c, design z (pack cfg c) = design z (fittedColumns z c) := by
+  constructor
+  · intro h
+    have hd := loss_decomposition z cfg
+    have hz : ∑ c, ‖design z (fittedColumns z c) - design z (pack cfg c)‖ ^ 2 = 0 := by
+      have := h (fit z)
+      have := Finset.sum_nonneg (s := Finset.univ)
+        (fun c _ => sq_nonneg ‖design z (fittedColumns z c) - design z (pack cfg c)‖)
+      linarith
+    have hh := (Finset.sum_eq_zero_iff_of_nonneg (fun c _ =>
+      sq_nonneg ‖design z (fittedColumns z c) - design z (pack cfg c)‖)).mp hz
+    intro c
+    exact (sub_eq_zero.mp (norm_eq_zero.mp (sq_eq_zero_iff.mp (hh c (Finset.mem_univ c))))).symm
+  · intro h other
+    have he : loss z cfg = loss z (fit z) := by
+      simp only [loss_eq_column_norms, fit, pack_unpack, h]
+    rw [he]
+    exact fit_minimizes z other
+
+def coefficientNormSq (cfg : MacroPath.Coefficients) : ℝ := ∑ c, ‖pack cfg c‖ ^ 2
+
+theorem coefficientNormSq_formula (cfg : MacroPath.Coefficients) :
+    coefficientNormSq cfg = ∑ c, (cfg.intercept c ^ 2 +
+      (∑ j, cfg.lagOne c j ^ 2) + ∑ j, cfg.lagTwo c j ^ 2) := by
+  simp [coefficientNormSq, EuclideanSpace.real_norm_sq_eq, pack, add_assoc]
+
+theorem coefficient_norm_decomposition {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) (h : ∀ other, loss z cfg ≤ loss z other) :
+    coefficientNormSq cfg = coefficientNormSq (fit z) +
+      ∑ c, ‖pack cfg c - fittedColumns z c‖ ^ 2 := by
+  have hh := (minimizer_iff z cfg).mp h
+  unfold coefficientNormSq
+  simp only [fit, pack_unpack]
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro c _
+  exact MoorePenrose.coefficient_norm_decomposition _ _ _ (hh c)
+
+theorem fit_minimum_norm {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) (h : ∀ other, loss z cfg ≤ loss z other) :
+    coefficientNormSq (fit z) ≤ coefficientNormSq cfg := by
+  rw [coefficient_norm_decomposition z cfg h]
+  exact le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => sq_nonneg _)
+
+theorem fit_unique_minimum_norm {Day : Type*} [Fintype Day] (z : Rows Day)
+    (cfg : MacroPath.Coefficients) (h : ∀ other, loss z cfg ≤ loss z other)
+    (hn : coefficientNormSq cfg ≤ coefficientNormSq (fit z)) : cfg = fit z := by
+  have hd := coefficient_norm_decomposition z cfg h
+  have hz : ∑ c, ‖pack cfg c - fittedColumns z c‖ ^ 2 = 0 := by
+    have := Finset.sum_nonneg (s := Finset.univ)
+      (fun c _ => sq_nonneg ‖pack cfg c - fittedColumns z c‖)
+    linarith
+  have hh := (Finset.sum_eq_zero_iff_of_nonneg (fun c _ =>
+    sq_nonneg ‖pack cfg c - fittedColumns z c‖)).mp hz
+  have he : pack cfg = fittedColumns z := by
+    funext c
+    exact sub_eq_zero.mp (norm_eq_zero.mp (sq_eq_zero_iff.mp (hh c (Finset.mem_univ c))))
+  rw [← unpack_pack cfg, he]
+  rfl
+
+theorem design_single {Day : Type*} [Fintype Day] (z : Rows Day)
+    (p : Predictor) (o : Observation Day) :
+    design z (EuclideanSpace.single p 1) o = designRow z o p := by
+  classical
+  change (∑ j, designRow z o j * (EuclideanSpace.single p 1) j) = _
+  simp
+
+theorem normal_equation {Day : Type*} [Fintype Day] (z : Rows Day)
+    (c : Fin 7) (p : Predictor) :
+    ∑ o, residual z o c * designRow z o p = 0 := by
+  have h := (Submodule.mem_orthogonal' _ _).mp
+    (MoorePenrose.residual_orthogonal (design z) (response z c))
+    _ (LinearMap.mem_range_self (design z) (EuclideanSpace.single p 1))
+  change inner ℝ (response z c - design z (fittedColumns z c))
+    (design z (EuclideanSpace.single p 1)) = 0 at h
+  change (∑ o, design z (EuclideanSpace.single p 1) o *
+    (response z c o - design z (fittedColumns z c) o)) = 0 at h
+  have hr : ∀ o, response z c o - design z (fittedColumns z c) o = residual z o c :=
+    fun o => (residual_column z o c).symm
+  simpa only [design_single, hr, mul_comm] using h
+
+theorem residual_sum_zero {Day : Type*} [Fintype Day] (z : Rows Day) (c : Fin 7) :
+    ∑ o, residual z o c = 0 := by
+  simpa only [designRow, mul_one] using normal_equation z c (.inl ())
+
+end Thesis.Intraday.VARFit

@@ -1,0 +1,203 @@
+import Intraday.SimulatorTrajectory
+import Mathlib.Data.Finset.Max
+
+/-! # Select the next event from the actual staged queue and macro calendar
+
+Simulator appendix, lines 190–212. Selection is recomputed from the live queue
+after each staging operation. All groups at the same due time are handled by
+the existing due phase; a coincident macro boundary is included in that same
+event. Consumed boundary markers are removed, so a zero-offset staged group
+cannot trigger retrieval from the same boundary again.
+
+An increasing, eligible macro calendar and source-relative time admissibility
+belong to initialisation/library guards. The lemmas below state exactly which
+guards imply chronological selection. `AdaptiveRollout` supplies the complete
+adaptive stochastic loop using derived queue-progress and burst-size bounds;
+`RolloutChronology` proves chronology through that loop.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.EventScheduler
+
+open EventReplay GroupReplay Finset
+
+def candidates (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) : Finset ℝ :=
+  ((remaining.image times) ∪ (pending.map ScheduledGroup.dueTime).toFinset).filter
+    (fun t => t ≤ horizon)
+
+theorem mem_candidates (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon t : ℝ) :
+    t ∈ candidates times remaining pending horizon ↔
+      ((∃ w ∈ remaining, times w = t) ∨ (∃ g ∈ pending, g.dueTime = t)) ∧ t ≤ horizon := by
+  simp [candidates, and_comm]
+
+def nextTime (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) : Option ℝ :=
+  if h : (candidates times remaining pending horizon).Nonempty then
+    some ((candidates times remaining pending horizon).min' h) else none
+
+theorem nextTime_spec (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon t : ℝ) (h : nextTime times remaining pending horizon = some t) :
+    t ∈ candidates times remaining pending horizon ∧
+      ∀ s ∈ candidates times remaining pending horizon, t ≤ s := by
+  unfold nextTime at h
+  split_ifs at h with hn
+  have he := Option.some.inj h
+  subst t
+  exact ⟨min'_mem _ _, fun s hs => min'_le _ _ hs⟩
+
+theorem nextTime_none (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) :
+    nextTime times remaining pending horizon = none ↔
+      (∀ w ∈ remaining, horizon < times w) ∧ (∀ g ∈ pending, horizon < g.dueTime) := by
+  unfold nextTime
+  split_ifs with h
+  · simp only [false_iff, not_and_or]
+    obtain ⟨t, ht⟩ := h
+    obtain ⟨hw | hg, ht⟩ := (mem_candidates times remaining pending horizon t).mp ht
+    · obtain ⟨w, hw, rfl⟩ := hw
+      exact Or.inl (by intro hall; exact not_lt_of_ge ht (hall w hw))
+    · obtain ⟨g, hg, rfl⟩ := hg
+      exact Or.inr (by intro hall; exact not_lt_of_ge ht (hall g hg))
+  · simp only [true_iff]
+    constructor
+    · intro w hw
+      by_contra! hn
+      exact h ⟨times w, (mem_candidates _ _ _ _ _).mpr ⟨Or.inl ⟨w, hw, rfl⟩, hn⟩⟩
+    · intro g hg
+      by_contra! hn
+      exact h ⟨g.dueTime, (mem_candidates _ _ _ _ _).mpr ⟨Or.inr ⟨g, hg, rfl⟩, hn⟩⟩
+
+theorem nextTime_chronological (times : ℕ → ℝ) (remaining : Finset ℕ)
+    (pending : List ScheduledGroup) (horizon current t : ℝ)
+    (hm : ∀ w ∈ remaining, current ≤ times w)
+    (hq : ∀ g ∈ pending, current ≤ g.dueTime)
+    (h : nextTime times remaining pending horizon = some t) : current ≤ t := by
+  have hs := (mem_candidates _ _ _ _ _).mp (nextTime_spec _ _ _ _ _ h).1
+  rcases hs.1 with ⟨w, hw, rfl⟩ | ⟨g, hg, rfl⟩
+  · exact hm w hw
+  · exact hq g hg
+
+theorem nextTime_no_skipped_due (times : ℕ → ℝ) (remaining : Finset ℕ)
+    (pending : List ScheduledGroup) (horizon t : ℝ)
+    (h : nextTime times remaining pending horizon = some t)
+    (g : ScheduledGroup) (hg : g ∈ pending) (hh : g.dueTime ≤ horizon) : t ≤ g.dueTime :=
+  (nextTime_spec _ _ _ _ _ h).2 _
+    ((mem_candidates _ _ _ _ _).mpr ⟨Or.inr ⟨g, hg, rfl⟩, hh⟩)
+
+theorem nextTime_no_skipped_boundary (times : ℕ → ℝ) (remaining : Finset ℕ)
+    (pending : List ScheduledGroup) (horizon t : ℝ)
+    (h : nextTime times remaining pending horizon = some t)
+    (w : ℕ) (hw : w ∈ remaining) (hh : times w ≤ horizon) : t ≤ times w :=
+  (nextTime_spec _ _ _ _ _ h).2 _
+    ((mem_candidates _ _ _ _ _).mpr ⟨Or.inl ⟨w, hw, rfl⟩, hh⟩)
+
+def boundariesAt (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) : Finset ℕ :=
+  remaining.filter (fun w => times w = t)
+
+def boundaryAt (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) : Option ℕ :=
+  if h : (boundariesAt times remaining t).Nonempty then
+    some ((boundariesAt times remaining t).min' h) else none
+
+theorem boundaryAt_some (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) (w : ℕ)
+    (h : boundaryAt times remaining t = some w) : w ∈ remaining ∧ times w = t := by
+  unfold boundaryAt at h
+  split_ifs at h with hn
+  have he := Option.some.inj h
+  subst w
+  exact (mem_filter.mp (min'_mem _ hn))
+
+theorem boundaryAt_none (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) :
+    boundaryAt times remaining t = none ↔ ∀ w ∈ remaining, times w ≠ t := by
+  unfold boundaryAt
+  split_ifs with h
+  · simp only [false_iff]
+    obtain ⟨w, hw⟩ := h
+    have hs := mem_filter.mp hw
+    exact fun hall => hall w hs.1 hs.2
+  · simp only [true_iff]
+    exact fun w hw he => h ⟨w, mem_filter.mpr ⟨hw, he⟩⟩
+
+theorem boundaryAt_unique (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ)
+    (hi : Set.InjOn times remaining) (w : ℕ) (hw : w ∈ remaining) (ht : times w = t) :
+    boundaryAt times remaining t = some w := by
+  unfold boundaryAt
+  have hn : (boundariesAt times remaining t).Nonempty := ⟨w, mem_filter.mpr ⟨hw, ht⟩⟩
+  rw [dif_pos hn]
+  apply congrArg some
+  have hs := mem_filter.mp (min'_mem (boundariesAt times remaining t) hn)
+  exact hi hs.1 hw (hs.2.trans ht.symm)
+
+def remainingAfter (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) : Finset ℕ :=
+  remaining.filter (fun w => times w ≠ t)
+
+theorem remainingAfter_no_repeat (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) :
+    boundaryAt times (remainingAfter times remaining t) t = none := by
+  rw [boundaryAt_none]
+  exact fun w hw => (mem_filter.mp hw).2
+
+theorem remainingAfter_nonboundary (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ)
+    (h : boundaryAt times remaining t = none) : remainingAfter times remaining t = remaining := by
+  exact filter_eq_self.mpr ((boundaryAt_none times remaining t).mp h)
+
+theorem remainingAfter_card_lt (times : ℕ → ℝ) (remaining : Finset ℕ) (t : ℝ) (w : ℕ)
+    (h : boundaryAt times remaining t = some w) :
+    (remainingAfter times remaining t).card < remaining.card := by
+  have hs := boundaryAt_some times remaining t w h
+  apply card_lt_card
+  refine Finset.ssubset_iff_subset_ne.mpr ⟨filter_subset _ _, ?_⟩
+  intro he
+  have hw : w ∈ remainingAfter times remaining t := he.symm ▸ hs.1
+  exact (mem_filter.mp hw).2 hs.2
+
+structure Selected where
+  event : EventInput
+  remaining : Finset ℕ
+
+def next (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) (policy : ℕ → EventQueue.BoundaryPolicy) : Option Selected :=
+  (nextTime times remaining pending horizon).map fun t =>
+    ⟨⟨t, boundaryAt times remaining t, policy ((boundaryAt times remaining t).getD 0)⟩,
+      remainingAfter times remaining t⟩
+
+theorem next_spec (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) (policy : ℕ → EventQueue.BoundaryPolicy) (out : Selected)
+    (h : next times remaining pending horizon policy = some out) :
+    nextTime times remaining pending horizon = some out.event.time ∧
+      out.event.completedWindow = boundaryAt times remaining out.event.time ∧
+      out.remaining = remainingAfter times remaining out.event.time := by
+  obtain ⟨t, ht, he⟩ := Option.map_eq_some_iff.mp h
+  subst out
+  exact ⟨ht, rfl, rfl⟩
+
+theorem next_time_source (times : ℕ → ℝ) (remaining : Finset ℕ) (pending : List ScheduledGroup)
+    (horizon : ℝ) (policy : ℕ → EventQueue.BoundaryPolicy) (out : Selected)
+    (h : next times remaining pending horizon policy = some out) :
+    ((∃ w ∈ remaining, times w = out.event.time) ∨
+      ∃ g ∈ pending, g.dueTime = out.event.time) ∧ out.event.time ≤ horizon :=
+  (mem_candidates _ _ _ _ _).mp
+    (nextTime_spec _ _ _ _ _ (next_spec _ _ _ _ _ _ h).1).1
+
+theorem next_nonboundary_has_due (times : ℕ → ℝ) (remaining : Finset ℕ)
+    (pending : List ScheduledGroup) (horizon : ℝ) (policy : ℕ → EventQueue.BoundaryPolicy)
+    (out : Selected) (h : next times remaining pending horizon policy = some out)
+    (hn : out.event.completedWindow = none) : ∃ g ∈ pending, g.dueTime = out.event.time := by
+  have hs := next_spec _ _ _ _ _ _ h
+  have hb := (boundaryAt_none _ _ _).mp (hs.2.1.symm.trans hn)
+  rcases (next_time_source _ _ _ _ _ _ h).1 with ⟨w, hw, he⟩ | hg
+  · exact (hb w hw he).elim
+  · exact hg
+
+def forPath (times : ℕ → ℝ) (remaining : Finset ℕ) (horizon : ℝ)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (path : SimulatorTrajectory.Path cfg) : Option Selected :=
+  if SimulatorTrajectory.halted path then none else
+    next times remaining path.current.session.pending horizon policy
+
+theorem forPath_halted (times : ℕ → ℝ) (remaining : Finset ℕ) (horizon : ℝ)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (path : SimulatorTrajectory.Path cfg) (h : SimulatorTrajectory.halted path = true) :
+    forPath times remaining horizon policy path = none := by simp [forPath, h]
+
+end Thesis.Intraday.EventScheduler

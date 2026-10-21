@@ -1,0 +1,40 @@
+{
+  "prop:sided-parametrisation-not-weakly-convex": {
+    "env": "prop",
+    "line": 370,
+    "number": "10.3",
+    "proofLine": 372,
+    "proofRepoPath": "graph-artifacts/thesis-fix-svg/prop__sided-parametrisation-not-weakly-convex__proof.svg",
+    "proofSvg": "thesis-fix-svg/prop__sided-parametrisation-not-weakly-convex__proof.svg",
+    "repoPath": "graph-artifacts/thesis-fix-svg/prop__sided-parametrisation-not-weakly-convex.svg",
+    "source": "2 - day-ahead/2_clearing_operator_price_curves_fix.tex",
+    "svg": "thesis-fix-svg/prop__sided-parametrisation-not-weakly-convex.svg"
+  },
+  "thm:lln-covariance": {
+    "env": "thm",
+    "line": 120,
+    "number": "11.6",
+    "repoPath": "graph-artifacts/thesis-fix-svg/thm__lln-covariance.svg",
+    "source": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+    "svg": "thesis-fix-svg/thm__lln-covariance.svg"
+  },
+  "thm:regression-theorem": {
+    "env": "thm",
+    "line": 186,
+    "number": "11.9",
+    "repoPath": "graph-artifacts/thesis-fix-svg/thm__regression-theorem.svg",
+    "source": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+    "svg": "thesis-fix-svg/thm__regression-theorem.svg"
+  },
+  "thm:scores-sigma-algebra": {
+    "env": "thm",
+    "line": 285,
+    "number": "11.12",
+    "proofLine": 299,
+    "proofRepoPath": "graph-artifacts/thesis-fix-svg/thm__scores-sigma-algebra__proof.svg",
+    "proofSvg": "thesis-fix-svg/thm__scores-sigma-algebra__proof.svg",
+    "repoPath": "graph-artifacts/thesis-fix-svg/thm__scores-sigma-algebra.svg",
+    "source": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+    "svg": "thesis-fix-svg/thm__scores-sigma-algebra.svg"
+  }
+}

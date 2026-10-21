@@ -1,0 +1,176 @@
+import Intraday.PriceGrid
+import Mathlib.Data.Prod.Lex
+
+/-! # Bounded common anchor correction with deterministic ties
+
+Simulator appendix, Burst Translation, Replay, and Anchor Shift. For a finite
+configured simulator grid and a nonempty set of live/staged prices, the finite
+candidate construction below is equivalent to the displayed real-valued
+constraint. We minimize target error, then absolute shift, then the supplied
+signed convention. Zero is feasible exactly under the stated current-grid and
+nonnegative-cap guards. This certifies the mathematical correction, not a
+missing historical grid, cap, or empirical anchor log.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.CommonAnchor
+
+open Finset
+
+def feasible (grid prices : Finset ℝ) (cap : ℝ) : Finset ℝ := by
+  classical
+  exact ((grid ×ˢ prices).image (fun qp => qp.1 - qp.2)).filter
+    fun s => |s| ≤ cap ∧ ∀ p ∈ prices, p + s ∈ grid
+
+theorem mem_feasible {grid prices : Finset ℝ} {cap s : ℝ} (hp : prices.Nonempty) :
+    s ∈ feasible grid prices cap ↔ |s| ≤ cap ∧ ∀ p ∈ prices, p + s ∈ grid := by
+  classical
+  constructor
+  · exact fun h => (mem_filter.mp h).2
+  · intro h
+    obtain ⟨p, hpp⟩ := hp
+    apply mem_filter.mpr
+    refine ⟨?_, h⟩
+    exact mem_image.mpr ⟨(p + s, p), mem_product.mpr ⟨h.2 p hpp, hpp⟩, by simp⟩
+
+theorem zero_mem_feasible {grid prices : Finset ℝ} {cap : ℝ}
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) :
+    0 ∈ feasible grid prices cap := by
+  apply (mem_feasible hp).mpr
+  simpa using And.intro hc hgrid
+
+theorem feasible_nonempty {grid prices : Finset ℝ} {cap : ℝ}
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) :
+    (feasible grid prices cap).Nonempty := ⟨0, zero_mem_feasible hp hgrid hc⟩
+
+abbrev Key := ℝ ×ₗ (ℝ ×ₗ ℝ)
+
+def signedKey (positiveFirst : Bool) (s : ℝ) : ℝ := if positiveFirst then -s else s
+
+def key (positiveFirst : Bool) (target s : ℝ) : Key :=
+  toLex (|s - target|, toLex (|s|, signedKey positiveFirst s))
+
+theorem key_injective (positiveFirst : Bool) (target : ℝ) :
+    Function.Injective (key positiveFirst target) := by
+  intro s t h
+  have he := congrArg (fun k : Key => (ofLex (ofLex k).2).2) h
+  cases positiveFirst <;> simpa [key, signedKey] using he
+
+def minimizers (candidates : Finset ℝ) (positiveFirst : Bool) (target : ℝ) : Finset ℝ :=
+  candidates.filter fun s =>
+    ∀ t ∈ candidates, key positiveFirst target s ≤ key positiveFirst target t
+
+theorem minimizers_nonempty {candidates : Finset ℝ} (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) :
+    (minimizers candidates positiveFirst target).Nonempty := by
+  obtain ⟨s, hs, hmin⟩ := exists_min_image candidates (key positiveFirst target) h
+  exact ⟨s, mem_filter.mpr ⟨hs, hmin⟩⟩
+
+def select (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) : ℝ :=
+  (minimizers candidates positiveFirst target).min' (minimizers_nonempty h positiveFirst target)
+
+theorem select_mem (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) : select candidates h positiveFirst target ∈ candidates :=
+  (mem_filter.mp (min'_mem (minimizers candidates positiveFirst target) _)).1
+
+theorem select_le_key (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) {t : ℝ} (ht : t ∈ candidates) :
+    key positiveFirst target (select candidates h positiveFirst target) ≤
+      key positiveFirst target t :=
+  (mem_filter.mp (min'_mem (minimizers candidates positiveFirst target) _)).2 t ht
+
+theorem select_unique (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) {t : ℝ} (ht : t ∈ candidates)
+    (hmin : ∀ s ∈ candidates, key positiveFirst target t ≤ key positiveFirst target s) :
+    t = select candidates h positiveFirst target :=
+  key_injective positiveFirst target (le_antisymm
+    (hmin _ (select_mem candidates h positiveFirst target))
+    (select_le_key candidates h positiveFirst target ht))
+
+theorem select_distance (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) {t : ℝ} (ht : t ∈ candidates) :
+    |select candidates h positiveFirst target - target| ≤ |t - target| := by
+  have hl := select_le_key candidates h positiveFirst target ht
+  rcases Prod.Lex.le_iff.mp hl with hd | hd
+  · exact hd.le
+  · exact hd.1.le
+
+theorem select_absolute_tie (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) {t : ℝ} (ht : t ∈ candidates)
+    (hd : |select candidates h positiveFirst target - target| = |t - target|) :
+    |select candidates h positiveFirst target| ≤ |t| := by
+  have hl := select_le_key candidates h positiveFirst target ht
+  rcases Prod.Lex.le_iff.mp hl with hd' | hd'
+  · change |select candidates h positiveFirst target - target| < |t - target| at hd'
+    exact False.elim (lt_irrefl _ (hd ▸ hd'))
+  · rcases Prod.Lex.le_iff.mp hd'.2 with ha | ha
+    · exact ha.le
+    · exact ha.1.le
+
+theorem select_signed_tie (candidates : Finset ℝ) (h : candidates.Nonempty)
+    (positiveFirst : Bool) (target : ℝ) {t : ℝ} (ht : t ∈ candidates)
+    (hd : |select candidates h positiveFirst target - target| = |t - target|)
+    (ha : |select candidates h positiveFirst target| = |t|) :
+    signedKey positiveFirst (select candidates h positiveFirst target) ≤
+      signedKey positiveFirst t := by
+  have hl := select_le_key candidates h positiveFirst target ht
+  rcases Prod.Lex.le_iff.mp hl with hd' | hd'
+  · change |select candidates h positiveFirst target - target| < |t - target| at hd'
+    exact False.elim (lt_irrefl _ (hd ▸ hd'))
+  · rcases Prod.Lex.le_iff.mp hd'.2 with ha' | ha'
+    · change |select candidates h positiveFirst target| < |t| at ha'
+      exact False.elim (lt_irrefl _ (ha ▸ ha'))
+    · exact ha'.2
+
+def correction (grid prices : Finset ℝ) (cap target : ℝ) (positiveFirst : Bool)
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) : ℝ :=
+  select (feasible grid prices cap) (feasible_nonempty hp hgrid hc) positiveFirst target
+
+theorem correction_feasible (grid prices : Finset ℝ) (cap target : ℝ) (positiveFirst : Bool)
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) :
+    |correction grid prices cap target positiveFirst hp hgrid hc| ≤ cap ∧
+      ∀ p ∈ prices, p + correction grid prices cap target positiveFirst hp hgrid hc ∈ grid :=
+  (mem_feasible hp).mp (select_mem _ _ _ _)
+
+/-- Optimality is over all real shifts satisfying the source constraint,
+not merely over an unverified list of trial shifts. -/
+theorem correction_optimal (grid prices : Finset ℝ) (cap target : ℝ) (positiveFirst : Bool)
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) {s : ℝ}
+    (hs : |s| ≤ cap ∧ ∀ p ∈ prices, p + s ∈ grid) :
+    |correction grid prices cap target positiveFirst hp hgrid hc - target| ≤ |s - target| :=
+  select_distance _ _ _ _ ((mem_feasible hp).mpr hs)
+
+theorem correction_improves_target (grid prices : Finset ℝ) (cap target : ℝ) (positiveFirst : Bool)
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) :
+    |correction grid prices cap target positiveFirst hp hgrid hc - target| ≤ |target| := by
+  simpa using (select_distance (feasible grid prices cap) (feasible_nonempty hp hgrid hc)
+    positiveFirst target (zero_mem_feasible hp hgrid hc))
+
+theorem correction_zero_target (grid prices : Finset ℝ) (cap : ℝ) (positiveFirst : Bool)
+    (hp : prices.Nonempty) (hgrid : prices ⊆ grid) (hc : 0 ≤ cap) :
+    correction grid prices cap 0 positiveFirst hp hgrid hc = 0 := by
+  have h := correction_improves_target grid prices cap 0 positiveFirst hp hgrid hc
+  simpa using h
+
+def shiftedPrices (prices : Finset ℝ) (s : ℝ) : Finset ℝ := by
+  classical
+  exact prices.image (· + s)
+
+theorem shiftedPrices_subset {grid prices : Finset ℝ} {s : ℝ}
+    (h : ∀ p ∈ prices, p + s ∈ grid) : shiftedPrices prices s ⊆ grid := by
+  intro q hq
+  obtain ⟨p, hp, rfl⟩ := mem_image.mp hq
+  exact h p hp
+
+theorem shiftedPrices_card (prices : Finset ℝ) (s : ℝ) :
+    (shiftedPrices prices s).card = prices.card := by
+  classical
+  exact card_image_of_injective _ (add_left_injective s)
+
+theorem midpoint_shift (bid ask s : ℝ) : ((bid + s) + (ask + s)) / 2 = (bid + ask) / 2 + s := by
+  ring
+
+theorem spread_shift (bid ask s : ℝ) : (ask + s) - (bid + s) = ask - bid := by ring
+
+end Thesis.Intraday.CommonAnchor

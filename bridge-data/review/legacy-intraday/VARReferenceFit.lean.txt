@@ -1,0 +1,196 @@
+import Intraday.VARFit
+import Mathlib.Analysis.Normed.Algebra.Spectrum
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
+
+/-! # Historical inputs and reference-fit acceptance
+
+Strictly historical, encoder-eligible days supply exactly 96 complete VAR
+observations each. Empty libraries fail. The reference acceptance rule uses
+the complex spectrum of the actual 14-by-14 fitted companion matrix
+(`eq:intraday-companion`), so complex
+eigenvalues cannot be missed by testing only a real spectrum.
+
+Climatology and component scales remain supplied historical estimates. This is
+an exact mathematical specification; it does not establish the spectral radius
+or numerical coefficients of an unavailable archived experiment.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.VARReferenceFit
+
+open scoped BigOperators Matrix ENNReal NNReal
+open MacroEncoding MacroEncodingWindows VARFit
+
+structure DayInput where
+  opening : Clearing.Market
+  operations : List Operation
+
+variable {Day : Type*}
+
+def history (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) : Finset Day := by
+  classical
+  exact pool.filter fun d => date d < origin ∧ Eligible (input d).opening (input d).operations
+
+theorem mem_history_iff (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (d : Day) :
+    d ∈ history pool date origin input ↔ d ∈ pool ∧ date d < origin ∧
+      Eligible (input d).opening (input d).operations := by
+  classical
+  simp [history]
+
+def encodedRows (u : Units) (input : Day → DayInput)
+    (scale : MacroPath.Row) (climatology : ℕ → MacroPath.Row) : Rows Day :=
+  fun d => standardised u (input d).opening (input d).operations scale climatology
+
+def historicalRows (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) : Rows ↥(history pool date origin input) :=
+  fun d => encodedRows u input scale climatology d.val
+
+theorem historicalRows_strict (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (d : ↥(history pool date origin input)) : date d.val < origin :=
+  ((mem_history_iff pool date origin input d).mp d.property).2.1
+
+theorem historicalRows_encoded (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (d : ↥(history pool date origin input)) :
+    encode u (input d).opening (input d).operations =
+      some (rows u (input d).opening (input d).operations) :=
+  (encode_some_iff _ _ _ _).mpr
+    ⟨((mem_history_iff pool date origin input d).mp d.property).2.2, rfl⟩
+
+theorem historicalRows_restore (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) (hs : ∀ c, scale c ≠ 0)
+    (d : ↥(history pool date origin input)) (w : Fin 98) :
+    MacroPath.inverseStandardise scale (climatology (w.val + 2))
+      (historicalRows pool date origin input u scale climatology d w) =
+        rows u (input d).opening (input d).operations w :=
+  restore_standardised _ _ _ _ _ hs w
+
+theorem observation_count (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) :
+    Fintype.card (Observation ↥(history pool date origin input)) =
+      (history pool date origin input).card * 96 := by
+  simp [Observation]
+
+theorem enough_complete_residuals (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (h : (history pool date origin input).Nonempty) :
+    2 ≤ Fintype.card (Observation ↥(history pool date origin input)) := by
+  rw [observation_count]
+  have := Finset.card_pos.mpr h
+  omega
+
+/-- Empty-design rejection precedes the algebraic fit. -/
+def fitHistory (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) : Option MacroPath.Coefficients := by
+  classical
+  exact if (history pool date origin input).Nonempty then
+    some (fit (historicalRows pool date origin input u scale climatology)) else none
+
+theorem fitHistory_some_iff (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) (cfg : MacroPath.Coefficients) :
+    fitHistory pool date origin input u scale climatology = some cfg ↔
+      (history pool date origin input).Nonempty ∧
+        cfg = fit (historicalRows pool date origin input u scale climatology) := by
+  classical
+  unfold fitHistory
+  split <;> simp_all [eq_comm]
+
+theorem fitHistory_none_iff (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) :
+    fitHistory pool date origin input u scale climatology = none ↔
+      history pool date origin input = ∅ := by
+  classical
+  simp [fitHistory, Finset.not_nonempty_iff_eq_empty]
+
+theorem fitHistory_minimizes (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) (cfg : MacroPath.Coefficients)
+    (h : fitHistory pool date origin input u scale climatology = some cfg)
+    (other : MacroPath.Coefficients) :
+    loss (historicalRows pool date origin input u scale climatology) cfg ≤
+      loss (historicalRows pool date origin input u scale climatology) other := by
+  rw [((fitHistory_some_iff _ _ _ _ _ _ _ _).mp h).2]
+  exact fit_minimizes _ _
+
+def residualBank {D : Type*} [Fintype D] (z : Rows D) (scale : MacroPath.Row) :
+    Observation D → MacroPath.Row := MacroPath.standardisedBank (residual z) scale
+
+theorem residualBank_sum_zero {D : Type*} [Fintype D] [Nonempty D]
+    (z : Rows D) (scale : MacroPath.Row) : ∑ o, residualBank z scale o = 0 :=
+  MacroPath.sum_centredBank _
+
+/-- Original label: `eq:intraday-companion`. -/
+def companion (cfg : MacroPath.Coefficients) : Matrix (Fin 7 ⊕ Fin 7) (Fin 7 ⊕ Fin 7) ℝ :=
+  Matrix.fromBlocks cfg.lagOne cfg.lagTwo 1 0
+
+theorem companion_blocks (cfg : MacroPath.Coefficients) (i j : Fin 7) :
+    companion cfg (.inl i) (.inl j) = cfg.lagOne i j ∧
+    companion cfg (.inl i) (.inr j) = cfg.lagTwo i j ∧
+    companion cfg (.inr i) (.inl j) = (1 : Matrix (Fin 7) (Fin 7) ℝ) i j ∧
+    companion cfg (.inr i) (.inr j) = 0 := ⟨rfl, rfl, rfl, rfl⟩
+
+theorem companion_action (cfg : MacroPath.Coefficients) (previous current : MacroPath.Row) :
+    companion cfg *ᵥ Sum.elim current previous =
+      Sum.elim (cfg.lagOne *ᵥ current + cfg.lagTwo *ᵥ previous) current := by
+  simp [companion, Matrix.fromBlocks_mulVec]
+
+def complexCompanion (cfg : MacroPath.Coefficients) :
+    Matrix (Fin 7 ⊕ Fin 7) (Fin 7 ⊕ Fin 7) ℂ := (companion cfg).map Complex.ofReal
+
+def Stable (cfg : MacroPath.Coefficients) : Prop :=
+  spectralRadius ℂ (complexCompanion cfg) < 1
+
+theorem stable_spectrum_bound (cfg : MacroPath.Coefficients) (h : Stable cfg)
+    (e : ℂ) (he : e ∈ spectrum ℂ (complexCompanion cfg)) : ‖e‖ < 1 := by
+  have hb : (‖e‖₊ : ℝ≥0∞) ≤ spectralRadius ℂ (complexCompanion cfg) :=
+    le_iSup_of_le e (le_iSup_of_le he le_rfl)
+  have ht := hb.trans_lt h
+  exact_mod_cast ht
+
+theorem stable_charpoly_roots (cfg : MacroPath.Coefficients) (h : Stable cfg)
+    (e : ℂ) (he : (complexCompanion cfg).charpoly.IsRoot e) : ‖e‖ < 1 := by
+  apply stable_spectrum_bound cfg h e
+  exact (Matrix.mem_spectrum_iff_isRoot_charpoly).mpr he
+
+/-- Exact acceptance predicate, separate from computing an archived fit. -/
+def accept (cfg : Option MacroPath.Coefficients) : Option MacroPath.Coefficients := by
+  classical
+  exact cfg.bind fun c => if Stable c then some c else none
+
+theorem accept_some_iff (input : Option MacroPath.Coefficients) (cfg : MacroPath.Coefficients) :
+    accept input = some cfg ↔ input = some cfg ∧ Stable cfg := by
+  classical
+  cases input with
+  | none => simp [accept]
+  | some c =>
+    simp only [accept, Option.bind_some]
+    split <;> simp_all [eq_comm]
+
+def referenceFit (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) : Option MacroPath.Coefficients :=
+  accept (fitHistory pool date origin input u scale climatology)
+
+theorem referenceFit_some_iff (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) (cfg : MacroPath.Coefficients) :
+    referenceFit pool date origin input u scale climatology = some cfg ↔
+      (history pool date origin input).Nonempty ∧
+        cfg = fit (historicalRows pool date origin input u scale climatology) ∧ Stable cfg := by
+  rw [referenceFit, accept_some_iff, fitHistory_some_iff, and_assoc]
+
+theorem referenceFit_minimizes (pool : Finset Day) (date : Day → ℝ) (origin : ℝ)
+    (input : Day → DayInput) (u : Units) (scale : MacroPath.Row)
+    (climatology : ℕ → MacroPath.Row) (cfg : MacroPath.Coefficients)
+    (h : referenceFit pool date origin input u scale climatology = some cfg)
+    (other : MacroPath.Coefficients) :
+    loss (historicalRows pool date origin input u scale climatology) cfg ≤
+      loss (historicalRows pool date origin input u scale climatology) other :=
+  fitHistory_minimizes _ _ _ _ _ _ _ cfg ((accept_some_iff _ cfg).mp h).1 other
+
+end Thesis.Intraday.VARReferenceFit

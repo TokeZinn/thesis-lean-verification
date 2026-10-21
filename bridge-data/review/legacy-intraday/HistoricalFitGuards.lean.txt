@@ -1,0 +1,142 @@
+import Mathlib.Data.Finset.Max
+import Mathlib.Data.Nat.Dist
+import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Tactic
+
+/-! # Historical-fit guards in the intraday simulator appendix
+
+Line 31 requires at least three strictly historical observations, nearest-window
+fallback with earlier-window tie breaking, nonempty pooled scale data, replacement
+of negligible scales by one, and at least two complete residual vectors. These
+are structural guards. `VARFit.lean` supplies the Moore–Penrose fit, and
+`VARReferenceFit.lean` connects it to eligible historical encoded days. Archived
+data and the numerical tolerance are not recovered here.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.HistoricalFitGuards
+
+open Finset
+
+def historical {ι : Type*} (pool : Finset ι) (date : ι → ℝ) (origin : ℝ) : Finset ι :=
+  pool.filter fun i => date i < origin
+
+theorem historical_strict {ι : Type*} (pool : Finset ι) (date : ι → ℝ) (origin : ℝ)
+    {i : ι} (hi : i ∈ historical pool date origin) : date i < origin :=
+  (mem_filter.mp hi).2
+
+def eligible {ι : Type*} (windows : Finset ℕ) (pool : ℕ → Finset ι)
+    (date : ι → ℝ) (origin : ℝ) : Finset ℕ :=
+  windows.filter fun w => 3 ≤ (historical (pool w) date origin).card
+
+def nearest (support : Finset ℕ) (target : ℕ) : Finset ℕ :=
+  support.filter fun w => ∀ v ∈ support, Nat.dist w target ≤ Nat.dist v target
+
+theorem nearest_nonempty (support : Finset ℕ) (hs : support.Nonempty) (target : ℕ) :
+    (nearest support target).Nonempty := by
+  obtain ⟨w, hw, hmin⟩ := exists_min_image support (fun w => Nat.dist w target) hs
+  exact ⟨w, mem_filter.mpr ⟨hw, hmin⟩⟩
+
+def select (support : Finset ℕ) (hs : support.Nonempty) (target : ℕ) : ℕ :=
+  (nearest support target).min' (nearest_nonempty support hs target)
+
+theorem select_spec (support : Finset ℕ) (hs : support.Nonempty) (target : ℕ) :
+    select support hs target ∈ support ∧
+    (∀ v ∈ support, Nat.dist (select support hs target) target ≤ Nat.dist v target) ∧
+    (∀ v ∈ support, Nat.dist v target = Nat.dist (select support hs target) target →
+      select support hs target ≤ v) := by
+  have hm : select support hs target ∈ nearest support target := min'_mem _ _
+  have hmin := (mem_filter.mp hm).2
+  refine ⟨(mem_filter.mp hm).1, hmin, ?_⟩
+  intro v hv heq
+  apply min'_le
+  exact mem_filter.mpr ⟨hv, fun w hw => heq.trans_le (hmin w hw)⟩
+
+theorem select_self (support : Finset ℕ) (target : ℕ) (ht : target ∈ support) :
+    select support ⟨target, ht⟩ target = target := by
+  have h := (select_spec support ⟨target, ht⟩ target).2.1 target ht
+  exact Nat.eq_of_dist_eq_zero (by simpa only [Nat.dist_self, Nat.le_zero] using h)
+
+def chooseWindow {ι : Type*} (windows : Finset ℕ) (pool : ℕ → Finset ι)
+    (date : ι → ℝ) (origin : ℝ) (target : ℕ) : Option ℕ :=
+  if h : (eligible windows pool date origin).Nonempty then
+    some (select (eligible windows pool date origin) h target) else none
+
+theorem chooseWindow_none_iff {ι : Type*} (windows : Finset ℕ) (pool : ℕ → Finset ι)
+    (date : ι → ℝ) (origin : ℝ) (target : ℕ) :
+    chooseWindow windows pool date origin target = none ↔
+      ∀ w ∈ windows, (historical (pool w) date origin).card < 3 := by
+  simp only [chooseWindow]
+  split_ifs with h
+  · simp only [false_iff]
+    obtain ⟨w, hw⟩ := h
+    have he := mem_filter.mp hw
+    intro hn
+    exact (not_lt_of_ge he.2) (hn w he.1)
+  · simp only [true_iff]
+    intro w hw
+    by_contra hn
+    exact h ⟨w, mem_filter.mpr ⟨hw, Nat.le_of_not_gt hn⟩⟩
+
+theorem chooseWindow_spec {ι : Type*} (windows : Finset ℕ) (pool : ℕ → Finset ι)
+    (date : ι → ℝ) (origin : ℝ) (target w : ℕ)
+    (hw : chooseWindow windows pool date origin target = some w) :
+    w ∈ windows ∧ 3 ≤ (historical (pool w) date origin).card ∧
+    (∀ v ∈ eligible windows pool date origin, Nat.dist w target ≤ Nat.dist v target) ∧
+    (∀ v ∈ eligible windows pool date origin, Nat.dist v target = Nat.dist w target → w ≤ v) := by
+  unfold chooseWindow at hw
+  split_ifs at hw with h
+  have heq := Option.some.inj hw
+  subst w
+  have hs := select_spec (eligible windows pool date origin) h target
+  exact ⟨(mem_filter.mp hs.1).1, (mem_filter.mp hs.1).2, hs.2⟩
+
+def replaceNegligible (tolerance scale : ℝ) : ℝ :=
+  if |scale| ≤ tolerance then 1 else scale
+
+theorem replaceNegligible_pos (tolerance scale : ℝ) (ht : 0 ≤ tolerance) (hs : 0 ≤ scale) :
+    0 < replaceNegligible tolerance scale := by
+  unfold replaceNegligible
+  split_ifs with h
+  · norm_num
+  · rw [abs_of_nonneg hs] at h
+    exact ht.trans_lt (lt_of_not_ge h)
+
+theorem replaceNegligible_eq_one (tolerance scale : ℝ) (h : |scale| ≤ tolerance) :
+    replaceNegligible tolerance scale = 1 := if_pos h
+
+theorem replaceNegligible_eq_scale (tolerance scale : ℝ) (h : tolerance < |scale|) :
+    replaceNegligible tolerance scale = scale := if_neg (not_le_of_gt h)
+
+/-- Replacing a negligible statistic does not turn an empty source collection
+into a fitted scale. The statistic is evaluated only on a nonempty collection. -/
+def checkedScale {ι : Type*} (pool : Finset ι) (statistic : Finset ι → ℝ)
+    (tolerance : ℝ) : Option ℝ :=
+  if pool.Nonempty then some (replaceNegligible tolerance (statistic pool)) else none
+
+theorem checkedScale_empty {ι : Type*} (statistic : Finset ι → ℝ) (tolerance : ℝ) :
+    checkedScale ∅ statistic tolerance = none := by simp [checkedScale]
+
+theorem checkedScale_pos {ι : Type*} (pool : Finset ι) (statistic : Finset ι → ℝ)
+    (tolerance scale : ℝ) (ht : 0 ≤ tolerance) (hs : 0 ≤ statistic pool)
+    (h : checkedScale pool statistic tolerance = some scale) : 0 < scale := by
+  unfold checkedScale at h
+  split_ifs at h with hne
+  have heq := Option.some.inj h
+  rw [← heq]
+  exact replaceNegligible_pos tolerance (statistic pool) ht hs
+
+/-- Missing components exclude the whole residual vector from the bank. -/
+def completeVectors {ι : Type*} (pool : Finset ι) (complete : ι → Prop)
+    [DecidablePred complete] : Finset ι := pool.filter complete
+
+def bankUsable {ι : Type*} (pool : Finset ι) (complete : ι → Prop)
+    [DecidablePred complete] : Prop := 2 ≤ (completeVectors pool complete).card
+
+theorem usable_bank_nonempty {ι : Type*} (pool : Finset ι) (complete : ι → Prop)
+    [DecidablePred complete] (h : bankUsable pool complete) :
+    (completeVectors pool complete).Nonempty := Finset.card_pos.mp (by
+  change 2 ≤ (completeVectors pool complete).card at h
+  omega)
+
+end Thesis.Intraday.HistoricalFitGuards

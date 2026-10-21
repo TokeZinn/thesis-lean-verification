@@ -1,0 +1,184 @@
+import Intraday.AnchoredLedger
+
+/-! # Shift price-bearing records in the actual staged group queue
+
+An absolute replacement price is shifted together with additions. Quantity-only
+updates remain unpriced and resolve at the live price when due. Cancellation
+keys and ordered fill counterparts are unchanged. No queue time is recomputed.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.StagedQueuePrices
+
+open LiveLedger LifecycleResolver TypedReplay GroupReplay AnchoredLedger LedgerMap
+
+def mapRequest (f : Order → Order) : Request → Request
+  | .add key buy o => .add key buy (f o)
+  | .cancel key => .cancel key
+  | .change key buy o => .change key buy (f o)
+
+def mapRecord (f : Order → Order) : SourceRecord → SourceRecord
+  | .lifecycle r => .lifecycle (mapRequest f r)
+  | .quantityUpdate key q priority => .quantityUpdate key q priority
+  | .instruction incoming resting immediate => .instruction incoming resting immediate
+
+def mapGroup (f : Order → Order) (g : ScheduledGroup) : ScheduledGroup :=
+  { g with records := g.records.map (mapRecord f) }
+
+def shiftQueue (shift : ℝ) (queue : List ScheduledGroup) : List ScheduledGroup :=
+  queue.map (mapGroup (boundedShift shift))
+
+def recordPrices : SourceRecord → List ℝ
+  | .lifecycle (.add _ _ o) => [price o]
+  | .lifecycle (.change _ _ o) => [price o]
+  | _ => []
+
+def groupPrices (g : ScheduledGroup) : List ℝ := g.records.flatMap recordPrices
+
+def queuePrices (queue : List ScheduledGroup) : List ℝ := queue.flatMap groupPrices
+
+def activePrices (s : Ledger) (queue : List ScheduledGroup) : Finset ℝ := by
+  classical
+  exact ((s.live.map (fun a => price a.order)) ++ queuePrices queue).toFinset
+
+theorem live_mem_active (s : Ledger) (queue : List ScheduledGroup) {a : Entry}
+    (ha : a ∈ s.live) : price a.order ∈ activePrices s queue := by
+  classical
+  exact List.mem_toFinset.mpr (List.mem_append_left _ (List.mem_map.mpr ⟨a, ha, rfl⟩))
+
+theorem staged_mem_active (s : Ledger) (queue : List ScheduledGroup) {p : ℝ}
+    (hp : p ∈ queuePrices queue) : p ∈ activePrices s queue := by
+  classical
+  exact List.mem_toFinset.mpr (List.mem_append_right _ hp)
+
+theorem activePrices_nonempty (s : Ledger) (queue : List ScheduledGroup) (hs : TwoSided s) :
+    (activePrices s queue).Nonempty := by
+  obtain ⟨a, ha, _⟩ := side_order_mem s true ⟨0, hs.1⟩
+  exact ⟨price a.order, live_mem_active s queue ha⟩
+
+theorem recordPrices_shift (shift : ℝ) (r : SourceRecord)
+    (h : ∀ p ∈ recordPrices r, p + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    recordPrices (mapRecord (boundedShift shift) r) = (recordPrices r).map (· + shift) := by
+  cases r with
+  | lifecycle r =>
+    cases r with
+    | add key buy o =>
+      have hp := h (price o) (List.mem_singleton_self _)
+      simp only [mapRecord, mapRequest, recordPrices, List.map_cons, List.map_nil]
+      rw [boundedShift_price _ _ hp]
+    | cancel key => rfl
+    | change key buy o =>
+      have hp := h (price o) (List.mem_singleton_self _)
+      simp only [mapRecord, mapRequest, recordPrices, List.map_cons, List.map_nil]
+      rw [boundedShift_price _ _ hp]
+  | quantityUpdate key q priority => rfl
+  | instruction incoming resting immediate => rfl
+
+theorem recordsPrices_shift (shift : ℝ) (records : List SourceRecord)
+    (h : ∀ p ∈ records.flatMap recordPrices, p + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    (records.map (mapRecord (boundedShift shift))).flatMap recordPrices =
+      (records.flatMap recordPrices).map (· + shift) := by
+  induction records with
+  | nil => rfl
+  | cons r rs ih =>
+    have hr : ∀ p ∈ recordPrices r, p + shift ∈ Set.Icc (-9999 : ℝ) 9999 :=
+      fun p hp => h p (List.mem_append_left _ hp)
+    have hrs : ∀ p ∈ rs.flatMap recordPrices, p + shift ∈ Set.Icc (-9999 : ℝ) 9999 :=
+      fun p hp => h p (List.mem_append_right _ hp)
+    simp only [List.map_cons, List.flatMap_cons, List.map_append,
+      recordPrices_shift shift r hr, ih hrs]
+
+theorem groupPrices_shift (shift : ℝ) (g : ScheduledGroup)
+    (h : ∀ p ∈ groupPrices g, p + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    groupPrices (mapGroup (boundedShift shift) g) = (groupPrices g).map (· + shift) :=
+  recordsPrices_shift shift g.records h
+
+theorem queuePrices_shift (shift : ℝ) (queue : List ScheduledGroup)
+    (h : ∀ p ∈ queuePrices queue, p + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    queuePrices (shiftQueue shift queue) = (queuePrices queue).map (· + shift) := by
+  induction queue with
+  | nil => rfl
+  | cons g gs ih =>
+    have hg : ∀ p ∈ groupPrices g, p + shift ∈ Set.Icc (-9999 : ℝ) 9999 :=
+      fun p hp => h p (List.mem_append_left _ hp)
+    have hgs : ∀ p ∈ queuePrices gs, p + shift ∈ Set.Icc (-9999 : ℝ) 9999 :=
+      fun p hp => h p (List.mem_append_right _ hp)
+    change groupPrices (mapGroup (boundedShift shift) g) ++
+      queuePrices (shiftQueue shift gs) = (groupPrices g ++ queuePrices gs).map (· + shift)
+    rw [groupPrices_shift shift g hg, ih hgs, List.map_append]
+
+theorem shiftLedger_prices (shift : ℝ) (s : Ledger) (h : InBounds shift s) :
+    (shiftLedger shift s).live.map (fun a => price a.order) =
+      (s.live.map (fun a => price a.order)).map (· + shift) := by
+  simp only [shiftLedger, mapLedger, List.map_map]
+  exact List.map_congr_left (fun a ha => boundedShift_price shift a.order (h a ha))
+
+theorem activePrices_shift (shift : ℝ) (s : Ledger) (queue : List ScheduledGroup)
+    (h : ∀ p ∈ activePrices s queue, p + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    activePrices (shiftLedger shift s) (shiftQueue shift queue) =
+      CommonAnchor.shiftedPrices (activePrices s queue) shift := by
+  classical
+  have hl : InBounds shift s := fun a ha => h _ (live_mem_active s queue ha)
+  have hq := queuePrices_shift shift queue (fun p hp => h p (staged_mem_active s queue hp))
+  ext p
+  simp only [activePrices, shiftLedger_prices shift s hl, hq, List.mem_toFinset,
+    ← List.map_append, List.mem_map, CommonAnchor.shiftedPrices, Finset.mem_image]
+
+theorem shiftQueue_metadata (shift : ℝ) (queue : List ScheduledGroup) :
+    (shiftQueue shift queue).map (fun g => (g.dueTime, g.window, g.sourceKey)) =
+      queue.map (fun g => (g.dueTime, g.window, g.sourceKey)) := by
+  simp [shiftQueue, mapGroup, List.map_map, Function.comp_def]
+
+theorem shiftQueue_length (shift : ℝ) (queue : List ScheduledGroup) :
+    (shiftQueue shift queue).length = queue.length := by simp [shiftQueue]
+
+theorem shiftQueue_record_counts (shift : ℝ) (queue : List ScheduledGroup) :
+    (shiftQueue shift queue).map (fun g => g.records.length) =
+      queue.map (fun g => g.records.length) := by
+  simp [shiftQueue, mapGroup, List.map_map, Function.comp_def]
+
+theorem shiftQueue_ordered (shift : ℝ) (queue : List ScheduledGroup) :
+    (shiftQueue shift queue).Pairwise (fun a b => EventQueue.key a ≤ EventQueue.key b) ↔
+      queue.Pairwise (fun a b => EventQueue.key a ≤ EventQueue.key b) := by
+  simp [shiftQueue, List.pairwise_map, EventQueue.key, mapGroup]
+
+theorem mapRecord_quantityUpdate (shift : ℝ) (key : ℕ) (q : PositiveQuantity) (priority : Time) :
+    mapRecord (boundedShift shift) (.quantityUpdate key q priority) =
+      .quantityUpdate key q priority := rfl
+
+theorem mapRecord_instruction (shift : ℝ) (incoming : ℕ) (resting : List ℕ) (immediate : Bool) :
+    mapRecord (boundedShift shift) (.instruction incoming resting immediate) =
+      .instruction incoming resting immediate := rfl
+
+/-- An equality after deleting only prices records preservation of every
+other payload field, including quantity, priority, keys and fill order. -/
+def withoutPrice (o : Order) : Order :=
+  WithLp.toLp 1 (⟨0, by norm_num⟩, o.snd)
+
+theorem withoutPrice_shift (shift : ℝ) (o : Order) :
+    withoutPrice (boundedShift shift o) = withoutPrice o := by
+  unfold boundedShift
+  split <;> rfl
+
+theorem mapRecord_withoutPrice_shift (shift : ℝ) (r : SourceRecord) :
+    mapRecord withoutPrice (mapRecord (boundedShift shift) r) = mapRecord withoutPrice r := by
+  cases r with
+  | lifecycle r => cases r <;> simp [mapRecord, mapRequest, withoutPrice_shift]
+  | quantityUpdate key q priority => rfl
+  | instruction incoming resting immediate => rfl
+
+theorem mapGroup_withoutPrice_shift (shift : ℝ) (g : ScheduledGroup) :
+    mapGroup withoutPrice (mapGroup (boundedShift shift) g) = mapGroup withoutPrice g := by
+  change { g with records :=
+    (g.records.map (mapRecord (boundedShift shift))).map (mapRecord withoutPrice) } =
+    { g with records := g.records.map (mapRecord withoutPrice) }
+  apply congrArg (fun rs : List SourceRecord => ({ g with records := rs } : ScheduledGroup))
+  rw [List.map_map]
+  exact List.map_congr_left (fun r _ => mapRecord_withoutPrice_shift shift r)
+
+theorem shiftQueue_all_nonprice_data (shift : ℝ) (queue : List ScheduledGroup) :
+    (shiftQueue shift queue).map (mapGroup withoutPrice) = queue.map (mapGroup withoutPrice) := by
+  simp only [shiftQueue, List.map_map]
+  exact List.map_congr_left (fun g _ => mapGroup_withoutPrice_shift shift g)
+
+end Thesis.Intraday.StagedQueuePrices

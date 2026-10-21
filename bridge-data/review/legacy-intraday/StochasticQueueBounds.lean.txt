@@ -1,0 +1,128 @@
+import Intraday.QueueProgress
+import Mathlib.Data.Finset.Lattice.Fold
+
+/-! # The actual retrieval law can add only a bounded number of groups
+
+Both primary and fallback supports are finite. The bound is computed from the
+actual source-burst lengths on their union; it is not an assumed cap on output
+queues. A nonboundary step skips retrieval and strictly decreases the queue
+whenever its selected time is the due time of a pending group.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.StochasticQueueBounds
+
+open SimulatorTrajectory SimulatorStep RetrievalPhase BurstInsertion QueueProgress
+
+def burstBound (p : Parameters) : ℕ :=
+  (p.primary ∪ p.fallback).sup (fun j => (p.library j).burst.length)
+
+theorem burst_length_le (p : Parameters) (j : ℕ) (hj : j ∈ p.primary ∪ p.fallback) :
+    (p.library j).burst.length ≤ burstBound p :=
+  Finset.le_sup (f := fun j => (p.library j).burst.length) hj
+
+def preparation (p : Parameters) {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (event : EventReplay.EventInput) : Preparation :=
+  prepareEvent p x event
+
+theorem preparation_ready_pool (p : Parameters) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (event : EventReplay.EventInput) (law : SelectedLaw)
+    (h : preparation p x event = .ready law) (j : ℕ) (hj : j ∈ law.distribution.support) :
+    j ∈ p.primary ∪ p.fallback := by
+  unfold preparation prepareEvent at h
+  cases hb : p.burst with
+  | none =>
+    simp only [hb] at h
+    unfold prepare at h
+    split at h
+    · contradiction
+    · split at h
+      · contradiction
+      · rename_i law' hlaw
+        cases h
+        have hs := retrieveDetailed_support p.primary p.fallback
+          (fun j => (p.library j).entryTime) event.time
+          (distance p.fit p.library (bookKey p.fit (LiveLedger.market x.session.replay.book)
+            (p.start event) (p.destination event)))
+          (p.gate event) (p.gate_nonneg event) hlaw hj
+        cases hf : law.usedFallback with
+        | false => exact Finset.mem_union_left _ (by simpa [hf] using hs.1)
+        | true => exact Finset.mem_union_right _ (by simpa [hf] using hs.1)
+  | some support =>
+    simp only [hb] at h
+    exact support.subset event ((BurstSelection.ready_support (support.eligible event)
+      x _ law h j).mp hj)
+
+theorem prepared_length_le (p : Parameters) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (event : EventReplay.EventInput) (out : Outcome cfg)
+    (ho : out ∈ (executePreparation x event.time ((nextWindow p.horizon event).getD 0)
+      p.library (preparation p x event)).support) :
+    (out.state.getD x).session.pending.length ≤ x.session.pending.length + burstBound p := by
+  cases hp : preparation p x event with
+  | skipped =>
+    rw [hp, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    simp
+  | failed =>
+    rw [hp, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    have hs := (retrievalFailure_preserves_state x).2.2.1
+    simpa only [Option.getD_some, hs] using Nat.le_add_right x.session.pending.length (burstBound p)
+  | ready law =>
+    rw [hp] at ho
+    obtain ⟨j, hj, rfl⟩ :=
+      (ready_outcome_support x event.time _ p.library law out).mp ho
+    have hb := burst_length_le p j (preparation_ready_pool p x event law hp j hj)
+    cases hs : stageTransition x event.time ((nextWindow p.horizon event).getD 0) (p.library j) with
+    | none => simp
+    | some y =>
+      dsimp only [Option.getD_some]
+      exact (stageTransition_length_le x event.time _ (p.library j) y hs).trans
+        (Nat.add_le_add_left hb _)
+
+theorem eventLaw_queue_le (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg)
+    (ho : out ∈ (eventLaw p x event).support) :
+    (accept p x event out).current.session.pending.length ≤
+      x.current.session.pending.length + burstBound p := by
+  have h := prepared_length_le p (advanced p x event) event out ho
+  exact h.trans (Nat.add_le_add_right
+    (advance_queue_le p.depth (anchorEnabled p) (anchorTarget p) x.current event) _)
+
+theorem step_queue_le (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hy : y ∈ (SimulatorTrajectory.step p x event).support) :
+    y.current.session.pending.length ≤ x.current.session.pending.length + burstBound p := by
+  cases hh : halted x with
+  | true =>
+    rw [step_halted p x event hh, PMF.mem_support_pure_iff] at hy
+    subst y
+    omega
+  | false =>
+    obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hh).mp hy
+    exact eventLaw_queue_le p x event out ho
+
+theorem step_nonboundary_current (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hh : halted x = false)
+    (hn : event.completedWindow = none)
+    (hy : y ∈ (SimulatorTrajectory.step p x event).support) :
+    y.current = advanced p x event := by
+  obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hh).mp hy
+  have he : eventLaw p x event = PMF.pure
+      (⟨some (advanced p x event), ⟨false, false, none, false, none⟩⟩ : Outcome cfg) :=
+    eventLaw_no_retrieval p x event (nextWindow_nonboundary p.horizon event hn)
+  rw [he, PMF.mem_support_pure_iff] at ho
+  subst out
+  rfl
+
+theorem step_nonboundary_queue_lt (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hh : halted x = false)
+    (hn : event.completedWindow = none)
+    (hg : ∃ g ∈ x.current.session.pending, g.dueTime ≤ event.time)
+    (hy : y ∈ (SimulatorTrajectory.step p x event).support) :
+    y.current.session.pending.length < x.current.session.pending.length := by
+  rw [step_nonboundary_current p x y event hh hn hy]
+  have hf : x.current.session.replay.failure = none := by
+    simpa using (Bool.or_eq_false_iff.mp hh).2
+  exact advance_queue_lt p.depth (anchorEnabled p) (anchorTarget p) x.current event hf hg
+
+end Thesis.Intraday.StochasticQueueBounds

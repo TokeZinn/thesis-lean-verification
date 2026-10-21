@@ -1,0 +1,110 @@
+import Intraday.SimulatorTrajectory
+
+/-! # Actual queue progress and the size of a staged burst
+
+Replay and the boundary policy only consume or discard source groups; anchor
+correction preserves their number. A selected nonboundary due time consumes at
+least one group from an active state, even if that group causes failure. A
+successfully staged burst contains exactly one group per source group. These
+facts give termination bounds for the adaptive reference event loop.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.QueueProgress
+
+open GroupReplay EventQueue EventReplay
+
+theorem run_consumed_nonempty (depth : ℕ) (s : GroupReplay.State)
+    (groups : List ScheduledGroup) (hf : s.failure = none) (hg : groups ≠ []) :
+    (GroupReplay.run depth s groups).consumed ≠ [] := by
+  cases groups with
+  | nil => contradiction
+  | cons g gs => simp [GroupReplay.run, hf]
+
+theorem drainDue_consumed_pos (depth : ℕ) (s : GroupReplay.State)
+    (pending : List ScheduledGroup) (time : ℝ) (hf : s.failure = none)
+    (hg : ∃ g ∈ pending, g.dueTime ≤ time) :
+    0 < (drainDue depth s pending time).consumed.length := by
+  obtain ⟨g, hg, ht⟩ := hg
+  have hmem : g ∈ selected (due time) pending :=
+    (selected_mem _ _ _).mpr ⟨hg, by simpa [due] using ht⟩
+  have hne : selected (due time) pending ≠ [] := by
+    intro h
+    simp only [h, List.not_mem_nil] at hmem
+  exact List.length_pos_iff.mpr (run_consumed_nonempty depth s _ hf hne)
+
+theorem tick_pending_le (depth : ℕ) (s : GroupReplay.State)
+    (pending : List ScheduledGroup) (event : EventInput) :
+    (QueueTick.tick depth s pending event.time event.completedWindow
+      event.policy).boundaryPhase.pending.length ≤ pending.length := by
+  have h := (QueueTick.tick_accounting depth s pending event.time
+    event.completedWindow event.policy).length_eq
+  simp only [List.length_append] at h
+  omega
+
+theorem tick_pending_lt (depth : ℕ) (s : GroupReplay.State)
+    (pending : List ScheduledGroup) (event : EventInput) (hf : s.failure = none)
+    (hg : ∃ g ∈ pending, g.dueTime ≤ event.time) :
+    (QueueTick.tick depth s pending event.time event.completedWindow
+      event.policy).boundaryPhase.pending.length < pending.length := by
+  have h := (QueueTick.tick_accounting depth s pending event.time
+    event.completedWindow event.policy).length_eq
+  have hp := drainDue_consumed_pos depth s pending event.time hf hg
+  change 0 < (QueueTick.tick depth s pending event.time
+    event.completedWindow event.policy).duePhase.consumed.length at hp
+  simp only [List.length_append] at h
+  omega
+
+theorem afterAnchor_queue_length (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput) :
+    (afterAnchor depth enabled anchor x event).pending.length =
+      (tickResult depth x event).boundaryPhase.pending.length := by
+  have h := congrArg List.length
+    (AnchorPhase.correct_queue_schedule cfg event.time (anchor event.time) enabled
+      (afterTick depth x event) (afterTick_invariant depth x event) (afterTick_grid depth x event))
+  simpa only [List.length_map] using h
+
+theorem advance_queue_le (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput) :
+    (advance depth enabled anchor x event).session.pending.length ≤ x.session.pending.length := by
+  unfold advance
+  split
+  · exact le_rfl
+  · change (afterAnchor depth enabled anchor x event).pending.length ≤ _
+    rw [afterAnchor_queue_length]
+    exact tick_pending_le depth x.session.replay x.session.pending event
+
+theorem advance_queue_lt (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput)
+    (hf : x.session.replay.failure = none)
+    (hg : ∃ g ∈ x.session.pending, g.dueTime ≤ event.time) :
+    (advance depth enabled anchor x event).session.pending.length < x.session.pending.length := by
+  rw [advance_active depth enabled anchor x event hf]
+  change (afterAnchor depth enabled anchor x event).pending.length < _
+  rw [afterAnchor_queue_length]
+  exact tick_pending_lt depth x.session.replay x.session.pending event hf hg
+
+theorem stageBurst_length (cfg : QueueAnchor.Config) (boundary offset : ℝ) (window : ℕ)
+    (source : List BurstStaging.SourceGroup) (staged : List ScheduledGroup)
+    (h : BurstStaging.stageBurst cfg boundary offset window source = some staged) :
+    staged.length = source.length := by
+  have hs := congrArg List.length
+    (BurstStaging.stageBurst_spec cfg boundary offset window source staged h).2
+  simpa only [List.length_map] using hs
+
+theorem stageTransition_length_le {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : RetrievalPhase.Transition)
+    (y : EventReplay.State cfg)
+    (h : BurstInsertion.stageTransition x boundary window transition = some y) :
+    y.session.pending.length ≤ x.session.pending.length + transition.burst.length := by
+  by_cases hf : x.session.replay.failure.isSome = true
+  · rw [BurstInsertion.stageTransition_failed_state x boundary window transition hf] at h
+    have he := Option.some.inj h
+    subst y
+    omega
+  · have hn : x.session.replay.failure = none := by simpa using hf
+    obtain ⟨staged, hs, he⟩ :=
+      BurstInsertion.stageTransition_queue x boundary window transition hn h
+    rw [he, List.length_append, stageBurst_length _ _ _ _ _ _ hs]
+
+end Thesis.Intraday.QueueProgress

@@ -1,0 +1,150 @@
+import Intraday.QueueAnchor
+import Intraday.QueueTick
+
+/-! # Failure-aware anchor phase and immutable historical transaction output
+
+This phase runs after due groups and boundary handling. It shifts only current
+live/staged prices; past transactions and group snapshots stay as recorded.
+A failed rollout is unchanged. The disabled Burst convention records a zero
+correction without changing the book or pending queue.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.AnchorPhase
+
+open LiveLedger GroupReplay StagedQueuePrices QueueAnchor
+
+structure AnchorLog where
+  eventTime : ℝ
+  targetValue : ℝ
+  enabled : Bool
+  shift : ℝ
+
+structure Session where
+  replay : GroupReplay.State
+  pending : List ScheduledGroup
+  anchors : List AnchorLog
+
+def correct (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) : Session :=
+  if h : x.replay.failure = none then
+    if enabled then
+      let out := applyAnchor cfg x.replay.book x.pending value (hx.2.2 h) hg
+      ⟨{ x.replay with book := out.book }, out.pending,
+        x.anchors ++ [⟨time, value, true, out.shift⟩]⟩
+    else ⟨x.replay, x.pending, x.anchors ++ [⟨time, value, false, 0⟩]⟩
+  else x
+
+theorem correct_failed (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid)
+    (hf : x.replay.failure ≠ none) : correct cfg time value enabled x hx hg = x := by
+  simp [correct, hf]
+
+theorem correct_disabled (cfg : Config) (time value : ℝ) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid)
+    (hf : x.replay.failure = none) :
+    correct cfg time value false x hx hg =
+      ⟨x.replay, x.pending, x.anchors ++ [⟨time, value, false, 0⟩]⟩ := by simp [correct, hf]
+
+theorem correct_failure (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    (correct cfg time value enabled x hx hg).replay.failure = x.replay.failure := by
+  unfold correct
+  split
+  · split <;> rfl
+  · rfl
+
+theorem correct_history (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    (correct cfg time value enabled x hx hg).replay.log = x.replay.log := by
+  unfold correct
+  split
+  · split <;> rfl
+  · rfl
+
+theorem correct_tape (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    tape (correct cfg time value enabled x hx hg).replay = tape x.replay := by
+  simp only [tape, correct_history]
+
+theorem correct_statuses (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    statuses (correct cfg time value enabled x hx hg).replay = statuses x.replay := by
+  simp only [statuses, correct_history]
+
+theorem correct_counter (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    (correct cfg time value enabled x hx hg).replay.book.nextId = x.replay.book.nextId := by
+  unfold correct
+  split
+  · split
+    · exact applyAnchor_counter _ _ _ _ _ _
+    · rfl
+  · rfl
+
+theorem correct_invariant (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    Invariant (correct cfg time value enabled x hx hg).replay := by
+  unfold correct
+  split
+  · rename_i hf
+    split
+    · refine ⟨applyAnchor_valid cfg hx.1 _ _ _ _, ?_, ?_⟩
+      · exact (applyAnchor_sorted cfg _ _ _ _ _).mpr hx.2.1
+      · intro _
+        exact applyAnchor_twoSided cfg _ _ _ (hx.2.2 hf) hg
+    · exact hx
+  · exact hx
+
+theorem correct_grid (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    activePrices (correct cfg time value enabled x hx hg).replay.book
+      (correct cfg time value enabled x hx hg).pending ⊆ cfg.grid := by
+  unfold correct
+  split
+  · split
+    · exact applyAnchor_grid _ _ _ _ _ _
+    · exact hg
+  · exact hg
+
+theorem correct_queue_schedule (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    (correct cfg time value enabled x hx hg).pending.map
+      (fun g => (g.dueTime, g.window, g.sourceKey)) =
+        x.pending.map (fun g => (g.dueTime, g.window, g.sourceKey)) := by
+  unfold correct
+  split
+  · split
+    · exact applyAnchor_queue_metadata _ _ _ _ _ _
+    · rfl
+  · rfl
+
+theorem correct_error (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid) :
+    |midpoint (correct cfg time value enabled x hx hg).replay.book - value| ≤
+      |midpoint x.replay.book - value| := by
+  unfold correct
+  split
+  · split
+    · exact applyAnchor_error _ _ _ _ _ _
+    · exact le_rfl
+  · exact le_rfl
+
+theorem correct_log_count (cfg : Config) (time value : ℝ) (enabled : Bool) (x : Session)
+    (hx : Invariant x.replay) (hg : activePrices x.replay.book x.pending ⊆ cfg.grid)
+    (hf : x.replay.failure = none) :
+    (correct cfg time value enabled x hx hg).anchors.length = x.anchors.length + 1 := by
+  simp only [correct, dif_pos hf]
+  split <;> simp
+
+def installTick (depth : ℕ) (x : Session) (time : ℝ)
+    (window : Option ℕ) (policy : EventQueue.BoundaryPolicy) : Session :=
+  let out := QueueTick.tick depth x.replay x.pending time window policy
+  ⟨out.boundaryPhase.state, out.boundaryPhase.pending, x.anchors⟩
+
+theorem installTick_invariant (depth : ℕ) (x : Session) (time : ℝ)
+    (window : Option ℕ) (policy : EventQueue.BoundaryPolicy) (hx : Invariant x.replay) :
+    Invariant (installTick depth x time window policy).replay :=
+  QueueTick.tick_invariant depth hx _ _ _ _
+
+end Thesis.Intraday.AnchorPhase

@@ -1,0 +1,89 @@
+import Intraday.LedgerSeeding
+
+/-! # Change order payloads without changing lifecycle metadata or positions
+
+The common anchor correction uses these maps. Side selection commutes with the
+actual market map, so book geometry is computed on the same original indices.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.LedgerMap
+
+open LiveLedger LedgerTupleActions Clearing Execution
+open Foundations.MarketRepresentation Foundations.MarketRepresentation.TuplesBasic
+open Foundations.MarketClearing.Selection
+
+def mapEntry (f : Order → Order) (a : Entry) : Entry := { a with order := f a.order }
+
+def mapLedger (f : Order → Order) (s : Ledger) : Ledger :=
+  { s with live := s.live.map (mapEntry f) }
+
+def mapMarket (f : Order → Order) (m : Market) : Market :=
+  ⟨m.1, fun i => ⟨(m.2 i).1, f (m.2 i).2⟩⟩
+
+theorem mapLedger_valid (f : Order → Order) {s : Ledger} (hs : Valid s) :
+    Valid (mapLedger f s) := by
+  refine ⟨?_, ?_, ?_⟩
+  · simpa [mapLedger, mapEntry, List.pairwise_map] using hs.1
+  · simpa [mapLedger, mapEntry, List.pairwise_map] using hs.2.1
+  · intro a ha
+    obtain ⟨b, hb, rfl⟩ := List.mem_map.mp ha
+    exact hs.2.2 b hb
+
+theorem mapLedger_lookup (f : Order → Order) (s : Ledger) (key : ℕ) :
+    lookup (mapLedger f s) key = (lookup s key).map (mapEntry f) := by
+  simp [lookup, mapLedger, mapEntry, List.find?_map, Function.comp_def]
+
+theorem mapLedger_ids (f : Order → Order) (s : Ledger) :
+    (mapLedger f s).live.map Entry.liveId = s.live.map Entry.liveId := by
+  simp [mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+theorem mapLedger_keys (f : Order → Order) (s : Ledger) :
+    (mapLedger f s).live.map Entry.localKey = s.live.map Entry.localKey := by
+  simp [mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+theorem mapLedger_sides (f : Order → Order) (s : Ledger) :
+    (mapLedger f s).live.map Entry.isBuy = s.live.map Entry.isBuy := by
+  simp [mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+@[simp] theorem mapLedger_counter (f : Order → Order) (s : Ledger) :
+    (mapLedger f s).nextId = s.nextId := rfl
+
+theorem mapLedger_market (f : Order → Order) (s : Ledger) :
+    market (mapLedger f s) = mapMarket f (market s) := by
+  apply tupleList_injective
+  rw [tupleList_market]
+  simp only [mapLedger, mapEntry, mapMarket, tagged, market,
+    Foundations.MarketActions.Primitive.tupleList, Tuple.entry, List.map_map,
+    Function.comp_def]
+  change s.live.map (fun a => (⟨a.isBuy, f a.order⟩ : TaggedOrder)) =
+    List.ofFn ((fun a => (⟨a.isBuy, f a.order⟩ : TaggedOrder)) ∘ s.live.get)
+  rw [← List.map_ofFn, List.ofFn_get]
+
+theorem constant_valueAtTag (buy : Bool) (z : TaggedOrder) (h : z.1 = buy) :
+    valueAtTag buy z h = z.2 := by
+  rcases z with ⟨tag, o⟩
+  cases h
+  rfl
+
+theorem side_mapMarket (f : Order → Order) (buy : Bool) (m : Market) :
+    side buy (mapMarket f m) = Tuple.map f (side buy m) := by
+  apply congrArg (fun x => (⟨(side buy m).1, x⟩ : Book))
+  funext i
+  simp only [side, separationComponent, componentFromIndices, constant_valueAtTag]
+  rfl
+
+theorem side_mapLedger (f : Order → Order) (buy : Bool) (s : Ledger) :
+    side buy (market (mapLedger f s)) = Tuple.map f (side buy (market s)) := by
+  rw [mapLedger_market, side_mapMarket]
+
+theorem mapLedger_twoSided (f : Order → Order) (s : Ledger) :
+    GroupReplay.TwoSided (mapLedger f s) ↔ GroupReplay.TwoSided s := by
+  simp only [GroupReplay.TwoSided, side_mapLedger]
+  rfl
+
+theorem mapLedger_comp (f g : Order → Order) (s : Ledger) :
+    mapLedger f (mapLedger g s) = mapLedger (f ∘ g) s := by
+  simp [mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+end Thesis.Intraday.LedgerMap

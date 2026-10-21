@@ -1,0 +1,168 @@
+import Intraday.ReplayGridInvariant
+import Intraday.AnchorInterpolation
+
+/-! # Replay, boundary policy and anchor correction with persistent event logs
+
+This composes the actual phases and derives the anchor's validity/grid guards
+from their preceding output. Every processed event records its complete queue
+result, including discarded groups, and its post-correction book. Failure is
+absorbing for the complete state. Event-grid generation, retrieval and newly
+sampled burst insertion are separate operations, not assumed complete here.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.EventReplay
+
+open LiveLedger GroupReplay QueueAnchor AnchorPhase StagedQueuePrices ReplayGridInvariant
+
+structure EventInput where
+  time : ℝ
+  completedWindow : Option ℕ
+  policy : EventQueue.BoundaryPolicy
+
+structure EventLog where
+  input : EventInput
+  queueResult : QueueTick.TickOutput
+  correctedBook : Ledger
+
+structure State (cfg : Config) where
+  session : Session
+  events : List EventLog
+  invariant : Invariant session.replay
+  grid : activePrices session.replay.book session.pending ⊆ cfg.grid
+
+def tickResult (depth : ℕ) {cfg : Config} (x : State cfg) (event : EventInput) :
+    QueueTick.TickOutput :=
+  QueueTick.tick depth x.session.replay x.session.pending
+    event.time event.completedWindow event.policy
+
+def afterTick (depth : ℕ) {cfg : Config} (x : State cfg) (event : EventInput) : Session :=
+  installTick depth x.session event.time event.completedWindow event.policy
+
+theorem afterTick_invariant (depth : ℕ) {cfg : Config} (x : State cfg) (event : EventInput) :
+    Invariant (afterTick depth x event).replay :=
+  installTick_invariant depth x.session event.time event.completedWindow event.policy x.invariant
+
+theorem afterTick_grid (depth : ℕ) {cfg : Config} (x : State cfg) (event : EventInput) :
+    activePrices (afterTick depth x event).replay.book
+      (afterTick depth x event).pending ⊆ cfg.grid :=
+  installTick_grid cfg.grid depth x.session event.time event.completedWindow event.policy x.grid
+
+def afterAnchor (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) : Session :=
+  correct cfg event.time (anchor event.time) enabled (afterTick depth x event)
+    (afterTick_invariant depth x event) (afterTick_grid depth x event)
+
+def advanceActive (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) : State cfg :=
+  let after := afterAnchor depth enabled anchor x event
+  ⟨after, x.events ++ [⟨event, tickResult depth x event, after.replay.book⟩],
+    correct_invariant cfg event.time (anchor event.time) enabled (afterTick depth x event)
+      (afterTick_invariant depth x event) (afterTick_grid depth x event),
+    correct_grid cfg event.time (anchor event.time) enabled (afterTick depth x event)
+      (afterTick_invariant depth x event) (afterTick_grid depth x event)⟩
+
+def advance (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) : State cfg :=
+  if x.session.replay.failure.isSome then x else advanceActive depth enabled anchor x event
+
+theorem advance_failed (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) (hf : x.session.replay.failure.isSome = true) :
+    advance depth enabled anchor x event = x := by simp [advance, hf]
+
+theorem advance_active (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) (hf : x.session.replay.failure = none) :
+    advance depth enabled anchor x event = advanceActive depth enabled anchor x event := by
+  simp [advance, hf]
+
+theorem advanceActive_log_count (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    (advanceActive depth enabled anchor x event).events.length = x.events.length + 1 := by
+  simp [advanceActive]
+
+theorem advanceActive_queue_log (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    (advanceActive depth enabled anchor x event).events.map (fun e => e.queueResult) =
+      x.events.map (fun e => e.queueResult) ++ [tickResult depth x event] := by
+  simp [advanceActive]
+
+theorem tickResult_accounting (depth : ℕ) {cfg : Config} (x : State cfg) (event : EventInput) :
+    let out := tickResult depth x event
+    (out.duePhase.consumed ++ (out.boundaryPhase.discarded ++ out.boundaryPhase.consumed ++
+      out.boundaryPhase.pending)).Perm x.session.pending :=
+  QueueTick.tick_accounting depth x.session.replay x.session.pending
+    event.time event.completedWindow event.policy
+
+theorem afterAnchor_failure (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    (afterAnchor depth enabled anchor x event).replay.failure =
+      (tickResult depth x event).boundaryPhase.state.failure :=
+  correct_failure _ _ _ _ _ _ _
+
+theorem afterAnchor_on_failure (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput)
+    (hf : (tickResult depth x event).boundaryPhase.state.failure ≠ none) :
+    afterAnchor depth enabled anchor x event = afterTick depth x event :=
+  correct_failed _ _ _ _ _ _ _ hf
+
+theorem advanceActive_group_history (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    (advanceActive depth enabled anchor x event).session.replay.log.map LogEntry.group =
+      x.session.replay.log.map LogEntry.group ++ (tickResult depth x event).duePhase.consumed ++
+        (tickResult depth x event).boundaryPhase.consumed := by
+  simp only [advanceActive, afterAnchor, correct_history]
+  exact QueueTick.tick_log_order depth x.session.replay x.session.pending
+    event.time event.completedWindow event.policy
+
+theorem advanceActive_counter (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    x.session.replay.book.nextId ≤
+      (advanceActive depth enabled anchor x event).session.replay.book.nextId := by
+  dsimp only [advanceActive, afterAnchor]
+  rw [correct_counter]
+  exact QueueTick.tick_counter depth x.session.replay x.session.pending
+    event.time event.completedWindow event.policy
+
+theorem advance_counter (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (event : EventInput) :
+    x.session.replay.book.nextId ≤
+      (advance depth enabled anchor x event).session.replay.book.nextId := by
+  unfold advance
+  split
+  · exact le_rfl
+  · exact advanceActive_counter _ _ _ _ _
+
+def run (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config} :
+    State cfg → List EventInput → State cfg
+  | x, [] => x
+  | x, event :: events => run depth enabled anchor (advance depth enabled anchor x event) events
+
+theorem run_failed (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (events : List EventInput) (hf : x.session.replay.failure.isSome = true) :
+    run depth enabled anchor x events = x := by
+  induction events with
+  | nil => rfl
+  | cons event events ih =>
+    simpa only [run, advance_failed depth enabled anchor x event hf] using ih
+
+theorem run_counter (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (events : List EventInput) :
+    x.session.replay.book.nextId ≤
+      (run depth enabled anchor x events).session.replay.book.nextId := by
+  induction events generalizing x with
+  | nil => exact le_rfl
+  | cons event events ih =>
+    exact (advance_counter depth enabled anchor x event).trans (ih _)
+
+theorem run_grid (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (events : List EventInput) :
+    activePrices (run depth enabled anchor x events).session.replay.book
+      (run depth enabled anchor x events).session.pending ⊆ cfg.grid :=
+  (run depth enabled anchor x events).grid
+
+theorem run_invariant (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ) {cfg : Config}
+    (x : State cfg) (events : List EventInput) :
+    Invariant (run depth enabled anchor x events).session.replay :=
+  (run depth enabled anchor x events).invariant
+
+end Thesis.Intraday.EventReplay

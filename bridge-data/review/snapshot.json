@@ -1,0 +1,3794 @@
+{
+  "blocks": [
+    {
+      "change": "unchanged",
+      "key": "defn:disjoint-union",
+      "line": 44,
+      "previousKey": "defn:disjoint-union",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:52:rem:2",
+      "line": 52,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:52:rem:2",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:adm-static",
+      "line": 58,
+      "previousKey": "exmp:adm-static",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:agent-adm-static",
+      "line": 74,
+      "previousKey": "exmp:agent-adm-static",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:adm-dyn",
+      "line": 92,
+      "previousKey": "exmp:adm-dyn",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:agent-adm-dyn",
+      "line": 96,
+      "previousKey": "exmp:agent-adm-dyn",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-isomorphism",
+      "line": 120,
+      "previousKey": "prop:disjoint-isomorphism",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-product",
+      "line": 144,
+      "previousKey": "prop:disjoint-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-partial-order",
+      "line": 186,
+      "previousKey": "prop:disjoint-partial-order",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:partial-order-static-market",
+      "line": 210,
+      "previousKey": "exmp:partial-order-static-market",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-total-order",
+      "line": 224,
+      "previousKey": "prop:disjoint-total-order",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:249:rem:12",
+      "line": 249,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:249:rem:12",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:strict-disjoint-total-order",
+      "line": 261,
+      "previousKey": "cor:strict-disjoint-total-order",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:szpilrajn",
+      "line": 271,
+      "previousKey": "thm:szpilrajn",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:total-order-static-market",
+      "line": 280,
+      "previousKey": "exmp:total-order-static-market",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:total-order-dynamic-market",
+      "line": 297,
+      "previousKey": "exmp:total-order-dynamic-market",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:completing-order-agent-based-static-market",
+      "line": 322,
+      "previousKey": "exmp:completing-order-agent-based-static-market",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:350:rem:18",
+      "line": 350,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:350:rem:18",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:disjoint-union-metrisation",
+      "line": 357,
+      "previousKey": "defn:disjoint-union-metrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:368:rem:20",
+      "line": 368,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:368:rem:20",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-union-metrisation",
+      "line": 378,
+      "previousKey": "prop:disjoint-union-metrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:disjoint-union-metric-properties",
+      "line": 395,
+      "previousKey": "prop:disjoint-union-metric-properties",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:pasting-lemma",
+      "line": 433,
+      "previousKey": "thm:pasting-lemma",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "changed",
+      "key": "thm:pasting-lemma-measurable",
+      "line": 463,
+      "previousKey": "thm:pasting-lemma-measurable",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:498:rem:25",
+      "line": 498,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:498:rem:25",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:finite-subsets",
+      "line": 507,
+      "previousKey": "defn:finite-subsets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:injection-into-finite-sets",
+      "line": 517,
+      "previousKey": "prop:injection-into-finite-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-sets-over-finite-set",
+      "line": 523,
+      "previousKey": "prop:finite-sets-over-finite-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:countable-finite-sets",
+      "line": 531,
+      "previousKey": "prop:countable-finite-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:Hausdorff-distance",
+      "line": 554,
+      "previousKey": "defn:Hausdorff-distance",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:hausdorff-convention",
+      "line": 562,
+      "previousKey": "rem:hausdorff-convention",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:Hausdorff-finite-sets",
+      "line": 575,
+      "previousKey": "thm:Hausdorff-finite-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:hausdorff-infinite-values",
+      "line": 590,
+      "previousKey": "rem:hausdorff-infinite-values",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:unordered-configuration-space",
+      "line": 594,
+      "previousKey": "rem:unordered-configuration-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-separable",
+      "line": 633,
+      "previousKey": "prop:finite-separable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-set-cauchy",
+      "line": 671,
+      "previousKey": "prop:finite-set-cauchy",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:uniformly-discrete",
+      "line": 718,
+      "previousKey": "defn:uniformly-discrete",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:uniformly-discrete-complete",
+      "line": 734,
+      "previousKey": "prop:uniformly-discrete-complete",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-hausdorff-uniformly-discrete",
+      "line": 747,
+      "previousKey": "prop:finite-hausdorff-uniformly-discrete",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-hausdorff-uniformly-discrete-iff",
+      "line": 768,
+      "previousKey": "prop:finite-hausdorff-uniformly-discrete-iff",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:labelled-finite-sets",
+      "line": 781,
+      "previousKey": "defn:labelled-finite-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:labelled-properties",
+      "line": 790,
+      "previousKey": "thm:labelled-properties",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:helpful-labelled",
+      "line": 804,
+      "previousKey": "lem:helpful-labelled",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tuple",
+      "line": 896,
+      "previousKey": "defn:tuple",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:903:rem:45",
+      "line": 903,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:903:rem:45",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tuple-length",
+      "line": 907,
+      "previousKey": "defn:tuple-length",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorted-tuples",
+      "line": 921,
+      "previousKey": "defn:sorted-tuples",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:totally-ordered-tuple-sorted-iff-monotone",
+      "line": 940,
+      "previousKey": "prop:totally-ordered-tuple-sorted-iff-monotone",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:finite-permutations",
+      "line": 973,
+      "previousKey": "defn:finite-permutations",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:985:rem:50",
+      "line": 985,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:985:rem:50",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorting-permutations",
+      "line": 995,
+      "previousKey": "defn:sorting-permutations",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:permutation-exists",
+      "line": 1005,
+      "previousKey": "thm:permutation-exists",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorting-map",
+      "line": 1029,
+      "previousKey": "defn:sorting-map",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1048:cor:54",
+      "line": 1048,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1048:cor:54",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:unique-sorting-map-total-order",
+      "line": 1070,
+      "previousKey": "cor:unique-sorting-map-total-order",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:sorting-permutations-not-unique",
+      "line": 1104,
+      "previousKey": "rem:sorting-permutations-not-unique",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:graph-injects",
+      "line": 1123,
+      "previousKey": "prop:graph-injects",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:tuple-space-metrisation",
+      "line": 1131,
+      "previousKey": "thm:tuple-space-metrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "changed",
+      "key": "thm:tuple-space-properties",
+      "line": 1145,
+      "previousKey": "thm:tuple-space-properties",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:tuple-metrisation",
+      "line": 1292,
+      "previousKey": "cor:tuple-metrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:truncated-metric-equivalent-topology",
+      "line": 1306,
+      "previousKey": "prop:truncated-metric-equivalent-topology",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:the-standard-machinery",
+      "line": 1322,
+      "previousKey": "thm:the-standard-machinery",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:index-comparable",
+      "line": 1369,
+      "previousKey": "defn:index-comparable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:reflexive-transitive-closure",
+      "line": 1379,
+      "previousKey": "defn:reflexive-transitive-closure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1386:rem:65",
+      "line": 1386,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1386:rem:65",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:transitive-closure-finite",
+      "line": 1396,
+      "previousKey": "prop:transitive-closure-finite",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:connectivity-relation",
+      "line": 1414,
+      "previousKey": "defn:connectivity-relation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:sim-equivalence",
+      "line": 1421,
+      "previousKey": "prop:sim-equivalence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:comparability-components",
+      "line": 1434,
+      "previousKey": "defn:comparability-components",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:components-partition-incomp",
+      "line": 1449,
+      "previousKey": "prop:components-partition-incomp",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tau",
+      "line": 1478,
+      "previousKey": "defn:tau",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:tau-injective",
+      "line": 1485,
+      "previousKey": "prop:tau-injective",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:components-totally-ordered-by-arrival-index",
+      "line": 1491,
+      "previousKey": "cor:components-totally-ordered-by-arrival-index",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:labelled-finite-set-natural-projection-injective",
+      "line": 1500,
+      "previousKey": "lem:labelled-finite-set-natural-projection-injective",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorting-finite-sets",
+      "line": 1511,
+      "previousKey": "defn:sorting-finite-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:minimum-sorting-rule",
+      "line": 1540,
+      "previousKey": "defn:minimum-sorting-rule",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1550:rem:77",
+      "line": 1550,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1550:rem:77",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:minimum-sorting-map-is-sorting-map",
+      "line": 1560,
+      "previousKey": "prop:minimum-sorting-map-is-sorting-map",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:minimum-sorting-map-idempotent",
+      "line": 1595,
+      "previousKey": "cor:minimum-sorting-map-idempotent",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:sort-discont",
+      "line": 1617,
+      "previousKey": "exmp:sort-discont",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:measurable-partition",
+      "line": 1651,
+      "previousKey": "thm:measurable-partition",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:permutation-map",
+      "line": 1677,
+      "previousKey": "defn:permutation-map",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:permuting-continuous",
+      "line": 1690,
+      "previousKey": "prop:permuting-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:permutations-countable",
+      "line": 1725,
+      "previousKey": "prop:permutations-countable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorting-valid-elements",
+      "line": 1738,
+      "previousKey": "defn:sorting-valid-elements",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:tuple-space-covered-by-sorting-valid-elements",
+      "line": 1748,
+      "previousKey": "cor:tuple-space-covered-by-sorting-valid-elements",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:local-continuity-sorting",
+      "line": 1763,
+      "previousKey": "cor:local-continuity-sorting",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:permutations-inherit-order",
+      "line": 1774,
+      "previousKey": "lem:permutations-inherit-order",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:sorting-valid-first-choice-partition-covers",
+      "line": 1788,
+      "previousKey": "lem:sorting-valid-first-choice-partition-covers",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:induced-sorting",
+      "line": 1815,
+      "previousKey": "prop:induced-sorting",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1840:rem:91",
+      "line": 1840,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1840:rem:91",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:measurable-partition-sorting",
+      "line": 1844,
+      "previousKey": "prop:measurable-partition-sorting",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:measurable-sorting-exists",
+      "line": 1879,
+      "previousKey": "thm:measurable-sorting-exists",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:many-measurable-sorting-exists",
+      "line": 1888,
+      "previousKey": "cor:many-measurable-sorting-exists",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1899:rem:95",
+      "line": 1899,
+      "previousKey": "source:1 - theoretical foundations/2_chapter_market_representations.tex:1899:rem:95",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "changed",
+      "key": "thm:minimal-sorting-measurable",
+      "line": 1905,
+      "previousKey": "thm:minimal-sorting-measurable",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/2_chapter_market_representations.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:concat-tuple",
+      "line": 9,
+      "previousKey": "defn:concat-tuple",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:concat-empty-tuples",
+      "line": 22,
+      "previousKey": "rem:concat-empty-tuples",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorted-tuple-add",
+      "line": 33,
+      "previousKey": "defn:sorted-tuple-add",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:tuple-monoid",
+      "line": 42,
+      "previousKey": "prop:tuple-monoid",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:pairing",
+      "line": 77,
+      "previousKey": "defn:pairing",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:pairing-finite-set-is-sorted-tuple",
+      "line": 85,
+      "previousKey": "cor:pairing-finite-set-is-sorted-tuple",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:reindex",
+      "line": 92,
+      "previousKey": "defn:reindex",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:reindex-bracket-notation",
+      "line": 98,
+      "previousKey": "rem:reindex-bracket-notation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:cancel",
+      "line": 112,
+      "previousKey": "defn:cancel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:identifier-coordinates",
+      "line": 129,
+      "previousKey": "exmp:identifier-coordinates",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:identifier-cancel",
+      "line": 141,
+      "previousKey": "defn:identifier-cancel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:identifier-coordinates",
+      "line": 151,
+      "previousKey": "rem:identifier-coordinates",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sorted-cancel",
+      "line": 160,
+      "previousKey": "defn:sorted-cancel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:cancel-closure-sorted",
+      "line": 171,
+      "previousKey": "cor:cancel-closure-sorted",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:identifier-tie-breaking",
+      "line": 184,
+      "previousKey": "prop:identifier-tie-breaking",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:identifier-tie-breaking-borel",
+      "line": 217,
+      "previousKey": "prop:identifier-tie-breaking-borel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:modification",
+      "line": 247,
+      "previousKey": "defn:modification",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:void-modification",
+      "line": 261,
+      "previousKey": "rem:void-modification",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:analytic-properties-actions",
+      "line": 273,
+      "previousKey": "thm:analytic-properties-actions",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:sorted-operations-measurable",
+      "line": 382,
+      "previousKey": "cor:sorted-operations-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:identifier-cancel-continuous",
+      "line": 401,
+      "previousKey": "prop:identifier-cancel-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:actions",
+      "line": 467,
+      "previousKey": "defn:actions",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:composite-actions",
+      "line": 483,
+      "previousKey": "defn:composite-actions",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:action-metrisation",
+      "line": 525,
+      "previousKey": "cor:action-metrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:application-continuous",
+      "line": 561,
+      "previousKey": "prop:application-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:composite-action-metric",
+      "line": 572,
+      "previousKey": "thm:composite-action-metric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:composite-application-continuous",
+      "line": 584,
+      "previousKey": "thm:composite-application-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/3_market_actions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:composition-continuous",
+      "line": 23,
+      "previousKey": "prop:composition-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:filter",
+      "line": 56,
+      "previousKey": "cor:filter",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:characteristic-functions-tuple",
+      "line": 67,
+      "previousKey": "prop:characteristic-functions-tuple",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:measurable-index-filter-for-countable-borel-family",
+      "line": 85,
+      "previousKey": "cor:measurable-index-filter-for-countable-borel-family",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tuple-projection",
+      "line": 108,
+      "previousKey": "defn:tuple-projection",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:tuple-projection-operator-notation",
+      "line": 120,
+      "previousKey": "rem:tuple-projection-operator-notation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:tuple-projection-continuous",
+      "line": 128,
+      "previousKey": "prop:tuple-projection-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:separation-operators",
+      "line": 184,
+      "previousKey": "defn:separation-operators",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:separation-element-projection",
+      "line": 195,
+      "previousKey": "rem:separation-element-projection",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:separation-continuous",
+      "line": 221,
+      "previousKey": "prop:separation-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:minimal-sort",
+      "line": 338,
+      "previousKey": "defn:minimal-sort",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:tuple-space-measurable-2",
+      "line": 355,
+      "previousKey": "lem:tuple-space-measurable-2",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:minimal-sorting-measurable",
+      "line": 362,
+      "previousKey": "prop:minimal-sorting-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:cumulative-summation-continuous",
+      "line": 423,
+      "previousKey": "lem:cumulative-summation-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:executable-volume-uniform-price",
+      "line": 475,
+      "previousKey": "prop:executable-volume-uniform-price",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:index-measurable",
+      "line": 516,
+      "previousKey": "thm:index-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:increasing-decreasing-measurable",
+      "line": 524,
+      "previousKey": "lem:increasing-decreasing-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:bounded-sets-measurable",
+      "line": 555,
+      "previousKey": "lem:bounded-sets-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:equilibrium-quantity-measurable",
+      "line": 637,
+      "previousKey": "thm:equilibrium-quantity-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:executable-volume-usc",
+      "line": 675,
+      "previousKey": "prop:executable-volume-usc",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:state-compatible-volume-measurable",
+      "line": 711,
+      "previousKey": "cor:state-compatible-volume-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:state-midpoint-price-measurable",
+      "line": 756,
+      "previousKey": "cor:state-midpoint-price-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:state-functionals-permutation-invariant",
+      "line": 806,
+      "previousKey": "lem:state-functionals-permutation-invariant",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/4_market_clearing.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:weak-convergence-finite-measures",
+      "line": 30,
+      "previousKey": "defn:weak-convergence-finite-measures",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:prokhorov-metric-weak-convergence-polish",
+      "line": 38,
+      "previousKey": "thm:prokhorov-metric-weak-convergence-polish",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:point-process-measurability-equivalence",
+      "line": 50,
+      "previousKey": "rem:point-process-measurability-equivalence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:sufficient-decomposition",
+      "line": 58,
+      "previousKey": "thm:sufficient-decomposition",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:helpful-point-process",
+      "line": 67,
+      "previousKey": "lem:helpful-point-process",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:measures-coincide",
+      "line": 97,
+      "previousKey": "cor:measures-coincide",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:disintegration-lemma",
+      "line": 115,
+      "previousKey": "lem:disintegration-lemma",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:permutative-equality",
+      "line": 277,
+      "previousKey": "defn:permutative-equality",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:perm-equal-equiv",
+      "line": 285,
+      "previousKey": "prop:perm-equal-equiv",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:permuted-tuple-quotient-space",
+      "line": 310,
+      "previousKey": "defn:permuted-tuple-quotient-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:permuted-tuple-notation",
+      "line": 321,
+      "previousKey": "rem:permuted-tuple-notation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-equivalence-classes",
+      "line": 325,
+      "previousKey": "prop:finite-equivalence-classes",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:permuted-tuple-hausdorff-distance",
+      "line": 356,
+      "previousKey": "defn:permuted-tuple-hausdorff-distance",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:permuted-tuple-hausdorff-metric-complete-separable",
+      "line": 373,
+      "previousKey": "thm:permuted-tuple-hausdorff-metric-complete-separable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tuple-induced-integer-valued-measure",
+      "line": 444,
+      "previousKey": "defn:tuple-induced-integer-valued-measure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:tuple-induced-measure-continuous",
+      "line": 478,
+      "previousKey": "prop:tuple-induced-measure-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:tuple-measure-surjective",
+      "line": 521,
+      "previousKey": "prop:tuple-measure-surjective",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:tuple-induced-measure-permutation-invariant",
+      "line": 548,
+      "previousKey": "cor:tuple-induced-measure-permutation-invariant",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:permuted-tuple-measure-map-bijective",
+      "line": 565,
+      "previousKey": "prop:permuted-tuple-measure-map-bijective",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:permuted-tuple-measure-continuous",
+      "line": 602,
+      "previousKey": "prop:permuted-tuple-measure-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:inverse-permuted-tuple-measure-continuous",
+      "line": 628,
+      "previousKey": "prop:inverse-permuted-tuple-measure-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:integer-measures-tuples-homeomorphic",
+      "line": 704,
+      "previousKey": "thm:integer-measures-tuples-homeomorphic",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:measurable-enumeration",
+      "line": 715,
+      "previousKey": "lem:measurable-enumeration",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:measurable-enumeration-adaptation",
+      "line": 718,
+      "previousKey": "rem:measurable-enumeration-adaptation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:point-process-tuple",
+      "line": 724,
+      "previousKey": "thm:point-process-tuple",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:functional-and-operator",
+      "line": 795,
+      "previousKey": "defn:functional-and-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:weak-linear-operator",
+      "line": 801,
+      "previousKey": "defn:weak-linear-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:convex-cone",
+      "line": 840,
+      "previousKey": "defn:convex-cone",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:weakly-convex-operator",
+      "line": 847,
+      "previousKey": "defn:weakly-convex-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:phi-subspace",
+      "line": 854,
+      "previousKey": "prop:phi-subspace",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:phi-extends",
+      "line": 858,
+      "previousKey": "prop:phi-extends",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:function-kernel-quotient-space",
+      "line": 866,
+      "previousKey": "defn:function-kernel-quotient-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:kernel-quotient-terminology",
+      "line": 873,
+      "previousKey": "rem:kernel-quotient-terminology",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:function-kernel-quotient-injective-extension",
+      "line": 877,
+      "previousKey": "prop:function-kernel-quotient-injective-extension",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:weak-linear-transport-vector-space-structure",
+      "line": 890,
+      "previousKey": "thm:weak-linear-transport-vector-space-structure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:weak-convex-transport-convex-cone-structure",
+      "line": 904,
+      "previousKey": "cor:weak-convex-transport-convex-cone-structure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:weak-linear-kernel-inner-product-space",
+      "line": 916,
+      "previousKey": "prop:weak-linear-kernel-inner-product-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:inner-product-kernel-space",
+      "line": 931,
+      "previousKey": "defn:inner-product-kernel-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:kernel-space-hilbert-iff-image-closed",
+      "line": 939,
+      "previousKey": "prop:kernel-space-hilbert-iff-image-closed",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:bijective-weak-linear-transport-hilbert-structure",
+      "line": 946,
+      "previousKey": "cor:bijective-weak-linear-transport-hilbert-structure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:kernel-space-separable",
+      "line": 950,
+      "previousKey": "prop:kernel-space-separable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:completed-kernel-space",
+      "line": 963,
+      "previousKey": "defn:completed-kernel-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:closed-convex-cone-closure-projection",
+      "line": 973,
+      "previousKey": "thm:closed-convex-cone-closure-projection",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:grothendieck-vector-space-from-convex-cone",
+      "line": 991,
+      "previousKey": "thm:grothendieck-vector-space-from-convex-cone",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:1 - theoretical foundations/5_stochastic_markets.tex:1296:cor:45",
+      "line": 1296,
+      "previousKey": "source:1 - theoretical foundations/5_stochastic_markets.tex:1296:cor:45",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:grothendieck-vectorization-inner-product-space",
+      "line": 1309,
+      "previousKey": "cor:grothendieck-vectorization-inner-product-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "1 - theoretical foundations/5_stochastic_markets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:supply-and-demand-curves",
+      "line": 41,
+      "previousKey": "defn:supply-and-demand-curves",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:excess-supply-and-completed-graph",
+      "line": 59,
+      "previousKey": "defn:excess-supply-and-completed-graph",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:crossing-price-and-equilibrium-operator",
+      "line": 74,
+      "previousKey": "defn:crossing-price-and-equilibrium-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:positively-matched-state-space-and-price-impact-curve",
+      "line": 92,
+      "previousKey": "defn:positively-matched-state-space-and-price-impact-curve",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:price-impact-curve-properties",
+      "line": 106,
+      "previousKey": "prop:price-impact-curve-properties",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:space-of-price-curves",
+      "line": 139,
+      "previousKey": "defn:space-of-price-curves",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:2 - day-ahead/2_clearing_operator_price_curves.tex:166:defn:7",
+      "line": 166,
+      "previousKey": "source:2 - day-ahead/2_clearing_operator_price_curves.tex:166:defn:7",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:admissible-price-curve-parametrisation",
+      "line": 173,
+      "previousKey": "defn:admissible-price-curve-parametrisation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:linear-parametrisation-operator",
+      "line": 203,
+      "previousKey": "defn:linear-parametrisation-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:linear-parametrisation-convex",
+      "line": 221,
+      "previousKey": "prop:linear-parametrisation-convex",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:2 - day-ahead/2_clearing_operator_price_curves.tex:261:cor:11",
+      "line": 261,
+      "previousKey": "source:2 - day-ahead/2_clearing_operator_price_curves.tex:261:cor:11",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sided-essential-decomposition",
+      "line": 282,
+      "previousKey": "defn:sided-essential-decomposition",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:parametrisation-operator",
+      "line": 328,
+      "previousKey": "defn:parametrisation-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:graph-tracing-pairs",
+      "line": 350,
+      "previousKey": "defn:graph-tracing-pairs",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:admissible-parametrisations-cone",
+      "line": 361,
+      "previousKey": "prop:admissible-parametrisations-cone",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "exmp:sided-average-not-canonical",
+      "line": 395,
+      "previousKey": "exmp:sided-average-not-canonical",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:sided-parametrisation-not-weakly-convex",
+      "line": 443,
+      "previousKey": "cor:sided-parametrisation-not-weakly-convex",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:pl-encoding-measurable",
+      "line": 496,
+      "previousKey": "prop:pl-encoding-measurable",
+      "sameProof": false,
+      "sameStatement": false,
+      "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:expected-hilbert",
+      "line": 37,
+      "previousKey": "defn:expected-hilbert",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:tensor-product",
+      "line": 62,
+      "previousKey": "defn:tensor-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:covariance-operator",
+      "line": 73,
+      "previousKey": "defn:covariance-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:spectral-thm",
+      "line": 98,
+      "previousKey": "thm:spectral-thm",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:2 - day-ahead/3_functional_data_analysis.tex:105:rem:5",
+      "line": 105,
+      "previousKey": "source:2 - day-ahead/3_functional_data_analysis.tex:105:rem:5",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:lln-clt-mean",
+      "line": 113,
+      "previousKey": "thm:lln-clt-mean",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:lln-covariance",
+      "line": 125,
+      "previousKey": "thm:lln-covariance",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:conditional-expect-Hilbert",
+      "line": 144,
+      "previousKey": "thm:conditional-expect-Hilbert",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:regression-theorem",
+      "line": 186,
+      "previousKey": "thm:regression-theorem",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:weak-stationarity",
+      "line": 218,
+      "previousKey": "defn:weak-stationarity",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:weak-stationarity",
+      "line": 230,
+      "previousKey": "prop:weak-stationarity",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:scores-sigma-algebra",
+      "line": 297,
+      "previousKey": "thm:scores-sigma-algebra",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/3_functional_data_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:empirical-coordinate-scales",
+      "line": 47,
+      "previousKey": "defn:empirical-coordinate-scales",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/4_price_curve_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:asinh-price-transform",
+      "line": 85,
+      "previousKey": "defn:asinh-price-transform",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/4_price_curve_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:coordinate-scaling-operators",
+      "line": 95,
+      "previousKey": "defn:coordinate-scaling-operators",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/4_price_curve_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:rolling-coordinate-scales",
+      "line": 193,
+      "previousKey": "defn:rolling-coordinate-scales",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/4_price_curve_analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:rectangular-simple-function",
+      "line": 35,
+      "previousKey": "defn:rectangular-simple-function",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:k-leaf-tree-class",
+      "line": 145,
+      "previousKey": "defn:k-leaf-tree-class",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:cell-impurity-split",
+      "line": 160,
+      "previousKey": "defn:cell-impurity-split",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:cell-risk-minimiser",
+      "line": 179,
+      "previousKey": "lem:cell-risk-minimiser",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:gram-split-gain-bound",
+      "line": 253,
+      "previousKey": "prop:gram-split-gain-bound",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:hilbert-shapley-value",
+      "line": 378,
+      "previousKey": "defn:hilbert-shapley-value",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:lifted-price-scale-smearing",
+      "line": 672,
+      "previousKey": "defn:lifted-price-scale-smearing",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:monotone-decoding-nonexpansive",
+      "line": 697,
+      "previousKey": "prop:monotone-decoding-nonexpansive",
+      "sameProof": false,
+      "sameStatement": false,
+      "source": "2 - day-ahead/5_forecasting_impact.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:viability-screen-impact-cost",
+      "line": 42,
+      "previousKey": "defn:viability-screen-impact-cost",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/6_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:battery-schedule-set",
+      "line": 252,
+      "previousKey": "defn:battery-schedule-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/6_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:battery-value-functions",
+      "line": 283,
+      "previousKey": "defn:battery-value-functions",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/6_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:battery-sublinear-scaling",
+      "line": 384,
+      "previousKey": "prop:battery-sublinear-scaling",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/6_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:everett-lagrangian-separation",
+      "line": 416,
+      "previousKey": "prop:everett-lagrangian-separation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "2 - day-ahead/6_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:intraday-order-space",
+      "line": 9,
+      "previousKey": "defn:intraday-order-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:price-time-priority-metric",
+      "line": 68,
+      "previousKey": "defn:price-time-priority-metric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:separation-preserves-price-time",
+      "line": 107,
+      "previousKey": "prop:separation-preserves-price-time",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:best-price-and-tradeprice",
+      "line": 136,
+      "previousKey": "defn:best-price-and-tradeprice",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:crossing-set-closed",
+      "line": 162,
+      "previousKey": "prop:crossing-set-closed",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:single-stage-clearing-map",
+      "line": 181,
+      "previousKey": "defn:single-stage-clearing-map",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:single-stage-execution",
+      "line": 211,
+      "previousKey": "prop:single-stage-execution",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:iterated-single-stage-clearing",
+      "line": 262,
+      "previousKey": "defn:iterated-single-stage-clearing",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:iterated-single-stage-measurable",
+      "line": 274,
+      "previousKey": "cor:iterated-single-stage-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:retagging",
+      "line": 282,
+      "previousKey": "defn:retagging",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:retagging-measurable",
+      "line": 293,
+      "previousKey": "cor:retagging-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:clearing-operator",
+      "line": 314,
+      "previousKey": "defn:clearing-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:3 - intraday/2_lobs_and_tuples.tex:331:rem:13",
+      "line": 331,
+      "previousKey": "source:3 - intraday/2_lobs_and_tuples.tex:331:rem:13",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:clearing-measurable",
+      "line": 334,
+      "previousKey": "thm:clearing-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "changed",
+      "key": "defn:identifier-clearing-operator",
+      "line": 365,
+      "previousKey": "defn:identifier-clearing-operator",
+      "sameProof": true,
+      "sameStatement": false,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:identifier-clearing-properties",
+      "line": 395,
+      "previousKey": "prop:identifier-clearing-properties",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:visible-order-book",
+      "line": 420,
+      "previousKey": "defn:visible-order-book",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:depth-restricted-step",
+      "line": 438,
+      "previousKey": "defn:depth-restricted-step",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:visible-step-measurable",
+      "line": 501,
+      "previousKey": "prop:visible-step-measurable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/2_lobs_and_tuples.tex"
+    },
+    {
+      "change": "changed",
+      "key": "defn:order-book-path-point-process",
+      "line": 9,
+      "previousKey": "defn:order-book-path-point-process",
+      "sameProof": true,
+      "sameStatement": false,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:block-bootstrap",
+      "line": 31,
+      "previousKey": "defn:block-bootstrap",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:block-bootstrap-invariance",
+      "line": 98,
+      "previousKey": "prop:block-bootstrap-invariance",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:state-dependent-selection-probabilities",
+      "line": 162,
+      "previousKey": "defn:state-dependent-selection-probabilities",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:ensemble-mid-rank-coverage",
+      "line": 177,
+      "previousKey": "defn:ensemble-mid-rank-coverage",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:midrank-coverage-expectations",
+      "line": 196,
+      "previousKey": "prop:midrank-coverage-expectations",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/3_inference_for_point_processes.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:parser-inner-outer-programs",
+      "line": 342,
+      "previousKey": "defn:parser-inner-outer-programs",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:parser-two-level-exactness",
+      "line": 375,
+      "previousKey": "prop:parser-two-level-exactness",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:aa-encoder",
+      "line": 588,
+      "previousKey": "defn:aa-encoder",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:aa-retrieval-policy",
+      "line": 611,
+      "previousKey": "defn:aa-retrieval-policy",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:aa-attention-equivalence",
+      "line": 623,
+      "previousKey": "prop:aa-attention-equivalence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:aa-training-energy-score",
+      "line": 651,
+      "previousKey": "defn:aa-training-energy-score",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:aa-es-convex-simplex",
+      "line": 658,
+      "previousKey": "prop:aa-es-convex-simplex",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:intraday-ensemble-energy-score",
+      "line": 777,
+      "previousKey": "defn:intraday-ensemble-energy-score",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/4_simulation_of_the_lob.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:se-mandate",
+      "line": 15,
+      "previousKey": "defn:se-mandate",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/5_applications.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:mandate-martingale",
+      "line": 26,
+      "previousKey": "prop:mandate-martingale",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "3 - intraday/5_applications.tex"
+    },
+    {
+      "change": "changed",
+      "key": "defn:fixed-grid-representative",
+      "line": 12,
+      "previousKey": "defn:fixed-grid-representative",
+      "sameProof": true,
+      "sameStatement": false,
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:isotonic-decoding-grid",
+      "line": 29,
+      "previousKey": "defn:isotonic-decoding-grid",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:app-isotonic-properties",
+      "line": 47,
+      "previousKey": "prop:app-isotonic-properties",
+      "sameProof": true,
+      "sameStatement": false,
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:numerical-inner-product",
+      "line": 80,
+      "previousKey": "defn:numerical-inner-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:app-numerical-inner-product-exact",
+      "line": 91,
+      "previousKey": "prop:app-numerical-inner-product-exact",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/day-ahead-numerical-implementation.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:existence",
+      "line": 11,
+      "previousKey": "axiom:existence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:extensionality",
+      "line": 18,
+      "previousKey": "axiom:extensionality",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:foundation",
+      "line": 25,
+      "previousKey": "axiom:foundation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:subset",
+      "line": 32,
+      "previousKey": "defn:subset",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:scheme-of-comprehension",
+      "line": 44,
+      "previousKey": "axiom:scheme-of-comprehension",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:empty-set-unique",
+      "line": 52,
+      "previousKey": "prop:empty-set-unique",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:empty-set",
+      "line": 62,
+      "previousKey": "defn:empty-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:no-universal-set",
+      "line": 66,
+      "previousKey": "thm:no-universal-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:pairing",
+      "line": 83,
+      "previousKey": "axiom:pairing",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:union",
+      "line": 90,
+      "previousKey": "axiom:union",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:power-set",
+      "line": 101,
+      "previousKey": "axiom:power-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:power-set",
+      "line": 107,
+      "previousKey": "defn:power-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:replacement",
+      "line": 115,
+      "previousKey": "axiom:replacement",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:infinity",
+      "line": 122,
+      "previousKey": "axiom:infinity",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:product-space",
+      "line": 132,
+      "previousKey": "defn:product-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:relation",
+      "line": 142,
+      "previousKey": "defn:relation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:equivalence-relation",
+      "line": 153,
+      "previousKey": "defn:equivalence-relation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:equivalence-class",
+      "line": 163,
+      "previousKey": "defn:equivalence-class",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:function",
+      "line": 175,
+      "previousKey": "defn:function",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:graph",
+      "line": 179,
+      "previousKey": "defn:graph",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:graph-defines",
+      "line": 187,
+      "previousKey": "prop:graph-defines",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:empty-domain-function",
+      "line": 194,
+      "previousKey": "prop:empty-domain-function",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:bijection",
+      "line": 205,
+      "previousKey": "defn:bijection",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:bijection-not-homeomorphism",
+      "line": 217,
+      "previousKey": "rem:bijection-not-homeomorphism",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:arbitrary-product-space",
+      "line": 221,
+      "previousKey": "defn:arbitrary-product-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:binary-product-space",
+      "line": 229,
+      "previousKey": "prop:binary-product-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "axiom:choice",
+      "line": 241,
+      "previousKey": "axiom:choice",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:ordered-sets",
+      "line": 248,
+      "previousKey": "defn:ordered-sets",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:well-ordering",
+      "line": 271,
+      "previousKey": "thm:well-ordering",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:zorns-lemma",
+      "line": 274,
+      "previousKey": "thm:zorns-lemma",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:induction",
+      "line": 288,
+      "previousKey": "prop:induction",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:recursion",
+      "line": 295,
+      "previousKey": "thm:recursion",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:cardinality",
+      "line": 305,
+      "previousKey": "defn:cardinality",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:cantor-schroeder-bernstein",
+      "line": 314,
+      "previousKey": "thm:cantor-schroeder-bernstein",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:sequence",
+      "line": 320,
+      "previousKey": "defn:sequence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/sets.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:monoid",
+      "line": 6,
+      "previousKey": "defn:monoid",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:abelian-monoid",
+      "line": 16,
+      "previousKey": "defn:abelian-monoid",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:cancellation-property",
+      "line": 25,
+      "previousKey": "defn:cancellation-property",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:abelian-group",
+      "line": 38,
+      "previousKey": "defn:abelian-group",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:grothendieck-relation",
+      "line": 48,
+      "previousKey": "prop:grothendieck-relation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:grothendieck-group",
+      "line": 68,
+      "previousKey": "defn:grothendieck-group",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:grothendieck-universal",
+      "line": 76,
+      "previousKey": "prop:grothendieck-universal",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:group-completion-scope",
+      "line": 94,
+      "previousKey": "rem:group-completion-scope",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:field",
+      "line": 100,
+      "previousKey": "defn:field",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:real-vector-space",
+      "line": 110,
+      "previousKey": "defn:real-vector-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:vector-space-extension",
+      "line": 124,
+      "previousKey": "prop:vector-space-extension",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/algebra.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:9:defn:1",
+      "line": 9,
+      "previousKey": "source:A - appendices/analysis.tex:9:defn:1",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:20:defn:2",
+      "line": 20,
+      "previousKey": "source:A - appendices/analysis.tex:20:defn:2",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:29:prop:3",
+      "line": 29,
+      "previousKey": "source:A - appendices/analysis.tex:29:prop:3",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:topology-base",
+      "line": 53,
+      "previousKey": "prop:topology-base",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:64:defn:5",
+      "line": 64,
+      "previousKey": "source:A - appendices/analysis.tex:64:defn:5",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:Hausdorff",
+      "line": 74,
+      "previousKey": "defn:Hausdorff",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:second-countable",
+      "line": 89,
+      "previousKey": "defn:second-countable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:96:defn:8",
+      "line": 96,
+      "previousKey": "source:A - appendices/analysis.tex:96:defn:8",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:104:defn:9",
+      "line": 104,
+      "previousKey": "source:A - appendices/analysis.tex:104:defn:9",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:113:defn:10",
+      "line": 113,
+      "previousKey": "source:A - appendices/analysis.tex:113:defn:10",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:metric",
+      "line": 121,
+      "previousKey": "defn:metric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:extended-metric-convention",
+      "line": 132,
+      "previousKey": "rem:extended-metric-convention",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:pseudometric",
+      "line": 150,
+      "previousKey": "defn:pseudometric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:pseudometric-metric-relation",
+      "line": 161,
+      "previousKey": "cor:pseudometric-metric-relation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:topology-extended-pseudometric",
+      "line": 173,
+      "previousKey": "prop:topology-extended-pseudometric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:distance-to-set",
+      "line": 210,
+      "previousKey": "defn:distance-to-set",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:232:defn:17",
+      "line": 232,
+      "previousKey": "source:A - appendices/analysis.tex:232:defn:17",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:hausdorff-distance",
+      "line": 246,
+      "previousKey": "prop:hausdorff-distance",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:255:prop:19",
+      "line": 255,
+      "previousKey": "source:A - appendices/analysis.tex:255:prop:19",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:pseudometric-quotient",
+      "line": 278,
+      "previousKey": "prop:pseudometric-quotient",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:Cauchy-sequence",
+      "line": 295,
+      "previousKey": "defn:Cauchy-sequence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:convergent-sequence",
+      "line": 303,
+      "previousKey": "defn:convergent-sequence",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:complete-space",
+      "line": 314,
+      "previousKey": "defn:complete-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:separable",
+      "line": 319,
+      "previousKey": "defn:separable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:327:defn:25",
+      "line": 327,
+      "previousKey": "source:A - appendices/analysis.tex:327:defn:25",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:g-delta",
+      "line": 332,
+      "previousKey": "defn:g-delta",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:alexandrov",
+      "line": 337,
+      "previousKey": "thm:alexandrov",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:standard-borel-space",
+      "line": 342,
+      "previousKey": "defn:standard-borel-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:borel-subset-standard-borel",
+      "line": 347,
+      "previousKey": "thm:borel-subset-standard-borel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-metric-products",
+      "line": 355,
+      "previousKey": "prop:finite-metric-products",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:pointwise-versus-lp",
+      "line": 372,
+      "previousKey": "rem:pointwise-versus-lp",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:376:defn:32",
+      "line": 376,
+      "previousKey": "source:A - appendices/analysis.tex:376:defn:32",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:spc-continuous",
+      "line": 384,
+      "previousKey": "prop:spc-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:408:prop:34",
+      "line": 408,
+      "previousKey": "source:A - appendices/analysis.tex:408:prop:34",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:425:defn:35",
+      "line": 425,
+      "previousKey": "source:A - appendices/analysis.tex:425:defn:35",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "new",
+      "key": "lem:regular-paths-bounded-borel",
+      "line": 448,
+      "previousKey": null,
+      "sameProof": false,
+      "sameStatement": false,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:478:defn:37",
+      "line": 478,
+      "previousKey": "source:A - appendices/analysis.tex:469:defn:36",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:skorokhod-metric",
+      "line": 493,
+      "previousKey": "prop:skorokhod-metric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/analysis.tex:504:prop:39",
+      "line": 504,
+      "previousKey": "source:A - appendices/analysis.tex:495:prop:38",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:norm",
+      "line": 7,
+      "previousKey": "defn:norm",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:inner-product",
+      "line": 18,
+      "previousKey": "defn:inner-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:norm-induced-by-inner-product",
+      "line": 30,
+      "previousKey": "prop:norm-induced-by-inner-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:metric-induced-by-norm",
+      "line": 46,
+      "previousKey": "prop:metric-induced-by-norm",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "cor:metric-induced-by-inner-product",
+      "line": 58,
+      "previousKey": "cor:metric-induced-by-inner-product",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:banach-hilbert-separable",
+      "line": 70,
+      "previousKey": "defn:banach-hilbert-separable",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:finite-products",
+      "line": 80,
+      "previousKey": "prop:finite-products",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:bounded-linear-operator",
+      "line": 96,
+      "previousKey": "defn:bounded-linear-operator",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:operator-norm",
+      "line": 106,
+      "previousKey": "defn:operator-norm",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:bounded-iff-continuous",
+      "line": 118,
+      "previousKey": "prop:bounded-iff-continuous",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:dual-space",
+      "line": 123,
+      "previousKey": "defn:dual-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:riesz-representation",
+      "line": 132,
+      "previousKey": "thm:riesz-representation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:adjoint-compact-operators",
+      "line": 144,
+      "previousKey": "defn:adjoint-compact-operators",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:frechet-derivative",
+      "line": 154,
+      "previousKey": "defn:frechet-derivative",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "lem:squared-loss-gradient",
+      "line": 167,
+      "previousKey": "lem:squared-loss-gradient",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/functional-analysis.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:measurable-space",
+      "line": 10,
+      "previousKey": "defn:measurable-space",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:measure",
+      "line": 21,
+      "previousKey": "defn:measure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:atom-diffuse",
+      "line": 34,
+      "previousKey": "defn:atom-diffuse",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:atomic",
+      "line": 51,
+      "previousKey": "thm:atomic",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:measurable-function",
+      "line": 64,
+      "previousKey": "defn:measurable-function",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:trace-sigma-algebra",
+      "line": 73,
+      "previousKey": "defn:trace-sigma-algebra",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:measurable-restrictions",
+      "line": 82,
+      "previousKey": "prop:measurable-restrictions",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:push-forward",
+      "line": 111,
+      "previousKey": "prop:push-forward",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:simple-function",
+      "line": 123,
+      "previousKey": "defn:simple-function",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:bochner-integral",
+      "line": 162,
+      "previousKey": "defn:bochner-integral",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:bochner-integrability",
+      "line": 209,
+      "previousKey": "prop:bochner-integrability",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:expected-value",
+      "line": 217,
+      "previousKey": "defn:expected-value",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:lp-spaces",
+      "line": 228,
+      "previousKey": "defn:lp-spaces",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "rem:lp-point-evaluation",
+      "line": 268,
+      "previousKey": "rem:lp-point-evaluation",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:lp-banach",
+      "line": 272,
+      "previousKey": "prop:lp-banach",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "changed",
+      "key": "prop:cadlag-caglad-l2",
+      "line": 288,
+      "previousKey": "prop:cadlag-caglad-l2",
+      "sameProof": false,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:product-measure",
+      "line": 303,
+      "previousKey": "defn:product-measure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:tonelli-fubini",
+      "line": 312,
+      "previousKey": "thm:tonelli-fubini",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:markov-kernel",
+      "line": 329,
+      "previousKey": "defn:markov-kernel",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:measure-disintegration",
+      "line": 342,
+      "previousKey": "thm:measure-disintegration",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:regular-conditional-distribution",
+      "line": 359,
+      "previousKey": "thm:regular-conditional-distribution",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:finite-integer-valued-measures",
+      "line": 383,
+      "previousKey": "defn:finite-integer-valued-measures",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "thm:prokhorov-metric",
+      "line": 398,
+      "previousKey": "thm:prokhorov-metric",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:kallenberg-random-measure",
+      "line": 424,
+      "previousKey": "defn:kallenberg-random-measure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "source:A - appendices/measure.tex:438:prop:25",
+      "line": 438,
+      "previousKey": "source:A - appendices/measure.tex:438:prop:25",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:mean-measure",
+      "line": 451,
+      "previousKey": "prop:mean-measure",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/measure.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:frechet-martingale",
+      "line": 15,
+      "previousKey": "defn:frechet-martingale",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/extended-research-directions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "defn:cdf-constraint-selection",
+      "line": 52,
+      "previousKey": "defn:cdf-constraint-selection",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/extended-research-directions.tex"
+    },
+    {
+      "change": "unchanged",
+      "key": "prop:cdf-constraint-properties",
+      "line": 79,
+      "previousKey": "prop:cdf-constraint-properties",
+      "sameProof": true,
+      "sameStatement": true,
+      "source": "A - appendices/extended-research-directions.tex"
+    }
+  ],
+  "previousSnapshot": "snapshot-revision-2.json",
+  "removedBlocks": [],
+  "revision": 3,
+  "scope": "All TeX, style and bibliography files; formal inventory follows master.tex recursively.",
+  "snapshotRoot": "C:\\Users\\tokez\\Desktop\\thesis-lean-verification\\audit\\doctoral-2026-10-20\\source-revision-3",
+  "sourceHashes": {
+    "0 - introduction/1_climatechange.tex": "64dc4a332fafbef1f322b735af65fa8e3d029cc2f7112ca78fe11fae0781125d",
+    "0 - introduction/2_description.tex": "c0b2ae08e757402738d9b70868894ea13879aba2b984be20bcfa4a9600b02903",
+    "0 - introduction/3_finance.tex": "8fbcd1ad9099373d618dc675cee6d64cf26ad2584336a51a0ae2151c2951483e",
+    "0 - introduction/4_problemstatement.tex": "fb8bd18c61cef75885ac3b0555e6fa88655bc271a5d35d30d24b5aa1ace82010",
+    "1 - theoretical foundations/1_economics.tex": "6b876e87a16e1bd3f7caf5775cdd40849d35290810682930c5cf7f7a016cff01",
+    "1 - theoretical foundations/2_chapter_market_representations.tex": "1ee103fcb3cd542fe3822050dad3e4834413ac26ad0e5a641c2a8966940d7a50",
+    "1 - theoretical foundations/3_market_actions.tex": "b83497af3d11bf19f6cc5b2deb0e74267944123e29c6d2836c686c2fd999b4f2",
+    "1 - theoretical foundations/4_market_clearing.tex": "257cc6548aeda8175fd72ca7c2b63f5f031d3e45e6c12a67da4b34ffaef89ddb",
+    "1 - theoretical foundations/5_stochastic_markets.tex": "a02b093976dcb14937ea0fa52c56882ef1c5ceded7ed3e33824ba8bff2815112",
+    "2 - day-ahead/1_introduction.tex": "0e35fc0f1cc7d8d25752c8dde3f645c051ed6e8bccbea03650739ac432307937",
+    "2 - day-ahead/2_clearing_operator_price_curves.tex": "d4e57157598bf86bf00f0ead05a2750d48899529d09e2ce1ef0e0eea2a2d07fe",
+    "2 - day-ahead/3_functional_data_analysis.tex": "72f165a00e4e5c388571dddd4abe531ef2d9b9b95c11c641e366bf6f91bc7882",
+    "2 - day-ahead/4_price_curve_analysis.tex": "85b324d3718e150e2b8132f45de062c70fd56adbb757303137a2aec8a16bbc42",
+    "2 - day-ahead/5_forecasting_impact.tex": "f37d82b3aecadba4c11ee57d3bc46bab794c363d8b0e2fc1047779616ca1c5c5",
+    "2 - day-ahead/6_applications.tex": "818f9b85955ad4674ea6027cc7cbc01d7199544899dd86abd520008d604bd7a0",
+    "3 - intraday/1_introduction.tex": "a19aa509aefd24edabdc60e968ef72b82b99697331811fe689fd9fa9d49678c3",
+    "3 - intraday/2_lobs_and_tuples.tex": "29b057655bec4997e29a54183007efae7484ec731598a510e2cc2a04f1035dca",
+    "3 - intraday/3_inference_for_point_processes.tex": "deec4fa438dd1a5f738eff53ae1c0e2d2362df4e4297e16d00e60517ebb25b78",
+    "3 - intraday/4_simulation_of_the_lob.tex": "d4277d795bdbf30a20eb7ea8ecb889c1316a5ddf0a2b444448a37fb107c893e1",
+    "3 - intraday/5_applications.tex": "3dadbaae03f5b0946941dbe6d026c836b1e043c22d68c9b797e63ae5923fba93",
+    "4 - conclusion/conclusion.tex": "d396aa6eac18ca1902158237e9edcc948f9c273895ac6765965c1ef87c2d5506",
+    "A - appendices/algebra.tex": "edd104db54c54c63c4799ca8fa5824ce058e6719fb0e1f1e50453f25c4588e08",
+    "A - appendices/analysis.tex": "b61b8180119afa0157e488e285dc624118a50fceef845a20f3c846ea02859575",
+    "A - appendices/day-ahead-battery-panels.tex": "dbea55d8241947ae00d4e406eee183649cfc8e1b838fe7a106578d12ebb1841c",
+    "A - appendices/day-ahead-numerical-implementation.tex": "5b258d95e96c18f2264bf640539a3326a4c3c90dad6e594d6b06153f2e5f9f29",
+    "A - appendices/extended-research-directions.tex": "20465836909471e012da679216150ca9befe9427434824c082562bdf4f89fcf7",
+    "A - appendices/functional-analysis.tex": "6f77914a39ef9f37ca938f4df3997d79c345bbd2dee7f46bfab12db2b4070cb6",
+    "A - appendices/intraday-policy-details.tex": "c21d71c8b80deb16989e6a937eae0bf8cf579f212d39125f0d86dbe82b2b2e90",
+    "A - appendices/intraday-reconstruction-details.tex": "7c7a52fea2de46babd1d92fcfce144e8c685f643ccdf7de12c7ed203929de29c",
+    "A - appendices/intraday-simulator-details.tex": "823ed5964120c60f1101e18986e2e0faaa3008576e47129ffab482e3ea13c141",
+    "A - appendices/intraday-technical-implementation.tex": "349ce28818863f2b20ac0f2cb6bb813cef8c647e8bbccb804c9f5cb2bac4b67c",
+    "A - appendices/measure.tex": "8139e0af1c8f4ca9301be286cfe848505c0e03b5a7de9bcc6e6b5ab640d4866c",
+    "A - appendices/sets.tex": "12240e16b2970e8d9363342d73742aa3160f59fc78b4ffb6432565c4bd977e2c",
+    "aaumath.sty": "cf454fb63281cea4f08be50f191880e8ae2fe21bdc4b261f4cbfcb72df6849a1",
+    "fig/analogue_attention/aa_styles.tex": "8fcf11b8eeac10b7cf95eaf85ac91343a5474d80f2ba62226eea2d602a7878c8",
+    "fig/analogue_attention/tikz/aa_attention_example.tex": "2c18d52dd9751068c5b34913fd93143c10e4575fcb5175ca9b020ff45d368c79",
+    "fig/analogue_attention/tikz/aa_chain.tex": "be4455e7176632bed5e5d286768e34e30051a1072f850ddf3b62f40f36df850c",
+    "fig/analogue_attention/tikz/aa_embedding_space.tex": "b31963f1ed719aec1d0db25e9373d9c146ed1bd28b3db9916e200be8c1af29de",
+    "fig/analogue_attention/tikz/aa_encoder.tex": "91dd6f1b2b8741e7a235882e5d59073e0d27e4079795c68b26cccf9473bf5d03",
+    "fig/analogue_attention/tikz/aa_library_gate.tex": "cf0ef483c624ffd62dbaf41d76212f7365f800b9b67d0eadc32f844f2c079f43",
+    "fig/analogue_attention/tikz/aa_overview.tex": "56c8d720092c3bde257faaa5d318ac2e1105553f2c1766e5819baef4db59fde1",
+    "fig/analogue_attention/tikz/aa_replay.tex": "bccdce3561dc708ead60da773c03fce8d3672400c7531b10df45b32b40a67520",
+    "fig/analogue_attention/tikz/aa_retrieval.tex": "7e32c818f5a4031ea5c4c9b57a798068810402cdadacd1b8b1ea2e21944405d8",
+    "fig/analogue_attention/tikz/aa_rolling.tex": "cb70a54d94329f39f117a5e9c9cacff0ecca50a1b684368d99e649dd9668839e",
+    "fig/analogue_attention/tikz/aa_sources.tex": "d4759d4d5b08a42dfe6a2b65c48e7218a2b1671372782bb9f8fb9a16f0f04afa",
+    "fig/analogue_attention/tikz/aa_tokens.tex": "07323ed3a16611256bd9cc82afe8ed73c4747637e6d46c47d60a801294cc6108",
+    "fig/analogue_attention/tikz/se_strategies.tex": "eab7d1748240d993f40d924048e2e63e6a0699e68c83b0262c6484166de941a1",
+    "fig/theory/addition.tex": "159fe729ea991595ae67d99ea1d5782fc31d2379b5ebb87e1f7cfd1deeeae606",
+    "fig/theory/composite-action.tex": "95934e66a0bb9f4f0e3d7e7e322738ab9b4d30d50c0d73f2c6c160dfbd6ac864",
+    "fig/theory/distance-to-set.tex": "8ad5966c62e73f98a54819bff6475b65d47cf8712cea23143066d734ecd1b61e",
+    "fig/theory/hausdorff.tex": "9db1e5682d2aa5d5d372ae5aa0db9d57bb6fdd4fb9a269f49bc31d03dca83304",
+    "fig/theory/modification.tex": "ee3fe97aeaa779ec595bbaa435d44dca231ccdb9e97e65c01c9bce5aeae5937e",
+    "fig/theory/removal.tex": "4288a40dd959b1942f6b9017d0ea654a05afc50c187f9507d29873fe109bf08e",
+    "fig/theory/separation-of-points.tex": "cb4bfd367755ed6f208045d86a89d6a1948644aa888db1bd362cf47f12a4e5da",
+    "fig/theory/sorting.tex": "8c7ac1d9fde8c274830e5928322705bd96952e7badb5dedd5aba197a9ee0912e",
+    "fig/theory/topology-space.tex": "208c26d539944c53d7b485f9df9059c17a85c1fc7359cbddf488c6f520f910b7",
+    "fig/theory/tuple-style.tex": "f52310d5e2f0d3e5755d0fd785177667c2d18f4ab8d92252a6f77090a970c88b",
+    "fig/theory/tuplefilter.tex": "b8b727beff41ccc15d9968b0aa7da239dddcfc928ca1bfa9361d3a9f9d7eea79",
+    "fig/tikz/aau-badge.tex": "2b9685568a7fca40f843eb15810af77deb41e3e4b698c25bb3a79c91ee5d37a2",
+    "fig/tuplehausdorff-corrected.tex": "b5c656199f69eb795eac8d846ff0638972a537eaa2a580a7a0c5ae7fb63410e7",
+    "incl/bib/articles.bib": "4a51f3bca02a7758c964c12d25b84ddccb092222390cc584d2ff4172e28f01a4",
+    "incl/bib/books.bib": "ccb410d8b9064338ccda753062d6adc220c589d77ff7f1013f843ae2e4b5c1f5",
+    "incl/bib/software.bib": "fba1312313ee6e5acbed5751a0c6f9a6869b62c77dc471e11d2d4d4278640284",
+    "incl/misc/abstract.tex": "4c83cf9b7ef67506b807248a43ca5f4eaa59abaea3c2320506eb9a04cbb2ad33",
+    "incl/misc/contents.tex": "b46d0abea24a4067f0f6b60942ed6e456c9e92e10d5b02013827fdac27c14a69",
+    "incl/misc/frontpage.tex": "9e2c1052ec3d2920a08273296b72c7220e48829376e739209e6774cee4775392",
+    "incl/misc/notation.tex": "bcb2eb6e04f44dda0ac232b7d92588addd3ce978fe6f7e1412342d01a29a4c16",
+    "incl/misc/preface.tex": "01fcac383f81604bd0a25a7c7db7d00ba0995cfc3e833e912ed197fcbf943fc0",
+    "incl/misc/resume.tex": "604165063ab29d564dfdd78bac33a91a66d3e592a2abbb808ec9a8b07c12196c",
+    "incl/misc/titlepage.tex": "55a2d92f45c0eff30264e978f2e03395e3fb07420b2eb122c3059052b64afee6",
+    "incl/pre/cmds.tex": "3f52e91f40c981498eb224c2b3150dfdabb3c68988cf539710755271dbcd5bb1",
+    "incl/pre/conf.tex": "79d8ecf31e3313d8129d7e757fff385f3b1c473a6890882b4514647dbe5e133f",
+    "incl/pre/figstyle.tex": "4328e15dc3273091b9a6f822855815468ab5e42208dccfc5bb605e5664a3c5f5",
+    "incl/pre/pkgs.tex": "ee1dec10b15c1812d261f10887541754dbdfcea7a6e070280f26126a08664500",
+    "master.tex": "8bc95974e87d98d84bda4ef63751ede8f108278846383406aa2a67193435f749",
+    "parts/0-introduction.tex": "b229573967733fe04894b179f84c492c9de80eb401a171c9c246fb1fa6dcc5b2",
+    "parts/1-foundations.tex": "9a8465253f584b61b562c5007283ad30f5072bb5df94ddb1ff80e6085ee79eee",
+    "parts/2-day-ahead.tex": "5d8c2117c755c0ac6dba92b68ae2f80a151e4fd7bbc55e98b174cfae19feb0d1",
+    "parts/3-intraday.tex": "15f99577e6de4891ddb05918873aa1a104e9033bfbd449b654154b644f4bcae6",
+    "parts/4-conclusion.tex": "3482e25dae50492459f0e0a0dd59ce256db33c5615f59d8c20188a62f23391e9",
+    "parts/appendices.tex": "180924ca93a4e6e5f9b53e01bbb3391b392353dca66d7c5a6eef68ea5b8aab0b",
+    "parts/bibliography.tex": "92d09184e63dd4cfa54f6cff5419681fe1854e84051cf727b277f06f46d2017e",
+    "parts/closing.tex": "8eed1529598db475f47d7411ad9c0c1a6accaff3ee37f2789e362300a06efbe8",
+    "parts/index.tex": "0b0c0be12c34080df6872eb231c8dd24646a119f3f047210106d9337206b5106"
+  },
+  "sourceRoot": "C:\\Users\\tokez\\Desktop\\Doctoral Thesis",
+  "summary": {
+    "duplicateLabels": {},
+    "environmentCount": 408,
+    "environmentKinds": {
+      "axiom": 10,
+      "cor": 29,
+      "defn": 162,
+      "exmp": 11,
+      "lem": 15,
+      "prop": 104,
+      "rem": 32,
+      "thm": 45
+    },
+    "labeledEnvironmentCount": 375,
+    "proofSvgCount": 2,
+    "sourceCount": 74,
+    "svgCount": 28,
+    "unlabeledEnvironmentCount": 33
+  },
+  "sourceRootHistory": [
+    {
+      "path": "C:\\Users\\tokez\\Desktop\\UltravibePhDThesis-doctoral-thesis\\UltravibePhDThesis-doctoral-thesis",
+      "until": "2026-10-21",
+      "note": "Working copy relocated to a git clone of TokeZinn/Doctoral-Thesis with identical content."
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+name: Market clearing
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part I, Ch. 4 (market clearing)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Foundations.MarketClearing.Alignment
+            Thesis.Foundations.MarketClearing.DoctoralLayerBorel
+            Thesis.Foundations.MarketClearing.DoctoralPermutation
+            Thesis.Foundations.MarketClearing.DoctoralResults
+            Thesis.Foundations.MarketClearing.DoctoralSemicontinuity
+            Thesis.Foundations.MarketClearing.DoctoralSemicontinuitySource
+            Thesis.Foundations.MarketClearing.Equilibrium
+            Thesis.Foundations.MarketClearing.MidpointPrice
+            Thesis.Foundations.MarketClearing.ProjectionSource
+            Thesis.Foundations.MarketClearing.QuantityPerturbation
+            Thesis.Foundations.MarketClearing.Selection
+            Thesis.Foundations.MarketClearing.SeparationAlgebra
+            Thesis.Foundations.MarketClearing.SeparationConcat
+            Thesis.Foundations.MarketClearing.Sorting
+            Thesis.Foundations.MarketClearing.ThresholdClearing
+            Thesis.Foundations.MarketClearing.ThresholdMarginals

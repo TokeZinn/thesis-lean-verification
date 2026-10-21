@@ -1,0 +1,95 @@
+name: Appendices
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build appendices
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Appendices.Algebra.Algebra
+            Thesis.Appendices.Algebra.CompletionScope
+            Thesis.Appendices.Algebra.DoctoralAlgebra
+            Thesis.Appendices.Algebra.GroupCompletion
+            Thesis.Appendices.Analysis.Analysis
+            Thesis.Appendices.Analysis.AnalysisBasic
+            Thesis.Appendices.Analysis.BoundedMetric
+            Thesis.Appendices.Analysis.ContinuousPathSource
+            Thesis.Appendices.Analysis.DoctoralAnalysis
+            Thesis.Appendices.Analysis.DoctoralPolish
+            Thesis.Appendices.Analysis.ExtendedAnalysis
+            Thesis.Appendices.Analysis.ExtendedSkorokhod
+            Thesis.Appendices.Analysis.RegularPathSupremum
+            Thesis.Appendices.Analysis.RegularPaths
+            Thesis.Appendices.Analysis.SkorokhodCompleteness
+            Thesis.Appendices.Analysis.SkorokhodConvergence
+            Thesis.Appendices.Analysis.SkorokhodInterpolation
+            Thesis.Appendices.Analysis.SkorokhodMetricCore
+            Thesis.Appendices.Analysis.SkorokhodPartitions
+            Thesis.Appendices.Analysis.SkorokhodRegularity
+            Thesis.Appendices.Analysis.SkorokhodReversal
+            Thesis.Appendices.Analysis.SkorokhodSeparability
+            Thesis.Appendices.Analysis.SkorokhodSeparation
+            Thesis.Appendices.Analysis.SkorokhodStepPaths
+            Thesis.Appendices.Analysis.SkorokhodTimeChangeLimits
+            Thesis.Appendices.Analysis.SkorokhodTimeChangeMetric
+            Thesis.Appendices.Analysis.SkorokhodTimeChanges
+            Thesis.Appendices.Analysis.SkorokhodUniform
+            Thesis.Appendices.Analysis.SourceAnalysisProofs
+            Thesis.Appendices.DayAheadNumerical.EmpiricalCalendar
+            Thesis.Appendices.DayAheadNumerical.ForecastReader
+            Thesis.Appendices.DayAheadNumerical.GridFits
+            Thesis.Appendices.DayAheadNumerical.GridPAVA
+            Thesis.Appendices.DayAheadNumerical.NumericalDecoding
+            Thesis.Appendices.DayAheadNumerical.NumericalEmbedding
+            Thesis.Appendices.DayAheadNumerical.NumericalRepresentation
+            Thesis.Appendices.DayAheadNumerical.PAVA.Algorithm
+            Thesis.Appendices.DayAheadNumerical.PAVA.Blocks
+            Thesis.Appendices.DayAheadNumerical.PAVA.Fits
+            Thesis.Appendices.DayAheadNumerical.PAVA.Optimality
+            Thesis.Appendices.DayAheadNumerical.ValidationCheckpoint
+            Thesis.Appendices.DayAheadNumerical.WeightedIsotonic
+            Thesis.Appendices.DayAheadNumerical.WeightedPAVA
+            Thesis.Appendices.ExtendedResearch.CDFConditional
+            Thesis.Appendices.ExtendedResearch.CDFConditionalSource
+            Thesis.Appendices.ExtendedResearch.CDFConstraint
+            Thesis.Appendices.ExtendedResearch.CDFSelection
+            Thesis.Appendices.ExtendedResearch.FrechetMartingale
+            Thesis.Appendices.ExtendedResearch.FrechetMartingaleExtended
+            Thesis.Appendices.ExtendedResearch.NumericalNormCounterexample
+            Thesis.Appendices.ExtendedResearch.PITCalibration
+            Thesis.Appendices.ExtendedResearch.PITCounterexample
+            Thesis.Appendices.ExtendedResearch.PITInfiniteCounterexample
+            Thesis.Appendices.ExtendedResearch.RandomizedCDF
+            Thesis.Appendices.ExtendedResearch.RandomizedPIT
+            Thesis.Appendices.ExtendedResearch.RevenueConcavity
+            Thesis.Appendices.FunctionalAnalysis.DoctoralFunctionalAnalysis
+            Thesis.Appendices.FunctionalAnalysis.FiniteProducts
+            Thesis.Appendices.FunctionalAnalysis.FunctionalAnalysis
+            Thesis.Appendices.MeasureTheory.AtomicMeasures
+            Thesis.Appendices.MeasureTheory.BochnerConstruction
+            Thesis.Appendices.MeasureTheory.ConditionalDistribution
+            Thesis.Appendices.MeasureTheory.ExtendedFubini
+            Thesis.Appendices.MeasureTheory.ExtendedProkhorov
+            Thesis.Appendices.MeasureTheory.ExtendedRandomMeasures
+            Thesis.Appendices.MeasureTheory.MeasureTheory
+            Thesis.Appendices.MeasureTheory.RegularPathRecovery
+            Thesis.Appendices.SetTheory.AppendixSourceProofs
+            Thesis.Appendices.SetTheory.DoctoralSetTheory
+            Thesis.Appendices.SetTheory.SetConstructions
+            Thesis.Appendices.SetTheory.SetTheory
+            Thesis.Appendices.SetTheory.ZFCFoundations

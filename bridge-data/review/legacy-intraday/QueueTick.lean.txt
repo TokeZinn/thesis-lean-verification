@@ -1,0 +1,97 @@
+import Intraday.EventQueue
+
+/-! # Due groups precede the completed-window queue policy
+
+This is the event-grid replay/boundary phase of the reference rollout. Its
+output is the input to anchor correction and subsequent-window retrieval.
+A due-group failure suppresses the boundary action, preserving the queue and
+partial logs at that point. Anchor/retrieval are separate later phases.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.QueueTick
+
+open GroupReplay EventQueue LiveLedger
+
+structure TickOutput where
+  duePhase : QueueOutput
+  boundaryPhase : BoundaryOutput
+
+def applyBoundary (depth : ℕ) (dueOutput : QueueOutput)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) : BoundaryOutput :=
+  match completedWindow with
+  | none => ⟨⟨dueOutput.state, [], dueOutput.pending⟩, none, []⟩
+  | some w => boundary depth dueOutput.state dueOutput.pending w policy
+
+def tick (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) : TickOutput :=
+  let drained := drainDue depth s queue time
+  ⟨drained, applyBoundary depth drained completedWindow policy⟩
+
+theorem applyBoundary_accounting (depth : ℕ) (q : QueueOutput)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) :
+    ((applyBoundary depth q completedWindow policy).discarded ++
+      (applyBoundary depth q completedWindow policy).consumed ++
+      (applyBoundary depth q completedWindow policy).pending).Perm q.pending := by
+  cases completedWindow with
+  | none => exact List.Perm.refl _
+  | some w => exact boundary_accounting depth q.state q.pending w policy
+
+theorem tick_accounting (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) :
+    let out := tick depth s queue time completedWindow policy
+    (out.duePhase.consumed ++ (out.boundaryPhase.discarded ++ out.boundaryPhase.consumed ++
+      out.boundaryPhase.pending)).Perm queue :=
+  ((List.Perm.refl _).append (applyBoundary_accounting depth _ completedWindow policy)).trans
+    (drainSelected_accounting depth s queue (due time))
+
+theorem applyBoundary_log (depth : ℕ) (q : QueueOutput)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) :
+    (applyBoundary depth q completedWindow policy).state.log.map LogEntry.group =
+      q.state.log.map LogEntry.group ++
+        (applyBoundary depth q completedWindow policy).consumed := by
+  cases completedWindow with
+  | none => simp [applyBoundary]
+  | some w => exact boundary_log depth q.state q.pending w policy
+
+theorem tick_log_order (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) :
+    let out := tick depth s queue time completedWindow policy
+    out.boundaryPhase.state.log.map LogEntry.group =
+      s.log.map LogEntry.group ++ out.duePhase.consumed ++ out.boundaryPhase.consumed := by
+  simp only [tick, applyBoundary_log, drainDue, drainSelected_log]
+
+theorem applyBoundary_failed (depth : ℕ) (q : QueueOutput)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) (hf : q.state.failure.isSome = true) :
+    applyBoundary depth q completedWindow policy = ⟨⟨q.state, [], q.pending⟩, none, []⟩ := by
+  cases completedWindow with
+  | none => rfl
+  | some w => exact boundary_failed depth q.state q.pending w policy hf
+
+theorem tick_due_failure (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy)
+    (hf : (drainDue depth s queue time).state.failure.isSome = true) :
+    (tick depth s queue time completedWindow policy).boundaryPhase =
+      ⟨⟨(drainDue depth s queue time).state, [],
+        (drainDue depth s queue time).pending⟩, none, []⟩ :=
+  applyBoundary_failed depth _ completedWindow policy hf
+
+theorem tick_invariant (depth : ℕ) {s : State} (hs : Invariant s)
+    (queue : List ScheduledGroup) (time : ℝ) (completedWindow : Option ℕ)
+    (policy : BoundaryPolicy) :
+    Invariant (tick depth s queue time completedWindow policy).boundaryPhase.state := by
+  have hd : Invariant (drainDue depth s queue time).state := run_invariant depth hs _
+  cases completedWindow with
+  | none => exact hd
+  | some w => exact boundary_invariant depth hd _ w policy
+
+theorem tick_counter (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (completedWindow : Option ℕ) (policy : BoundaryPolicy) :
+    s.book.nextId ≤
+      (tick depth s queue time completedWindow policy).boundaryPhase.state.book.nextId := by
+  have hd := drainSelected_counter depth s queue (due time)
+  cases completedWindow with
+  | none => exact hd
+  | some w => exact hd.trans (boundary_counter depth _ _ w policy)
+
+end Thesis.Intraday.QueueTick

@@ -1,0 +1,114 @@
+import Intraday.GeometrySweep
+import Intraday.HistoricalFitGuards
+import Mathlib.Data.Matrix.Mul
+
+/-! # The reference simulator's 41 + 41 to 5 geometry gauge
+
+Simulator appendix, Geometry Gauge. Empirical directions and historical scales
+are inputs to this exact map; this does not certify their numerical estimation.
+Indices are zero-based, so the source's node i is `node (i - 1)`.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.GeometryGauge
+
+open Execution GeometrySweep
+open scoped BigOperators
+
+abbrev Vector := Fin 82 → ℝ
+abbrev Score := Fin 5 → ℝ
+
+def node (i : Fin 41) : ℝ := -1 + (i.val : ℝ) / 20
+
+theorem node_bounds (i : Fin 41) : -1 ≤ node i ∧ node i ≤ 1 := by
+  have h : (i.val : ℝ) ≤ 40 := by exact_mod_cast (show i.val ≤ 40 by omega)
+  have hz : (0 : ℝ) ≤ i.val := Nat.cast_nonneg _
+  dsimp [node]
+  constructor <;> linarith
+
+@[simp] theorem node_first : node 0 = -1 := by norm_num [node]
+@[simp] theorem node_middle : node 20 = 0 := by norm_num [node]
+@[simp] theorem node_last : node 40 = 1 := by norm_num [node]
+
+theorem node_step (i : Fin 40) : node i.succ - node i.castSucc = 1 / 20 := by
+  simp [node, Nat.cast_add]
+  ring
+
+theorem node_strictMono : StrictMono node := by
+  intro i j hij
+  have h : (i.val : ℝ) < j.val := by exact_mod_cast hij
+  dsimp [node]
+  linarith
+
+def sampled (b : State) (notionalScale displacementScale : ℝ) : Vector :=
+  fun i => Fin.addCases (motive := fun _ : Fin (41 + 41) => ℝ)
+    (fun j => signedCost b (node j) / notionalScale)
+    (fun j => displacement b (node j) / displacementScale) i
+
+@[simp] theorem sampled_notional (b : State) (sC sD : ℝ) (i : Fin 41) :
+    sampled b sC sD (Fin.castAdd 41 i) = signedCost b (node i) / sC := by
+  simp [sampled]
+
+@[simp] theorem sampled_displacement (b : State) (sC sD : ℝ) (i : Fin 41) :
+    sampled b sC sD (Fin.natAdd 41 i) = displacement b (node i) / sD := by
+  simp only [sampled, Fin.addCases_right]
+
+theorem sampled_zero_coordinates (b : State) (sC sD : ℝ) :
+    sampled b sC sD 20 = 0 ∧ sampled b sC sD 61 = 0 := by
+  constructor
+  · change sampled b sC sD (Fin.castAdd 41 (20 : Fin 41)) = 0
+    rw [sampled_notional, node_middle, signedCost_zero, zero_div]
+  · change sampled b sC sD (Fin.natAdd 41 (20 : Fin 41)) = 0
+    rw [sampled_displacement, node_middle, displacement_zero, zero_div]
+
+theorem every_node_within_depth (b : State) (i : Fin 41) :
+    (allocations (bookOrders b.1) (requestedVolume b (node i))).sum =
+        requestedVolume b (node i) ∧
+    (allocations (bookOrders b.2) (requestedVolume b (node i))).sum =
+        requestedVolume b (node i) :=
+  requestedVolume_fully_allocated b (abs_le.mpr (node_bounds i))
+
+structure HistoricalBasis where
+  mean : Vector
+  directions : Matrix (Fin 82) (Fin 5) ℝ
+
+def project (basis : HistoricalBasis) (v : Vector) : Score :=
+  basis.directions.transpose.mulVec (v - basis.mean)
+
+def gauge (basis : HistoricalBasis) (sC sD : ℝ) (b : State) : Score :=
+  project basis (sampled b sC sD)
+
+theorem gauge_coordinate (basis : HistoricalBasis) (sC sD : ℝ) (b : State) (j : Fin 5) :
+    gauge basis sC sD b j = ∑ i, basis.directions i j * (sampled b sC sD i - basis.mean i) :=
+  rfl
+
+/-- One comparison uses a common basis; its common historical mean cancels. -/
+theorem project_difference (basis : HistoricalBasis) (v w : Vector) :
+    project basis v - project basis w = basis.directions.transpose.mulVec (v - w) := by
+  rw [project, project, ← Matrix.mulVec_sub]
+  congr 1
+  abel
+
+theorem gauge_difference (basis : HistoricalBasis) (sC sD : ℝ) (live candidate : State) :
+    gauge basis sC sD live - gauge basis sC sD candidate =
+      basis.directions.transpose.mulVec (sampled live sC sD - sampled candidate sC sD) :=
+  project_difference basis _ _
+
+theorem project_center (basis : HistoricalBasis) : project basis basis.mean = 0 := by
+  simp [project]
+
+theorem project_translate (basis : HistoricalBasis) (v shift : Vector) :
+    project { basis with mean := basis.mean + shift } (v + shift) = project basis v := by
+  unfold project
+  congr 1
+  funext i
+  simp only [Pi.sub_apply, Pi.add_apply]
+  ring
+
+/-- This wrapper shares the appendix's negligible-scale replacement rule.
+Both raw pooled scales and the tolerance are required to be nonnegative. -/
+def scaledGauge (basis : HistoricalBasis) (tolerance rawC rawD : ℝ) (b : State) : Score :=
+  gauge basis (HistoricalFitGuards.replaceNegligible tolerance rawC)
+    (HistoricalFitGuards.replaceNegligible tolerance rawD) b
+
+end Thesis.Intraday.GeometryGauge

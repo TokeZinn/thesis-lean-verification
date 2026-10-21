@@ -1,0 +1,148 @@
+import Intraday.EventReplay
+import Intraday.RetrievalSelection
+import Intraday.GeometryGauge
+
+/-! # Retrieval from the post-correction book with an explicit fallback record
+
+Query and candidate gauges use actual visible books in the same historical
+basis. The exact existing time gate, nearest-neighbour selection and normalized
+law are used; fallback recomputes all of them on its own support. This is the
+19-coordinate reference rule. Random-stream implementation and historical
+library construction remain separate inputs.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.RetrievalPhase
+
+open GroupReplay RetrievalSelection
+
+structure Transition where
+  book : Clearing.Market
+  start : MacroPath.Row
+  destination : MacroPath.Row
+  entryTime : ℝ
+  burst : List BurstStaging.SourceGroup
+
+structure Fit where
+  basis : GeometryGauge.HistoricalBasis
+  notionalScale : ℝ
+  displacementScale : ℝ
+  retrievalScale : ReferenceKey
+
+def bookKey (fit : Fit) (book : Clearing.Market) (start destination : MacroPath.Row) :
+    ReferenceKey :=
+  ⟨start, GeometryGauge.gauge fit.basis fit.notionalScale fit.displacementScale
+    (Clearing.splitMarket book), destination⟩
+
+def candidateKey (fit : Fit) (t : Transition) : ReferenceKey :=
+  bookKey fit t.book t.start t.destination
+
+def distance (fit : Fit) (library : ℕ → Transition) (query : ReferenceKey) (j : ℕ) : ℝ :=
+  referenceDistance query (candidateKey fit (library j)) fit.retrievalScale
+
+structure SelectedLaw where
+  distribution : PMF ℕ
+  usedFallback : Bool
+
+def retrieveDetailed (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (d gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Option SelectedLaw :=
+  match gatedAttempt primary entry clock d gate hg with
+  | some p => some ⟨p, false⟩
+  | none => (gatedAttempt fallback entry clock d gate hg).map (fun p => ⟨p, true⟩)
+
+theorem retrieveDetailed_distribution (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (d gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    (retrieveDetailed primary fallback entry clock d gate hg).map SelectedLaw.distribution =
+      retrieve primary fallback entry clock d gate hg := by
+  unfold retrieveDetailed retrieve
+  cases gatedAttempt primary entry clock d gate hg <;> simp [Function.comp_def]
+
+theorem retrieveDetailed_failure (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (d gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    retrieveDetailed primary fallback entry clock d gate hg = none ↔
+      gatedAttempt primary entry clock d gate hg = none ∧
+        gatedAttempt fallback entry clock d gate hg = none := by
+  unfold retrieveDetailed
+  cases gatedAttempt primary entry clock d gate hg <;> simp
+
+theorem retrieveDetailed_source (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (d gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) {out : SelectedLaw}
+    (h : retrieveDetailed primary fallback entry clock d gate hg = some out) :
+    gatedAttempt (if out.usedFallback then fallback else primary) entry clock d gate hg =
+      some out.distribution ∧
+      (out.usedFallback = true → gatedAttempt primary entry clock d gate hg = none) := by
+  unfold retrieveDetailed at h
+  split at h
+  · rename_i p hp
+    have he := Option.some.inj h
+    subst out
+    simpa using hp
+  · rename_i hp
+    obtain ⟨p, hpf, he⟩ := Option.map_eq_some_iff.mp h
+    subst out
+    exact ⟨hpf, fun _ => hp⟩
+
+theorem retrieveDetailed_support (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (d gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) {out : SelectedLaw}
+    (h : retrieveDetailed primary fallback entry clock d gate hg = some out)
+    {j : ℕ} (hj : j ∈ out.distribution.support) :
+    j ∈ (if out.usedFallback then fallback else primary) ∧ |entry j - clock| ≤ (3 / 100 : ℝ) :=
+  (mem_timeGate _ entry clock j).mp
+    (attempt_support _ d gate hg
+      (retrieveDetailed_source primary fallback entry clock d gate hg h).1 hj)
+
+def retrieveBook (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    (clock : ℝ) (book : Clearing.Market) (start destination : MacroPath.Row)
+    (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Option SelectedLaw :=
+  retrieveDetailed primary fallback (fun j => (library j).entryTime) clock
+    (distance fit library (bookKey fit book start destination)) gate hg
+
+inductive Preparation where
+  | skipped
+  | failed (usedFallback : Bool)
+  | ready (law : SelectedLaw)
+
+def prepare (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (clock : ℝ) (hasNextWindow : Bool)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Preparation :=
+  if x.session.replay.failure.isSome || !hasNextWindow then .skipped else
+    match retrieveBook fit library primary fallback clock (LiveLedger.market x.session.replay.book)
+      start destination gate hg with
+    | none => .failed true
+    | some law => .ready law
+
+theorem prepare_failed_state (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (clock : ℝ) (hasNextWindow : Bool)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j)
+    (hf : x.session.replay.failure.isSome = true) :
+    prepare fit library primary fallback x clock hasNextWindow start destination gate hg =
+      .skipped := by
+  simp [prepare, hf]
+
+theorem prepare_final_boundary (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (clock : ℝ)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    prepare fit library primary fallback x clock false start destination gate hg = .skipped := by
+  simp [prepare]
+
+def prepareAfterReplay (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (hasNextWindow : Bool) (start destination : MacroPath.Row)
+    (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Preparation :=
+  prepare fit library primary fallback (EventReplay.advance depth enabled anchor x event)
+    event.time hasNextWindow start destination gate hg
+
+theorem query_uses_corrected_book (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (hf : x.session.replay.failure = none) (fit : Fit) (start destination : MacroPath.Row) :
+    (bookKey fit (LiveLedger.market
+      (EventReplay.advance depth enabled anchor x event).session.replay.book)
+        start destination).gauge =
+      GeometryGauge.gauge fit.basis fit.notionalScale fit.displacementScale
+        (Clearing.splitMarket (LiveLedger.market
+          (EventReplay.afterAnchor depth enabled anchor x event).replay.book)) := by
+  rw [EventReplay.advance_active depth enabled anchor x event hf]
+  rfl
+
+end Thesis.Intraday.RetrievalPhase

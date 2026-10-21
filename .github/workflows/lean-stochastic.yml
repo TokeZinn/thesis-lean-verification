@@ -1,0 +1,48 @@
+name: Stochastic markets
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part I, Ch. 5 (stochastic markets)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Foundations.Stochastic.AtomicDecomposition
+            Thesis.Foundations.Stochastic.DoctoralPointProcesses
+            Thesis.Foundations.Stochastic.ExtendedPointMeasures
+            Thesis.Foundations.Stochastic.FiniteMeasureBorel
+            Thesis.Foundations.Stochastic.FiniteMeasureCompleteness
+            Thesis.Foundations.Stochastic.FiniteMeasureDensity
+            Thesis.Foundations.Stochastic.FiniteMeasureProkhorov
+            Thesis.Foundations.Stochastic.GrothendieckSource
+            Thesis.Foundations.Stochastic.IntegerMeasureCompleteness
+            Thesis.Foundations.Stochastic.IntegerMeasureSeparability
+            Thesis.Foundations.Stochastic.KernelHilbert
+            Thesis.Foundations.Stochastic.KernelHilbertAlignment
+            Thesis.Foundations.Stochastic.KernelMetric
+            Thesis.Foundations.Stochastic.MatchingSourceProof
+            Thesis.Foundations.Stochastic.MatchingTuples
+            Thesis.Foundations.Stochastic.MeasurableDistinctCounts
+            Thesis.Foundations.Stochastic.MeasurableFiniteMeasures
+            Thesis.Foundations.Stochastic.MeasurableOrderedValues
+            Thesis.Foundations.Stochastic.PermutationCardinalitySource
+            Thesis.Foundations.Stochastic.PermutationMultiplicity
+            Thesis.Foundations.Stochastic.PermutedTuples
+            Thesis.Foundations.Stochastic.PointProcessAlignment
+            Thesis.Foundations.Stochastic.PointProcesses
+            Thesis.Foundations.Stochastic.TupleMeasures
+            Thesis.Foundations.Stochastic.UniformTightness

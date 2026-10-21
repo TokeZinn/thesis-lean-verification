@@ -1,0 +1,148 @@
+import Intraday.LedgerMap
+import Intraday.AnchoredBooks
+
+/-! # Common shifts on the lifecycle-bearing book
+
+The total order helper leaves an out-of-domain order unchanged. The applied
+anchor always supplies a bound certificate for every live entry; on that
+domain the helper is proved equal to the exact price translation. Metadata,
+lookup identity, positions and allocation state are retained throughout.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.AnchoredLedger
+
+open LiveLedger LedgerMap AnchoredBooks Clearing Execution
+open Foundations.MarketRepresentation Foundations.MarketRepresentation.TuplesBasic
+
+def boundedShift (shift : ℝ) (o : Order) : Order :=
+  if h : price o + shift ∈ Set.Icc (-9999 : ℝ) 9999 then shiftOrder o shift h else o
+
+theorem boundedShift_exact (shift : ℝ) (o : Order)
+    (h : price o + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    boundedShift shift o = shiftOrder o shift h := by simp [boundedShift, h]
+
+theorem boundedShift_price (shift : ℝ) (o : Order)
+    (h : price o + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    price (boundedShift shift o) = price o + shift := by rw [boundedShift_exact _ _ h]; rfl
+
+@[simp] theorem boundedShift_quantity (shift : ℝ) (o : Order) :
+    quantity (boundedShift shift o) = quantity o := by unfold boundedShift; split <;> rfl
+
+@[simp] theorem boundedShift_time (shift : ℝ) (o : Order) :
+    time (boundedShift shift o) = time o := by unfold boundedShift; split <;> rfl
+
+def shiftLedger (shift : ℝ) (s : Ledger) : Ledger := mapLedger (boundedShift shift) s
+
+def InBounds (shift : ℝ) (s : Ledger) : Prop :=
+  ∀ a ∈ s.live, price a.order + shift ∈ Set.Icc (-9999 : ℝ) 9999
+
+theorem shiftLedger_valid (shift : ℝ) {s : Ledger} (hs : Valid s) :
+    Valid (shiftLedger shift s) := mapLedger_valid _ hs
+
+theorem shiftLedger_lookup (shift : ℝ) (s : Ledger) (key : ℕ) :
+    lookup (shiftLedger shift s) key = (lookup s key).map (mapEntry (boundedShift shift)) :=
+  mapLedger_lookup _ _ _
+
+theorem shiftLedger_lookup_price (shift : ℝ) (s : Ledger) (hb : InBounds shift s)
+    {key : ℕ} {a : Entry} (ha : lookup s key = some a) :
+    lookup (shiftLedger shift s) key = some (mapEntry (boundedShift shift) a) ∧
+      price (mapEntry (boundedShift shift) a).order = price a.order + shift :=
+  ⟨by rw [shiftLedger_lookup, ha]; rfl,
+    boundedShift_price shift a.order (hb a (lookup_some_mem ha))⟩
+
+theorem shiftLedger_metadata (shift : ℝ) (s : Ledger) :
+    (shiftLedger shift s).live.map Entry.liveId = s.live.map Entry.liveId ∧
+      (shiftLedger shift s).live.map Entry.localKey = s.live.map Entry.localKey ∧
+      (shiftLedger shift s).live.map Entry.isBuy = s.live.map Entry.isBuy ∧
+      (shiftLedger shift s).nextId = s.nextId :=
+  ⟨mapLedger_ids _ _, mapLedger_keys _ _, mapLedger_sides _ _, rfl⟩
+
+theorem shiftLedger_quantities (shift : ℝ) (s : Ledger) :
+    (shiftLedger shift s).live.map (fun a => quantity a.order) =
+      s.live.map (fun a => quantity a.order) := by
+  simp [shiftLedger, mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+theorem shiftLedger_times (shift : ℝ) (s : Ledger) :
+    (shiftLedger shift s).live.map (fun a => time a.order) =
+      s.live.map (fun a => time a.order) := by
+  simp [shiftLedger, mapLedger, mapEntry, List.map_map, Function.comp_def]
+
+theorem marketKey_shift_iff (a b : TaggedOrder) (shift : ℝ)
+    (ha : price a.2 + shift ∈ Set.Icc (-9999 : ℝ) 9999)
+    (hb : price b.2 + shift ∈ Set.Icc (-9999 : ℝ) 9999) :
+    marketKey ⟨a.1, boundedShift shift a.2⟩ ≤ marketKey ⟨b.1, boundedShift shift b.2⟩ ↔
+      marketKey a ≤ marketKey b := by
+  rw [boundedShift_exact _ _ ha, boundedShift_exact _ _ hb]
+  rcases a with ⟨buyA, a⟩
+  rcases b with ⟨buyB, b⟩
+  cases buyA <;> cases buyB <;>
+    simp only [marketKey, Bool.false_eq_true, ↓reduceIte,
+      Prod.Lex.toLex_le_toLex]
+  · simpa using priority_order_unchanged false a b shift ha hb
+  · norm_num
+  · norm_num
+  · simpa using priority_order_unchanged true a b shift ha hb
+
+theorem shiftLedger_sorted (shift : ℝ) (s : Ledger) (hb : InBounds shift s) :
+    SortedMarket (market (shiftLedger shift s)) ↔ SortedMarket (market s) := by
+  rw [shiftLedger, mapLedger_market]
+  constructor <;> intro hs i j hij
+  · exact (marketKey_shift_iff _ _ shift
+      (hb _ (List.get_mem s.live i)) (hb _ (List.get_mem s.live j))).mp (hs hij)
+  · exact (marketKey_shift_iff _ _ shift
+      (hb _ (List.get_mem s.live i)) (hb _ (List.get_mem s.live j))).mpr (hs hij)
+
+theorem side_order_mem (s : Ledger) (buy : Bool) (i : Fin (side buy (market s)).1) :
+    ∃ a ∈ s.live, a.order = (side buy (market s)).2 i := by
+  refine ⟨s.live.get (sideIndex buy (market s) i), List.get_mem _ _, ?_⟩
+  have h := congrArg Sigma.snd (side_entry buy (market s) i)
+  exact h.symm
+
+theorem side_bounds (shift : ℝ) (s : Ledger) (hb : InBounds shift s)
+    (buy : Bool) (i : Fin (side buy (market s)).1) :
+    price ((side buy (market s)).2 i) + shift ∈ Set.Icc (-9999 : ℝ) 9999 := by
+  obtain ⟨a, ha, he⟩ := side_order_mem s buy i
+  rw [← he]
+  exact hb a ha
+
+theorem shiftLedger_side (shift : ℝ) (s : Ledger) (hb : InBounds shift s) (buy : Bool) :
+    side buy (market (shiftLedger shift s)) =
+      shiftBook (side buy (market s)) shift (side_bounds shift s hb buy) := by
+  rw [shiftLedger, side_mapLedger]
+  apply congrArg (fun f => (⟨(side buy (market s)).1, f⟩ : Book))
+  funext i
+  exact boundedShift_exact _ _ _
+
+theorem shiftLedger_split (shift : ℝ) (s : Ledger) (hb : InBounds shift s) :
+    splitMarket (market (shiftLedger shift s)) =
+      shiftState (splitMarket (market s)) shift
+        (side_bounds shift s hb true) (side_bounds shift s hb false) :=
+  Prod.ext (shiftLedger_side shift s hb true) (shiftLedger_side shift s hb false)
+
+theorem shiftLedger_twoSided (shift : ℝ) (s : Ledger) :
+    GroupReplay.TwoSided (shiftLedger shift s) ↔ GroupReplay.TwoSided s :=
+  mapLedger_twoSided _ _
+
+theorem shiftLedger_midpoint (shift : ℝ) (s : Ledger) (hb : InBounds shift s)
+    (hs : GroupReplay.TwoSided s) :
+    GeometrySweep.midpoint (splitMarket (market (shiftLedger shift s))) =
+      GeometrySweep.midpoint (splitMarket (market s)) + shift := by
+  rw [shiftLedger_split shift s hb]
+  exact shiftState_midpoint _ _ _ _ hs.1 hs.2
+
+theorem shiftLedger_spread (shift : ℝ) (s : Ledger) (hb : InBounds shift s)
+    (hs : GroupReplay.TwoSided s) :
+    best 0 (side false (market (shiftLedger shift s))) -
+      best 0 (side true (market (shiftLedger shift s))) =
+        best 0 (side false (market s)) - best 0 (side true (market s)) := by
+  rw [shiftLedger_side shift s hb false, shiftLedger_side shift s hb true]
+  exact shiftState_spread (splitMarket (market s)) shift _ _ hs.1 hs.2
+
+theorem shiftLedger_referenceVolume (shift : ℝ) (s : Ledger) (hb : InBounds shift s) :
+    GeometrySweep.referenceVolume (splitMarket (market (shiftLedger shift s))) =
+      GeometrySweep.referenceVolume (splitMarket (market s)) := by
+  rw [shiftLedger_split shift s hb]
+  exact shiftState_referenceVolume _ _ _ _
+
+end Thesis.Intraday.AnchoredLedger

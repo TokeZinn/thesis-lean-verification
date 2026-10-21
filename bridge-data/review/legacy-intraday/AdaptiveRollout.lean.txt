@@ -1,0 +1,199 @@
+import Intraday.StochasticQueueBounds
+import Intraday.EventScheduler
+
+/-! # Terminating adaptive reference rollout
+
+Simulator appendix, lines 175–221. The next event is recomputed from the actual
+post-staging queue and the remaining macro calendar at every iteration. A
+well-founded recursion samples the existing reference event law and retains
+the complete trajectory. There is no user-chosen event-count cutoff.
+
+Termination follows from `(largest eligible burst + 1) * remaining boundaries
++ pending groups`: a boundary consumes a calendar marker and can add at most
+one eligible burst; any other selected event consumes at least one due group.
+Initialisation, eligible calendar construction and source-time admissibility
+remain separate inputs. Domain failure retains the partial calculation as
+specified in `SimulatorTrajectory`, without inventing an empirical repair.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.AdaptiveRollout
+
+open SimulatorTrajectory StochasticQueueBounds EventScheduler
+
+structure Schedule where
+  times : ℕ → ℝ
+  horizon : ℝ
+  policy : ℕ → EventQueue.BoundaryPolicy
+
+structure Frame (cfg : QueueAnchor.Config) where
+  path : Path cfg
+  remaining : Finset ℕ
+
+def select (s : Schedule) {cfg : QueueAnchor.Config} (x : Frame cfg) : Option Selected :=
+  forPath s.times x.remaining s.horizon s.policy x.path
+
+def rank (p : Parameters) {cfg : QueueAnchor.Config} (x : Frame cfg) : ℕ :=
+  (burstBound p + 1) * x.remaining.card + x.path.current.session.pending.length
+
+def nextFrame {cfg : QueueAnchor.Config} (selected : Selected) (y : Path cfg) : Frame cfg :=
+  ⟨y, selected.remaining⟩
+
+theorem selected_active (s : Schedule) {cfg : QueueAnchor.Config} (x : Frame cfg)
+    (selected : Selected) (hs : select s x = some selected) : halted x.path = false := by
+  cases hh : halted x.path with
+  | false => rfl
+  | true => simp [select, forPath, hh] at hs
+
+theorem selected_next (s : Schedule) {cfg : QueueAnchor.Config} (x : Frame cfg)
+    (selected : Selected) (hs : select s x = some selected) :
+    next s.times x.remaining x.path.current.session.pending s.horizon s.policy = some selected := by
+  simpa only [select, forPath, selected_active s x selected hs, Bool.false_eq_true,
+    ↓reduceIte] using hs
+
+theorem rank_decreases (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x : Frame cfg) (selected : Selected) (hs : select s x = some selected)
+    (y : Path cfg) (hy : y ∈ (SimulatorTrajectory.step p x.path selected.event).support) :
+    rank p (nextFrame selected y) < rank p x := by
+  have hn := selected_next s x selected hs
+  have hspec := next_spec _ _ _ _ _ _ hn
+  cases hb : selected.event.completedWindow with
+  | none =>
+    have hr : selected.remaining = x.remaining := hspec.2.2.trans
+      (remainingAfter_nonboundary s.times x.remaining selected.event.time
+        (hspec.2.1.symm.trans hb))
+    obtain ⟨g, hg, ht⟩ := next_nonboundary_has_due _ _ _ _ _ _ hn hb
+    have hq := step_nonboundary_queue_lt p x.path y selected.event
+      (selected_active s x selected hs) hb ⟨g, hg, ht.le⟩ hy
+    dsimp only [rank, nextFrame]
+    rw [hr]
+    omega
+  | some w =>
+    have hc : selected.remaining.card < x.remaining.card := by
+      rw [hspec.2.2]
+      exact remainingAfter_card_lt s.times x.remaining selected.event.time w
+        (hspec.2.1.symm.trans hb)
+    have hq := step_queue_le p x.path y selected.event hy
+    have hm := Nat.mul_le_mul_left (burstBound p + 1) (Nat.succ_le_of_lt hc)
+    simp only [Nat.mul_succ] at hm
+    dsimp only [rank, nextFrame]
+    omega
+
+def run (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config} (x : Frame cfg) :
+    PMF (Frame cfg) :=
+  match _hs : select s x with
+  | none => PMF.pure x
+  | some selected =>
+    (SimulatorTrajectory.step p x.path selected.event).bindOnSupport fun y _hy =>
+      run p s (nextFrame selected y)
+termination_by rank p x
+decreasing_by exact rank_decreases p s x selected _hs y _hy
+
+theorem run_terminal_state (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x : Frame cfg) (hs : select s x = none) : run p s x = PMF.pure x := by
+  rw [run]
+  split
+  · rfl
+  · rename_i selected he
+    cases hs.symm.trans he
+
+theorem run_halted (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x : Frame cfg) (hh : halted x.path = true) : run p s x = PMF.pure x := by
+  apply run_terminal_state
+  exact forPath_halted s.times x.remaining s.horizon s.policy x.path hh
+
+inductive Trace (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config} :
+    Frame cfg → Frame cfg → ℕ → Prop
+  | stop (x : Frame cfg) (hs : select s x = none) : Trace p s x x 0
+  | step (x : Frame cfg) (selected : Selected) (y : Path cfg) (z : Frame cfg) (n : ℕ)
+      (hs : select s x = some selected)
+      (hy : y ∈ (SimulatorTrajectory.step p x.path selected.event).support)
+      (rest : Trace p s (nextFrame selected y) z n) : Trace p s x z (n + 1)
+
+theorem run_support_trace (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x z : Frame cfg) (hz : z ∈ (run p s x).support) : ∃ n, Trace p s x z n := by
+  induction x using (measure (rank p)).wf.induction with
+  | h x ih =>
+    rw [run] at hz
+    split at hz
+    · rename_i hs
+      rw [PMF.mem_support_pure_iff] at hz
+      subst z
+      exact ⟨0, Trace.stop x hs⟩
+    · rename_i selected hs
+      obtain ⟨y, hy, hz⟩ := (PMF.mem_support_bindOnSupport_iff _ _).mp hz
+      obtain ⟨n, ht⟩ := ih (nextFrame selected y) (rank_decreases p s x selected hs y hy) hz
+      exact ⟨n + 1, Trace.step x selected y z n hs hy ht⟩
+
+theorem Trace.terminal (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) : select s z = none := by
+  induction h with
+  | stop x hs => exact hs
+  | step x selected y z n hs hy rest ih => exact ih
+
+theorem Trace.steps_le_rank (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) : n ≤ rank p x := by
+  induction h with
+  | stop x hs => exact Nat.zero_le _
+  | step x selected y z n hs hy rest ih =>
+    have hd := rank_decreases p s x selected hs y hy
+    omega
+
+theorem Trace.history_prefix (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) : x.path.history.IsPrefix z.path.history := by
+  induction h with
+  | stop x hs => exact ⟨[], by simp⟩
+  | step x selected y z n hs hy rest ih =>
+    exact (step_history_prefix p x.path y selected.event hy).trans ih
+
+theorem Trace.history_length (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) :
+    z.path.history.length = x.path.history.length + n := by
+  induction h with
+  | stop x hs => simp
+  | step x selected y z n hs hy rest ih =>
+    have hl : y.history.length = x.path.history.length + 1 := by
+      obtain ⟨out, _, rfl⟩ := (step_active_support p x.path y selected.event
+        (selected_active s x selected hs)).mp hy
+      simp [accept]
+    change z.path.history.length = y.history.length + n at ih
+    omega
+
+theorem Trace.counter (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) :
+    x.path.current.session.replay.book.nextId ≤ z.path.current.session.replay.book.nextId := by
+  induction h with
+  | stop x hs => exact le_rfl
+  | step x selected y z n hs hy rest ih =>
+    exact (step_counter p x.path y selected.event hy).trans ih
+
+theorem Trace.remaining_subset (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n) : z.remaining ⊆ x.remaining := by
+  induction h with
+  | stop x hs => exact Finset.Subset.refl _
+  | step x selected y z n hs hy rest ih =>
+    have he := (next_spec _ _ _ _ _ _ (selected_next s x selected hs)).2.2
+    exact ih.trans (by
+      change selected.remaining ⊆ x.remaining
+      rw [he]
+      exact Finset.filter_subset _ _)
+
+theorem run_complete (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x z : Frame cfg) (hz : z ∈ (run p s x).support) :
+    select s z = none ∧ x.path.history.IsPrefix z.path.history ∧
+      z.path.history.length ≤ x.path.history.length + rank p x := by
+  obtain ⟨n, ht⟩ := run_support_trace p s x z hz
+  refine ⟨ht.terminal p s, ht.history_prefix p s, ?_⟩
+  rw [ht.history_length p s]
+  exact Nat.add_le_add_left (ht.steps_le_rank p s) _
+
+theorem successful_completion (p : Parameters) (s : Schedule) {cfg : QueueAnchor.Config}
+    (x z : Frame cfg) (hz : z ∈ (run p s x).support) (hh : halted z.path = false) :
+    (∀ w ∈ z.remaining, s.horizon < s.times w) ∧
+      (∀ g ∈ z.path.current.session.pending, s.horizon < g.dueTime) := by
+  have he := (run_complete p s x z hz).1
+  simp only [select, forPath, hh, Bool.false_eq_true, ↓reduceIte, next,
+    Option.map_eq_none_iff] at he
+  exact (nextTime_none _ _ _ _).mp he
+
+end Thesis.Intraday.AdaptiveRollout

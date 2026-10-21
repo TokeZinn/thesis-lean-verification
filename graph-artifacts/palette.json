@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "sectionPalette": {
+    "day-ahead": "#9b6428",
+    "foundations": "#8f1d2c",
+    "intraday": "#2f6b5e",
+    "market-actions": "#775f32",
+    "market-clearing": "#7e3d45",
+    "market-representation": "#394f62",
+    "other": "#6e6670",
+    "preliminary": "#4f5963",
+    "stochastic": "#65517a"
+  },
+  "sectionWorkflows": {
+    "day-ahead": "lean-day-ahead.yml",
+    "foundations": "lean-foundations.yml",
+    "intraday": "lean-intraday.yml",
+    "market-actions": "lean-market-actions.yml",
+    "market-clearing": "lean-market-clearing.yml",
+    "market-representation": "lean-market-representation.yml",
+    "other": "lean-global.yml",
+    "preliminary": "lean-appendices.yml",
+    "stochastic": "lean-stochastic.yml"
+  },
+  "statusPalette": {
+    "commentary": {
+      "color": "#6e6670",
+      "description": "Recorded as framework commentary rather than a compiled declaration.",
+      "label": "commentary"
+    },
+    "external": {
+      "color": "#74558d",
+      "description": "A linked declaration depends transitively on a project-specific axiom.",
+      "label": "external"
+    },
+    "incorrect-statement": {
+      "color": "#a34b52",
+      "description": "A current-source mistake is documented; the linked valid lemmas do not prove the false clause.",
+      "label": "incorrect statement"
+    },
+    "needs-alignment": {
+      "color": "#9b6428",
+      "description": "A documented gap remains between the manuscript and its linked Lean statements.",
+      "label": "needs alignment"
+    },
+    "needs-review": {
+      "color": "#9b6428",
+      "description": "The source changed after a recorded finding; its diagnosis needs review.",
+      "label": "needs review"
+    },
+    "thesis-only": {
+      "color": "#817676",
+      "description": "The thesis block is present in the explorer but has no linked Lean declaration yet.",
+      "label": "thesis only"
+    },
+    "unknown": {
+      "color": "#a34b52",
+      "description": "Kernel evidence is missing, stale, unresolved, or contains an unfinished proof.",
+      "label": "unverified"
+    },
+    "verified": {
+      "color": "#2f6f59",
+      "description": "Every linked declaration has fresh transitive Lean kernel evidence, with no project-specific axioms or unfinished proofs. Statement alignment requires separate review.",
+      "label": "kernel checked"
+    }
+  }
+}

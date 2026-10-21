@@ -1,0 +1,245 @@
+import Intraday.GroupReplay
+import Mathlib.Data.List.Sort
+import Mathlib.Data.Prod.Lex
+
+/-! # Chronological queue processing and recorded drain-or-flush boundaries
+
+Groups are ordered by absolute due time, then a supplied deterministic source
+key. Sorting retains entire records and their multiplicity. At a boundary the
+completed-window predicate selects stale groups. Draining uses the same checked
+visible-state replay and stops at the first failure; flushing records precisely
+the discarded groups. Both branches preserve a complete accounting of inputs.
+This fixes an explicit reference queue policy; the empirical queue policy was
+not retained in the source and is not inferred here.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.EventQueue
+
+open GroupReplay LiveLedger
+
+abbrev QueueKey := ℝ ×ₗ ℕ
+
+def key (g : ScheduledGroup) : QueueKey := toLex (g.dueTime, g.sourceKey)
+
+def ordered (queue : List ScheduledGroup) : List ScheduledGroup :=
+  queue.mergeSort (fun a b => decide (key a ≤ key b))
+
+theorem ordered_perm (queue : List ScheduledGroup) : (ordered queue).Perm queue :=
+  List.mergeSort_perm _ _
+
+theorem ordered_pairwise (queue : List ScheduledGroup) :
+    (ordered queue).Pairwise (fun a b => key a ≤ key b) := by
+  have h := List.pairwise_mergeSort
+    (le := fun a b : ScheduledGroup => decide (key a ≤ key b))
+    (fun a b c hab hbc => by
+      simp only [decide_eq_true_eq] at hab hbc ⊢
+      exact le_trans hab hbc)
+    (fun a b => by simpa only [Bool.or_eq_true, decide_eq_true_eq] using le_total (key a) (key b))
+    queue
+  simpa only [decide_eq_true_eq] using h
+
+theorem key_le_time {a b : ScheduledGroup} (h : key a ≤ key b) : a.dueTime ≤ b.dueTime := by
+  rcases Prod.Lex.le_iff.mp h with ht | he
+  · exact ht.le
+  · exact he.1.le
+
+theorem ordered_chronological (queue : List ScheduledGroup) :
+    (ordered queue).Pairwise (fun a b => a.dueTime ≤ b.dueTime) :=
+  (ordered_pairwise queue).imp (fun h => key_le_time h)
+
+theorem ordered_length (queue : List ScheduledGroup) : (ordered queue).length = queue.length :=
+  (ordered_perm queue).length_eq
+
+def selected (p : ScheduledGroup → Bool) (queue : List ScheduledGroup) : List ScheduledGroup :=
+  (ordered queue).filter p
+
+def deferred (p : ScheduledGroup → Bool) (queue : List ScheduledGroup) : List ScheduledGroup :=
+  (ordered queue).filter (fun g => !p g)
+
+theorem selection_partition (p : ScheduledGroup → Bool) (queue : List ScheduledGroup) :
+    (selected p queue ++ deferred p queue).Perm queue :=
+  (List.filter_append_perm p (ordered queue)).trans (ordered_perm queue)
+
+theorem selected_mem (p : ScheduledGroup → Bool) (queue : List ScheduledGroup)
+    (g : ScheduledGroup) : g ∈ selected p queue ↔ g ∈ queue ∧ p g = true := by
+  simp only [selected, List.mem_filter, (ordered_perm queue).mem_iff]
+
+theorem deferred_mem (p : ScheduledGroup → Bool) (queue : List ScheduledGroup)
+    (g : ScheduledGroup) : g ∈ deferred p queue ↔ g ∈ queue ∧ p g = false := by
+  simp only [deferred, List.mem_filter, (ordered_perm queue).mem_iff, Bool.not_eq_true']
+
+theorem selected_ordered (p : ScheduledGroup → Bool) (queue : List ScheduledGroup) :
+    (selected p queue).Pairwise (fun a b => key a ≤ key b) :=
+  (ordered_pairwise queue).sublist List.filter_sublist
+
+structure QueueOutput where
+  state : State
+  consumed : List ScheduledGroup
+  pending : List ScheduledGroup
+
+def drainSelected (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) : QueueOutput :=
+  let replay := run depth s (selected p queue)
+  ⟨replay.state, replay.consumed, ordered (replay.pending ++ deferred p queue)⟩
+
+theorem drainSelected_accounting (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) :
+    ((drainSelected depth s queue p).consumed ++
+      (drainSelected depth s queue p).pending).Perm queue := by
+  change ((run depth s (selected p queue)).consumed ++
+    ordered ((run depth s (selected p queue)).pending ++ deferred p queue)).Perm queue
+  apply ((List.Perm.refl _).append (ordered_perm _)).trans
+  rw [← List.append_assoc, run_partition]
+  exact selection_partition p queue
+
+theorem drainSelected_valid (depth : ℕ) {s : State} (hs : Valid s.book)
+    (queue : List ScheduledGroup) (p : ScheduledGroup → Bool) :
+    Valid (drainSelected depth s queue p).state.book := run_valid depth hs _
+
+theorem drainSelected_counter (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) :
+    s.book.nextId ≤ (drainSelected depth s queue p).state.book.nextId := run_counter depth s _
+
+theorem consumed_sublist (depth : ℕ) (s : State) (gs : List ScheduledGroup) :
+    (run depth s gs).consumed.Sublist gs := by
+  have h := (List.prefix_append (run depth s gs).consumed (run depth s gs).pending).sublist
+  rwa [run_partition] at h
+
+theorem drainSelected_ordered (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) :
+    (drainSelected depth s queue p).consumed.Pairwise (fun a b => key a ≤ key b) :=
+  (selected_ordered p queue).sublist (consumed_sublist depth s _)
+
+theorem drainSelected_chronological (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) :
+    (drainSelected depth s queue p).consumed.Pairwise (fun a b => a.dueTime ≤ b.dueTime) :=
+  (drainSelected_ordered depth s queue p).imp (fun h => key_le_time h)
+
+theorem drainSelected_consumed (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) {g : ScheduledGroup}
+    (hg : g ∈ (drainSelected depth s queue p).consumed) : g ∈ queue ∧ p g = true :=
+  (selected_mem p queue g).mp ((consumed_sublist depth s _).subset hg)
+
+theorem drainSelected_success (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) (hf : (drainSelected depth s queue p).state.failure = none) :
+    (drainSelected depth s queue p).consumed = selected p queue ∧
+      (drainSelected depth s queue p).pending = ordered (deferred p queue) := by
+  obtain ⟨hc, hp⟩ := run_success_complete depth s (selected p queue) hf
+  exact ⟨hc, by simp only [drainSelected, hp, List.nil_append]⟩
+
+theorem drainSelected_log (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (p : ScheduledGroup → Bool) :
+    (drainSelected depth s queue p).state.log.map LogEntry.group =
+      s.log.map LogEntry.group ++ (drainSelected depth s queue p).consumed := run_log depth s _
+
+def due (time : ℝ) (g : ScheduledGroup) : Bool := decide (g.dueTime ≤ time)
+
+def drainDue (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ) : QueueOutput :=
+  drainSelected depth s queue (due time)
+
+theorem drainDue_consumed (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    {g : ScheduledGroup} (hg : g ∈ (drainDue depth s queue time).consumed) :
+    g ∈ queue ∧ g.dueTime ≤ time := by
+  simpa only [due, decide_eq_true_eq] using drainSelected_consumed depth s queue (due time) hg
+
+theorem drainDue_success_no_due (depth : ℕ) (s : State) (queue : List ScheduledGroup) (time : ℝ)
+    (hf : (drainDue depth s queue time).state.failure = none) {g : ScheduledGroup}
+    (hg : g ∈ (drainDue depth s queue time).pending) : time < g.dueTime := by
+  change g ∈ (drainSelected depth s queue (due time)).pending at hg
+  rw [(drainSelected_success depth s queue (due time) hf).2] at hg
+  have hd := (deferred_mem (due time) queue g).mp ((ordered_perm _).mem_iff.mp hg)
+  simpa only [due, decide_eq_false_iff_not, not_le] using hd.2
+
+inductive BoundaryPolicy where
+  | drain
+  | flush
+  deriving DecidableEq
+
+def stale (completedWindow : ℕ) (g : ScheduledGroup) : Bool := decide (g.window ≤ completedWindow)
+
+structure BoundaryOutput extends QueueOutput where
+  applied : Option BoundaryPolicy
+  discarded : List ScheduledGroup
+
+def boundary (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (completedWindow : ℕ) (policy : BoundaryPolicy) : BoundaryOutput :=
+  if s.failure.isSome then ⟨⟨s, [], queue⟩, none, []⟩ else
+    match policy with
+    | .drain => ⟨drainSelected depth s queue (stale completedWindow), some .drain, []⟩
+    | .flush => ⟨⟨s, [], deferred (stale completedWindow) queue⟩,
+        some .flush, selected (stale completedWindow) queue⟩
+
+theorem boundary_failed (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (policy : BoundaryPolicy) (hf : s.failure.isSome = true) :
+    boundary depth s queue w policy = ⟨⟨s, [], queue⟩, none, []⟩ := by simp [boundary, hf]
+
+theorem boundary_accounting (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (policy : BoundaryPolicy) :
+    ((boundary depth s queue w policy).discarded ++ (boundary depth s queue w policy).consumed ++
+      (boundary depth s queue w policy).pending).Perm queue := by
+  unfold boundary
+  split
+  · simp
+  · cases policy with
+    | drain => exact drainSelected_accounting depth s queue _
+    | flush => simpa only [List.append_nil] using selection_partition (stale w) queue
+
+theorem boundary_valid (depth : ℕ) {s : State} (hs : Valid s.book)
+    (queue : List ScheduledGroup) (w : ℕ) (policy : BoundaryPolicy) :
+    Valid (boundary depth s queue w policy).state.book := by
+  unfold boundary
+  split
+  · exact hs
+  · cases policy with
+    | drain => exact drainSelected_valid depth hs queue _
+    | flush => exact hs
+
+theorem boundary_flush_log (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (hf : s.failure = none) :
+    (boundary depth s queue w .flush).state = s ∧
+      (boundary depth s queue w .flush).discarded = selected (stale w) queue ∧
+      (boundary depth s queue w .flush).applied = some .flush := by simp [boundary, hf]
+
+theorem boundary_discarded_stale (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (policy : BoundaryPolicy) {g : ScheduledGroup}
+    (hg : g ∈ (boundary depth s queue w policy).discarded) : g ∈ queue ∧ g.window ≤ w := by
+  unfold boundary at hg
+  split at hg
+  · simp at hg
+  · cases policy with
+    | drain => simp at hg
+    | flush => simpa only [stale, decide_eq_true_eq] using (selected_mem _ queue g).mp hg
+
+theorem boundary_log (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (policy : BoundaryPolicy) :
+    (boundary depth s queue w policy).state.log.map LogEntry.group =
+      s.log.map LogEntry.group ++ (boundary depth s queue w policy).consumed := by
+  unfold boundary
+  split
+  · simp
+  · cases policy with
+    | drain => exact drainSelected_log depth s queue _
+    | flush => simp
+
+theorem boundary_counter (depth : ℕ) (s : State) (queue : List ScheduledGroup)
+    (w : ℕ) (policy : BoundaryPolicy) :
+    s.book.nextId ≤ (boundary depth s queue w policy).state.book.nextId := by
+  unfold boundary
+  split
+  · exact le_rfl
+  · cases policy with
+    | drain => exact drainSelected_counter depth s queue _
+    | flush => exact le_rfl
+
+theorem boundary_invariant (depth : ℕ) {s : State} (hs : Invariant s)
+    (queue : List ScheduledGroup) (w : ℕ) (policy : BoundaryPolicy) :
+    Invariant (boundary depth s queue w policy).state := by
+  unfold boundary
+  split
+  · exact hs
+  · cases policy with
+    | drain => exact run_invariant depth hs _
+    | flush => exact hs
+
+end Thesis.Intraday.EventQueue

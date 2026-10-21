@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 2,
+  "issues": [],
+  "retiredIssues": [
+    {
+      "id": "DA-001",
+      "label": "prop:weakly-convex",
+      "kind": "incorrect-statement-and-proof",
+      "originalSource": "2 - day-ahead/2_clearing_operator_price_curves.tex",
+      "baseSource": "2 - day-ahead/2_clearing_operator_price_curves_replacement.tex",
+      "baseLabel": "prop:sided-parametrisation-not-weakly-convex",
+      "fixSource": "2 - day-ahead/2_clearing_operator_price_curves_fix.tex",
+      "fixLabel": "prop:sided-parametrisation-not-weakly-convex",
+      "summary": "The canonical equal-block sided parametrisation is not weakly convex.",
+      "problem": "The proof decodes a positive combination of two parametrised graphs, but it does not establish that the canonical equal-block re-encoding of the decoded curve is the same representative. An explicit two-block/three-block midpoint lies outside the canonical image.",
+      "correction": "Use the replacement chapter's two-block/three-block counterexample. The replacement proof rules out every minimal canonical encoding of that midpoint, and the full-file fix is rebuilt from that replacement; Lean verifies both pointwise and almost-everywhere formulations.",
+      "leanDeclarations": [
+        "Thesis.DayAhead.SidedParametrisation.sidedParametrisation_not_weaklyConvex",
+        "Thesis.DayAhead.SidedParametrisation.sidedParametrisationHilbert_not_weaklyConvex"
+      ],
+      "currentLabel": "prop:sided-parametrisation-not-weakly-convex",
+      "status": "integrated",
+      "resolution": "The active chapter now states non-convexity. The total normalized actual and Euclidean Hilbert encoders are proved non-convex in Lean.",
+      "currentStatementSha256": "4b754be4a6d16bccae80d2c4961a6f9c064984d464f18a8e626b1155413d666f",
+      "currentProofSha256": "d2a41470a76ddf0bce1563686aa2eb54cabed98f77a0f00f3e4ba631e005bd6a",
+      "historicalSnapshot": "bridge-data/history/2026-07/thesis-fixes.json"
+    },
+    {
+      "id": "DA-007",
+      "label": "thm:lln-covariance",
+      "kind": "domain-correction",
+      "originalSource": "2 - day-ahead/3_functional_data_analysis.tex",
+      "fixSource": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+      "summary": "The unbiased sample covariance is undefined at n = 1.",
+      "problem": "The displayed estimator divides by n-1 while the theorem originally quantified over all positive sample sizes, including n = 1.",
+      "correction": "State the convergence along integers n >= 2. Lean uses the equivalent safe index n = k + 2 and proves almost-sure convergence in Hilbert--Schmidt norm.",
+      "leanDeclarations": [
+        "Thesis.DayAhead.HilbertSchmidtCovariance.sampleCovariance_hilbertSchmidt_strong_law_ae"
+      ],
+      "currentLabel": "thm:lln-covariance",
+      "status": "integrated",
+      "resolution": "The active covariance theorem explicitly assumes n >= 2.",
+      "currentStatementSha256": "80128e2dd8c394be00eb01d433fe36d8602ff4f1e42e0c1705dc91dd8529e098",
+      "currentProofSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "historicalSnapshot": "bridge-data/history/2026-07/thesis-fixes.json"
+    },
+    {
+      "id": "DA-002",
+      "label": "thm:regression-theorem",
+      "kind": "type-correction",
+      "originalSource": "2 - day-ahead/3_functional_data_analysis.tex",
+      "fixSource": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+      "summary": "A conditional expectation is an element of an argmin set, not equal to that set.",
+      "problem": "The first display equated a random variable with an argmin set, and the predictor clause did not give the state space and measurability structure of Y explicitly.",
+      "correction": "Replace equality by membership in the argmin, type the predictor Y into a measurable space E, and state the measurable factorisation through Y. Lean verifies the minimum-distance and factorisation clauses.",
+      "leanDeclarations": [
+        "Thesis.DayAhead.FunctionalData.condExpL2_minimizes",
+        "Thesis.DayAhead.FunctionalData.condExp_factorsThrough_predictor"
+      ],
+      "currentLabel": "thm:regression-theorem",
+      "status": "integrated",
+      "resolution": "Argmin membership and the typed predictor are integrated. The separate information-set error DA-040 remains open.",
+      "currentStatementSha256": "1006a45a9e2aee1454eb503b7c0d550aca423b9d5ea0eb65c07344b80e215e55",
+      "currentProofSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "historicalSnapshot": "bridge-data/history/2026-07/thesis-fixes.json"
+    },
+    {
+      "id": "DA-034",
+      "label": "thm:scores-sigma-algebra",
+      "kind": "proof-gap",
+      "originalSource": "2 - day-ahead/3_functional_data_analysis.tex",
+      "fixSource": "2 - day-ahead/3_functional_data_analysis_fix.tex",
+      "summary": "The score argument needs a countable basis for the Hilbert-space Borel sigma-algebra.",
+      "problem": "The original proof showed that individual open-ball preimages are score-measurable, then passed directly to all Borel sets without supplying the required countable generating family.",
+      "correction": "Use separability to choose a countable dense set and rational radii, whose balls form a countable basis. Lean proves that the score-generated measurable structure equals the Borel structure and then identifies the generated sigma-algebras.",
+      "leanDeclarations": [
+        "Thesis.DayAhead.FunctionalData.scoreMeasurableSpace_eq_borel",
+        "Thesis.DayAhead.FunctionalData.scores_generate_random_element"
+      ],
+      "currentLabel": "thm:scores-sigma-algebra",
+      "status": "integrated",
+      "resolution": "The active proof uses separability and a countable ball basis.",
+      "currentStatementSha256": "baf2442469f4c4d5ec66898650d802b5f3459f45f87f6dc409834bf53470fb5b",
+      "currentProofSha256": "f449402def0b4ab4851ec991352426469aaaa1660dd79fede63c5d2166a317aa",
+      "historicalSnapshot": "bridge-data/history/2026-07/thesis-fixes.json"
+    }
+  ],
+  "archivedReplacementSources": [
+    "3 - intraday/3_inference_replacement.tex"
+  ]
+}

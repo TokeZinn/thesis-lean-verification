@@ -1,0 +1,305 @@
+import Intraday.SimulatorStep
+import Intraday.BurstSelection
+
+/-! # Persistent sampled trajectories for supplied reference events
+
+Simulator appendix, lines 175–221. Each recorded event retains the state after
+replay/anchor and the complete stochastic retrieval outcome. Domain failure in
+conservative staging preserves that last state and is explicitly distinguished
+from the model's typed failure status. Such a partial reference calculation is
+not continued. This is not an invented empirical repair policy.
+
+The finite loop below consumes supplied events. `EventScheduler` and
+`AdaptiveRollout` construct and execute the complete adaptive grid from newly
+staged due times and remaining macro boundaries.
+No correspondence with an unrecorded seeded random stream is asserted.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.SimulatorTrajectory
+
+open SimulatorStep RetrievalPhase BurstInsertion
+
+structure Parameters where
+  depth : ℕ
+  horizon : ℕ
+  enabled : Bool
+  anchor : ℝ → ℝ
+  fit : Fit
+  library : ℕ → Transition
+  primary : Finset ℕ
+  fallback : Finset ℕ
+  start : EventReplay.EventInput → MacroPath.Row
+  destination : EventReplay.EventInput → MacroPath.Row
+  gate : EventReplay.EventInput → ℕ → ℝ
+  gate_nonneg : ∀ event j, 0 ≤ gate event j
+  burst : Option (BurstSelection.Support (primary ∪ fallback)) := none
+
+/-- Reference Burst disables correction. Its unused target log field is the
+fixed placeholder zero, so it does not evaluate a macro anchor. -/
+def anchorEnabled (p : Parameters) : Bool := if p.burst.isSome then false else p.enabled
+
+def anchorTarget (p : Parameters) : ℝ → ℝ := if p.burst.isSome then (fun _ => 0) else p.anchor
+
+def prepareEvent (p : Parameters) {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (event : EventReplay.EventInput) : Preparation :=
+  match p.burst with
+  | none => prepare p.fit p.library p.primary p.fallback x event.time
+      (nextWindow p.horizon event).isSome (p.start event) (p.destination event)
+      (p.gate event) (p.gate_nonneg event)
+  | some support => BurstSelection.prepare (support.eligible event) x
+      (nextWindow p.horizon event).isSome
+
+theorem prepareEvent_no_retrieval (p : Parameters) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (hn : nextWindow p.horizon event = none) : prepareEvent p x event = .skipped := by
+  cases hb : p.burst <;> simp only [prepareEvent, hb, hn, Option.isSome_none,
+    RetrievalPhase.prepare_final_boundary, BurstSelection.prepare_final_boundary]
+
+structure Entry (cfg : QueueAnchor.Config) where
+  event : EventReplay.EventInput
+  replayed : EventReplay.State cfg
+  outcome : Outcome cfg
+
+structure Path (cfg : QueueAnchor.Config) where
+  current : EventReplay.State cfg
+  history : List (Entry cfg)
+  domainFailure : Bool
+
+def halted {cfg : QueueAnchor.Config} (x : Path cfg) : Bool :=
+  x.domainFailure || x.current.session.replay.failure.isSome
+
+def begin {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) : Path cfg :=
+  ⟨x, [], false⟩
+
+def advanced (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) : EventReplay.State cfg :=
+  EventReplay.advance p.depth (anchorEnabled p) (anchorTarget p) x.current event
+
+def eventLaw (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) : PMF (Outcome cfg) :=
+  executePreparation (advanced p x event) event.time ((nextWindow p.horizon event).getD 0)
+    p.library (prepareEvent p (advanced p x event) event)
+
+theorem eventLaw_pairVAR (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (hb : p.burst = none) :
+    eventLaw p x event =
+      SimulatorStep.step p.depth p.horizon p.enabled p.anchor p.fit p.library p.primary p.fallback
+        x.current event (p.start event) (p.destination event)
+          (p.gate event) (p.gate_nonneg event) := by
+  simp only [eventLaw, prepareEvent, advanced, anchorEnabled, anchorTarget, hb,
+    Option.isSome_none, Bool.false_eq_true, ↓reduceIte, SimulatorStep.step]
+
+theorem eventLaw_no_retrieval (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (hn : nextWindow p.horizon event = none) :
+    eventLaw p x event =
+      PMF.pure ⟨some (advanced p x event), ⟨false, false, none, false, none⟩⟩ := by
+  rw [eventLaw, prepareEvent_no_retrieval p (advanced p x event) event hn]
+  rfl
+
+def accept (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg) : Path cfg :=
+  ⟨out.state.getD (advanced p x event),
+    x.history ++ [⟨event, advanced p x event, out⟩], out.state.isNone⟩
+
+def step (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) : PMF (Path cfg) :=
+  if halted x then PMF.pure x else (eventLaw p x event).map (accept p x event)
+
+theorem accept_history (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg) :
+    (accept p x event out).history = x.history ++ [⟨event, advanced p x event, out⟩] := rfl
+
+theorem accept_domain_failure (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg) (ho : out.state = none) :
+    (accept p x event out).current = advanced p x event ∧
+      (accept p x event out).domainFailure = true ∧ halted (accept p x event out) = true := by
+  simp [accept, ho, halted]
+
+theorem accept_success (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg) (y : EventReplay.State cfg)
+    (ho : out.state = some y) :
+    (accept p x event out).current = y ∧ (accept p x event out).domainFailure = false := by
+  simp [accept, ho]
+
+theorem step_halted (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (hh : halted x = true) : step p x event = PMF.pure x := by
+  simp [step, hh]
+
+theorem step_active_support (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hh : halted x = false) :
+    y ∈ (step p x event).support ↔
+      ∃ out ∈ (eventLaw p x event).support, accept p x event out = y := by
+  simp only [step, hh, Bool.false_eq_true, ↓reduceIte]
+  exact PMF.mem_support_map_iff _ _ _
+
+theorem step_history_extension (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hy : y ∈ (step p x event).support) :
+    y = x ∨ ∃ out ∈ (eventLaw p x event).support,
+      y.history = x.history ++ [⟨event, advanced p x event, out⟩] := by
+  cases hh : halted x with
+  | true =>
+    rw [step_halted p x event hh, PMF.mem_support_pure_iff] at hy
+    exact Or.inl hy
+  | false =>
+    obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hh).mp hy
+    exact Or.inr ⟨out, ho, rfl⟩
+
+theorem step_history_prefix (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hy : y ∈ (step p x event).support) :
+    x.history.IsPrefix y.history := by
+  rcases step_history_extension p x y event hy with rfl | ⟨out, _, he⟩
+  · exact ⟨[], by simp⟩
+  · exact ⟨[⟨event, advanced p x event, out⟩], he.symm⟩
+
+theorem step_history_length (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hy : y ∈ (step p x event).support) :
+    y.history.length ≤ x.history.length + 1 := by
+  rcases step_history_extension p x y event hy with rfl | ⟨out, _, he⟩
+  · omega
+  · simp [he]
+
+theorem preparation_preserves_book {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (preparation : Preparation)
+    (out : Outcome cfg)
+    (ho : out ∈ (executePreparation x boundary window library preparation).support) :
+    (out.state.getD x).session.replay.book = x.session.replay.book ∧
+      (out.state.getD x).session.replay.log = x.session.replay.log ∧
+      (out.state.getD x).session.anchors = x.session.anchors ∧
+      (out.state.getD x).events = x.events := by
+  cases preparation with
+  | skipped =>
+    rw [executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    exact ⟨rfl, rfl, rfl, rfl⟩
+  | failed =>
+    rw [executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    have h := retrievalFailure_preserves_state x
+    exact ⟨h.1, h.2.1, h.2.2.2.1, h.2.2.2.2⟩
+  | ready law =>
+    obtain ⟨j, _, rfl⟩ := (ready_outcome_support x boundary window library law out).mp ho
+    cases hs : stageTransition x boundary window (library j) with
+    | none => simp
+    | some y =>
+      dsimp only [Option.getD_some]
+      have h := stageTransition_book_unchanged x boundary window (library j) hs
+      exact ⟨congrArg GroupReplay.State.book h.1, congrArg GroupReplay.State.log h.1, h.2⟩
+
+theorem accept_preserves_replay_history (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (event : EventReplay.EventInput) (out : Outcome cfg)
+    (ho : out ∈ (eventLaw p x event).support) :
+    (accept p x event out).current.session.replay.book = (advanced p x event).session.replay.book ∧
+      (accept p x event out).current.session.replay.log = (advanced p x event).session.replay.log ∧
+      (accept p x event out).current.session.anchors = (advanced p x event).session.anchors ∧
+      (accept p x event out).current.events = (advanced p x event).events :=
+  preparation_preserves_book _ _ _ _ _ out ho
+
+theorem step_counter (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (event : EventReplay.EventInput) (hy : y ∈ (step p x event).support) :
+    x.current.session.replay.book.nextId ≤ y.current.session.replay.book.nextId := by
+  cases hh : halted x with
+  | true =>
+    rw [step_halted p x event hh, PMF.mem_support_pure_iff] at hy
+    subst y
+    exact le_rfl
+  | false =>
+    obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hh).mp hy
+    rw [(accept_preserves_replay_history p x event out ho).1]
+    exact EventReplay.advance_counter _ _ _ _ _
+
+def run (p : Parameters) {cfg : QueueAnchor.Config} :
+    Path cfg → List EventReplay.EventInput → PMF (Path cfg)
+  | x, [] => PMF.pure x
+  | x, event :: events => (step p x event).bind (fun y => run p y events)
+
+theorem run_halted (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (events : List EventReplay.EventInput) (hh : halted x = true) :
+    run p x events = PMF.pure x := by
+  induction events with
+  | nil => rfl
+  | cons event events ih => simp only [run, step_halted p x event hh, PMF.pure_bind, ih]
+
+theorem run_history_prefix (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (events : List EventReplay.EventInput) (hy : y ∈ (run p x events).support) :
+    x.history.IsPrefix y.history := by
+  induction events generalizing x with
+  | nil =>
+    rw [run, PMF.mem_support_pure_iff] at hy
+    subst y
+    exact ⟨[], by simp⟩
+  | cons event events ih =>
+    obtain ⟨z, hz, hy⟩ := (PMF.mem_support_bind_iff _ _ _).mp hy
+    exact (step_history_prefix p x z event hz).trans (ih z hy)
+
+theorem run_history_length (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (events : List EventReplay.EventInput) (hy : y ∈ (run p x events).support) :
+    y.history.length ≤ x.history.length + events.length := by
+  induction events generalizing x with
+  | nil =>
+    rw [run, PMF.mem_support_pure_iff] at hy
+    subst y
+    simp
+  | cons event events ih =>
+    obtain ⟨z, hz, hy⟩ := (PMF.mem_support_bind_iff _ _ _).mp hy
+    have h₁ := step_history_length p x z event hz
+    have h₂ := ih z hy
+    simp only [List.length_cons]
+    omega
+
+theorem run_counter (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (events : List EventReplay.EventInput) (hy : y ∈ (run p x events).support) :
+    x.current.session.replay.book.nextId ≤ y.current.session.replay.book.nextId := by
+  induction events generalizing x with
+  | nil =>
+    rw [run, PMF.mem_support_pure_iff] at hy
+    subst y
+    exact le_rfl
+  | cons event events ih =>
+    obtain ⟨z, hz, hy⟩ := (PMF.mem_support_bind_iff _ _ _).mp hy
+    exact (step_counter p x z event hz).trans (ih z hy)
+
+/-- The path records an initial segment of the requested events, in order.
+Stopping does not silently omit an intermediate event and resume later. -/
+theorem run_event_prefix (p : Parameters) {cfg : QueueAnchor.Config} (x y : Path cfg)
+    (events : List EventReplay.EventInput) (hy : y ∈ (run p x events).support) :
+    ∃ emitted : List (Entry cfg), y.history = x.history ++ emitted ∧
+      (emitted.map Entry.event).IsPrefix events := by
+  induction events generalizing x with
+  | nil =>
+    rw [run, PMF.mem_support_pure_iff] at hy
+    subst y
+    exact ⟨[], by simp, ⟨[], rfl⟩⟩
+  | cons event events ih =>
+    cases hh : halted x with
+    | true =>
+      rw [run_halted p x (event :: events) hh, PMF.mem_support_pure_iff] at hy
+      subst y
+      exact ⟨[], by simp, ⟨event :: events, rfl⟩⟩
+    | false =>
+      obtain ⟨z, hz, hy⟩ := (PMF.mem_support_bind_iff _ _ _).mp hy
+      obtain ⟨out, _, rfl⟩ := (step_active_support p x z event hh).mp hz
+      obtain ⟨emitted, hhistory, suffix, hprefix⟩ := ih _ hy
+      refine ⟨⟨event, advanced p x event, out⟩ :: emitted, ?_, suffix, ?_⟩
+      · simpa only [accept, List.append_assoc, List.singleton_append] using hhistory
+      · simpa only [List.map_cons, List.cons_append] using congrArg (List.cons event) hprefix
+
+theorem run_append (p : Parameters) {cfg : QueueAnchor.Config} (x : Path cfg)
+    (first later : List EventReplay.EventInput) :
+    run p x (first ++ later) = (run p x first).bind (fun y => run p y later) := by
+  induction first generalizing x with
+  | nil => simp only [List.nil_append, run, PMF.pure_bind]
+  | cons event events ih =>
+    simp only [List.cons_append, run, PMF.bind_bind]
+    congr 1
+    funext y
+    exact ih y
+
+theorem run_grid {cfg : QueueAnchor.Config} (y : Path cfg) :
+    StagedQueuePrices.activePrices y.current.session.replay.book
+      y.current.session.pending ⊆ cfg.grid := y.current.grid
+
+theorem run_valid {cfg : QueueAnchor.Config} (y : Path cfg) :
+    GroupReplay.Invariant y.current.session.replay := y.current.invariant
+
+end Thesis.Intraday.SimulatorTrajectory

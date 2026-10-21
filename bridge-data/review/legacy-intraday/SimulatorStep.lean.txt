@@ -1,0 +1,105 @@
+import Intraday.BurstInsertion
+
+/-! # One reference event step through replay, anchor, retrieval and staging
+
+The returned trace distinguishes skipped retrieval, exhausted support and a
+sampled transition (including fallback and the actual translation offset).
+The sampling operation is the existing probability law. Staging-domain failure
+remains explicit in the optional resulting state. Adaptive event selection and
+initialisation are separate; this does not reconstruct a missing seeded run.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.SimulatorStep
+
+open RetrievalPhase BurstInsertion
+
+structure RetrievalTrace where
+  attempted : Bool
+  failed : Bool
+  selectedIndex : Option ℕ
+  usedFallback : Bool
+  translation : Option ℝ
+
+structure Outcome (cfg : QueueAnchor.Config) where
+  state : Option (EventReplay.State cfg)
+  trace : RetrievalTrace
+
+def executePreparation {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) : Preparation → PMF (Outcome cfg)
+  | .skipped => PMF.pure ⟨some x, ⟨false, false, none, false, none⟩⟩
+  | .failed usedFallback =>
+    PMF.pure ⟨some (retrievalFailure x), ⟨true, true, none, usedFallback, none⟩⟩
+  | .ready law => law.distribution.map fun j =>
+      ⟨stageTransition x boundary window (library j),
+        ⟨true, false, some j, law.usedFallback, some (offset x (library j))⟩⟩
+
+def nextWindow (horizon : ℕ) (event : EventReplay.EventInput) : Option ℕ :=
+  event.completedWindow.bind (fun w => if w < horizon then some (w + 1) else none)
+
+def step (depth horizon : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : PMF (Outcome cfg) :=
+  let advanced := EventReplay.advance depth enabled anchor x event
+  let next := nextWindow horizon event
+  executePreparation advanced event.time (next.getD 0) library
+    (prepare fit library primary fallback advanced event.time next.isSome start destination gate hg)
+
+theorem nextWindow_nonboundary (horizon : ℕ) (event : EventReplay.EventInput)
+    (h : event.completedWindow = none) : nextWindow horizon event = none := by
+  simp [nextWindow, h]
+
+theorem nextWindow_final (horizon : ℕ) (event : EventReplay.EventInput) {w : ℕ}
+    (h : event.completedWindow = some w) (hw : horizon ≤ w) : nextWindow horizon event = none := by
+  simp [nextWindow, h, not_lt.mpr hw]
+
+theorem nextWindow_subsequent (horizon : ℕ) (event : EventReplay.EventInput) {w : ℕ}
+    (h : event.completedWindow = some w) (hw : w < horizon) :
+    nextWindow horizon event = some (w + 1) := by simp [nextWindow, h, hw]
+
+theorem step_failed (depth horizon : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j)
+    (hf : x.session.replay.failure.isSome = true) :
+    step depth horizon enabled anchor fit library primary fallback x event
+      start destination gate hg =
+      PMF.pure ⟨some x, ⟨false, false, none, false, none⟩⟩ := by
+  simp only [step, EventReplay.advance_failed depth enabled anchor x event hf,
+    prepare_failed_state fit library primary fallback x _ _ start destination gate hg hf,
+    executePreparation]
+
+theorem step_no_retrieval (depth horizon : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    (fit : Fit) (library : ℕ → Transition) (primary fallback : Finset ℕ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (start destination : MacroPath.Row) (gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j)
+    (hn : nextWindow horizon event = none) :
+    step depth horizon enabled anchor fit library primary fallback x event
+      start destination gate hg =
+      PMF.pure ⟨some (EventReplay.advance depth enabled anchor x event),
+        ⟨false, false, none, false, none⟩⟩ := by
+  simp only [step, hn, Option.isSome_none, prepare_final_boundary, executePreparation]
+
+theorem ready_outcome_support {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (law : SelectedLaw)
+    (out : Outcome cfg) :
+    out ∈ (executePreparation x boundary window library (.ready law)).support ↔
+      ∃ j ∈ law.distribution.support,
+        (⟨stageTransition x boundary window (library j),
+          ⟨true, false, some j, law.usedFallback, some (offset x (library j))⟩⟩ : Outcome cfg) =
+            out :=
+  PMF.mem_support_map_iff _ _ _
+
+theorem ready_sample_recorded {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (law : SelectedLaw)
+    {out : Outcome cfg}
+    (h : out ∈ (executePreparation x boundary window library (.ready law)).support) :
+    ∃ j ∈ law.distribution.support,
+      out.trace.selectedIndex = some j ∧ out.trace.usedFallback = law.usedFallback ∧
+        out.trace.translation = some (offset x (library j)) ∧
+        out.state = stageTransition x boundary window (library j) := by
+  obtain ⟨j, hj, rfl⟩ := (ready_outcome_support x boundary window library law out).mp h
+  exact ⟨j, hj, rfl, rfl, rfl, rfl⟩
+
+end Thesis.Intraday.SimulatorStep

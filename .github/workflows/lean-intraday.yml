@@ -1,0 +1,75 @@
+name: Intraday market
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part III (continuous intraday market)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Intraday.Applications.Mandate
+            Thesis.Intraday.Applications.MandateGaussian
+            Thesis.Intraday.InferencePointProcesses.BlockBootstrap
+            Thesis.Intraday.InferencePointProcesses.BookPath
+            Thesis.Intraday.InferencePointProcesses.BootstrapDistribution
+            Thesis.Intraday.InferencePointProcesses.EnsembleCalibration
+            Thesis.Intraday.InferencePointProcesses.EnsembleRanks
+            Thesis.Intraday.InferencePointProcesses.ExchangeableRanks
+            Thesis.Intraday.InferencePointProcesses.PointProcessBootstrap
+            Thesis.Intraday.InferencePointProcesses.RankLimits
+            Thesis.Intraday.InferencePointProcesses.StrictRanks
+            Thesis.Intraday.LOBsAndTuples.Clearing
+            Thesis.Intraday.LOBsAndTuples.CurrentSourceIssues
+            Thesis.Intraday.LOBsAndTuples.Execution
+            Thesis.Intraday.LOBsAndTuples.IdentifierClearing
+            Thesis.Intraday.LOBsAndTuples.IdentifierMarket
+            Thesis.Intraday.LOBsAndTuples.MarketSorting
+            Thesis.Intraday.LOBsAndTuples.Orders
+            Thesis.Intraday.LOBsAndTuples.Replay
+            Thesis.Intraday.LOBsAndTuples.Retagging
+            Thesis.Intraday.LOBsAndTuples.Visibility
+            Thesis.Intraday.Simulation.AnalogueAttention
+            Thesis.Intraday.Simulation.AnalogueReplay
+            Thesis.Intraday.Simulation.BilateralReplay
+            Thesis.Intraday.Simulation.CompiledReplay
+            Thesis.Intraday.Simulation.Conservation
+            Thesis.Intraday.Simulation.DepthProfile
+            Thesis.Intraday.Simulation.DomainExtensions
+            Thesis.Intraday.Simulation.EncoderSourceDefinition
+            Thesis.Intraday.Simulation.EnergyScore
+            Thesis.Intraday.Simulation.EuclideanNegativeType
+            Thesis.Intraday.Simulation.GeometrySweep
+            Thesis.Intraday.Simulation.InstructionConservation
+            Thesis.Intraday.Simulation.InstructionReplay
+            Thesis.Intraday.Simulation.LedgerSeeding
+            Thesis.Intraday.Simulation.LedgerSorting
+            Thesis.Intraday.Simulation.LedgerTupleActions
+            Thesis.Intraday.Simulation.LedgerVisibility
+            Thesis.Intraday.Simulation.LifecycleResolver
+            Thesis.Intraday.Simulation.LiveLedger
+            Thesis.Intraday.Simulation.MappedQuantityUpdate
+            Thesis.Intraday.Simulation.ParserAssembly
+            Thesis.Intraday.Simulation.ParserDecomposition
+            Thesis.Intraday.Simulation.ParserLinks
+            Thesis.Intraday.Simulation.ParserMatching
+            Thesis.Intraday.Simulation.ParserPrograms
+            Thesis.Intraday.Simulation.PositionTransform
+            Thesis.Intraday.Simulation.PriceTranslation
+            Thesis.Intraday.Simulation.ReplayGeometry
+            Thesis.Intraday.Simulation.ReplayQuantities
+            Thesis.Intraday.Simulation.RetrievalWeights
+            Thesis.Intraday.Simulation.TypedReplay

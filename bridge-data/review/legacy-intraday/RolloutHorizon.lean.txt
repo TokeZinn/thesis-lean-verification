@@ -1,0 +1,177 @@
+import Intraday.RolloutChronology
+
+/-! # No pending groups at a successful admissible horizon
+
+The source convention bounds every relative burst time by the window width.
+Under its corresponding calendar bound, all newly staged groups remain inside
+the horizon. Actual replay, boundary handling and anchoring preserve this bound.
+Together with adaptive completion this proves that a successful run has an
+empty pending queue, rather than merely having skipped beyond-horizon entries.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.RolloutHorizon
+
+open GroupReplay EventReplay EventQueue SimulatorStep RetrievalPhase BurstInsertion
+open SimulatorTrajectory StochasticQueueBounds QueueChronology AdaptiveRollout EventScheduler
+
+def Below (horizon : ℝ) (pending : List ScheduledGroup) : Prop :=
+  ∀ g ∈ pending, g.dueTime ≤ horizon
+
+theorem tick_below (depth : ℕ) (x : GroupReplay.State) (pending : List ScheduledGroup)
+    (event : EventInput) (horizon : ℝ) (h : Below horizon pending) :
+    Below horizon (QueueTick.tick depth x pending event.time event.completedWindow
+      event.policy).boundaryPhase.pending := by
+  intro g hg
+  apply h g
+  apply (QueueTick.tick_accounting depth x pending event.time
+    event.completedWindow event.policy).mem_iff.mp
+  exact List.mem_append_right _ (List.mem_append_right _ hg)
+
+theorem advance_below (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput)
+    (horizon : ℝ) (h : Below horizon x.session.pending) :
+    Below horizon (advance depth enabled anchor x event).session.pending := by
+  by_cases hf : x.session.replay.failure.isSome = true
+  · rwa [advance_failed depth enabled anchor x event hf]
+  · have hn : x.session.replay.failure = none := by simpa using hf
+    rw [advance_active depth enabled anchor x event hn]
+    intro g hg
+    have hm : g.dueTime ∈ (afterAnchor depth enabled anchor x event).pending.map
+        ScheduledGroup.dueTime := List.mem_map.mpr ⟨g, hg, rfl⟩
+    rw [afterAnchor_times] at hm
+    obtain ⟨g', hg', he⟩ := List.mem_map.mp hm
+    rw [← he]
+    exact tick_below depth x.session.replay x.session.pending event horizon h g' hg'
+
+theorem stageBurst_below (cfg : QueueAnchor.Config) (boundary offset : ℝ) (window : ℕ)
+    (source : List BurstStaging.SourceGroup) (staged : List ScheduledGroup)
+    (h : BurstStaging.stageBurst cfg boundary offset window source = some staged)
+    (horizon : ℝ) (ht : ∀ g ∈ source, boundary + g.relativeTime ≤ horizon) :
+    Below horizon staged := by
+  intro g hg
+  have hs := (BurstStaging.stageBurst_spec cfg boundary offset window source staged h).2
+  have hm : (g.dueTime, g.window, g.sourceKey,
+      g.records.map (StagedQueuePrices.mapRecord StagedQueuePrices.withoutPrice)) ∈
+      staged.map (fun g => (g.dueTime, g.window, g.sourceKey,
+        g.records.map (StagedQueuePrices.mapRecord StagedQueuePrices.withoutPrice))) :=
+    List.mem_map.mpr ⟨g, hg, rfl⟩
+  rw [hs] at hm
+  obtain ⟨g', hg', he⟩ := List.mem_map.mp hm
+  have heq := congrArg Prod.fst he
+  change boundary + g'.relativeTime = g.dueTime at heq
+  rw [← heq]
+  exact ht g' hg'
+
+theorem stageTransition_below {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) (y : EventReplay.State cfg)
+    (h : stageTransition x boundary window transition = some y)
+    (horizon : ℝ) (hx : Below horizon x.session.pending)
+    (ht : ∀ g ∈ transition.burst, boundary + g.relativeTime ≤ horizon) :
+    Below horizon y.session.pending := by
+  by_cases hf : x.session.replay.failure.isSome = true
+  · rw [stageTransition_failed_state x boundary window transition hf] at h
+    have he := Option.some.inj h
+    subst y
+    exact hx
+  · have hn : x.session.replay.failure = none := by simpa using hf
+    obtain ⟨staged, hs, he⟩ := stageTransition_queue x boundary window transition hn h
+    intro g hg
+    rw [he] at hg
+    rcases List.mem_append.mp hg with hold | hnew
+    · exact hx g hold
+    · exact stageBurst_below cfg boundary (offset x transition) window transition.burst
+        staged hs horizon ht g hnew
+
+theorem preparation_ready_boundary (p : Parameters) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (event : EventInput) (law : SelectedLaw)
+    (h : preparation p x event = .ready law) :
+    ∃ w, event.completedWindow = some w ∧ w < p.horizon := by
+  have hn : nextWindow p.horizon event ≠ none := by
+    intro he
+    rw [preparation, prepareEvent_no_retrieval p x event he] at h
+    cases h
+  cases hw : event.completedWindow with
+  | none => exact (hn (nextWindow_nonboundary p.horizon event hw)).elim
+  | some w =>
+    refine ⟨w, rfl, ?_⟩
+    by_contra! hc
+    exact hn (nextWindow_final p.horizon event hw hc)
+
+def WithinHorizon (p : Parameters) (s : Schedule) : Prop :=
+  ∀ w < p.horizon, ∀ j ∈ p.primary ∪ p.fallback,
+    ∀ g ∈ (p.library j).burst, s.times w + g.relativeTime ≤ s.horizon
+
+theorem prepared_below (p : Parameters) (s : Schedule) (hp : WithinHorizon p s)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput) (out : Outcome cfg)
+    (he : ∀ w, event.completedWindow = some w → event.time = s.times w)
+    (ho : out ∈ (executePreparation x event.time ((nextWindow p.horizon event).getD 0)
+      p.library (preparation p x event)).support) (hx : Below s.horizon x.session.pending) :
+    Below s.horizon (out.state.getD x).session.pending := by
+  cases hprep : preparation p x event with
+  | skipped =>
+    rw [hprep, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    exact hx
+  | failed =>
+    rw [hprep, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    simpa only [Option.getD_some, (retrievalFailure_preserves_state x).2.2.1] using hx
+  | ready law =>
+    rw [hprep] at ho
+    obtain ⟨j, hj, rfl⟩ := (ready_outcome_support x event.time _ p.library law out).mp ho
+    obtain ⟨w, hw, hc⟩ := preparation_ready_boundary p x event law hprep
+    have ht : ∀ g ∈ (p.library j).burst, event.time + g.relativeTime ≤ s.horizon := by
+      rw [he w hw]
+      exact hp w hc j (preparation_ready_pool p x event law hprep j hj)
+    cases hs : stageTransition x event.time ((nextWindow p.horizon event).getD 0) (p.library j) with
+    | none => exact hx
+    | some y =>
+      exact stageTransition_below x event.time _ (p.library j) y hs s.horizon hx ht
+
+theorem step_below (p : Parameters) (s : Schedule) (hp : WithinHorizon p s)
+    {cfg : QueueAnchor.Config} (x y : Path cfg) (event : EventInput)
+    (he : ∀ w, event.completedWindow = some w → event.time = s.times w)
+    (hy : y ∈ (SimulatorTrajectory.step p x event).support)
+    (hx : Below s.horizon x.current.session.pending) :
+    Below s.horizon y.current.session.pending := by
+  cases hh : halted x with
+  | true =>
+    rw [step_halted p x event hh, PMF.mem_support_pure_iff] at hy
+    subst y
+    exact hx
+  | false =>
+    obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hh).mp hy
+    exact prepared_below p s hp (advanced p x event) event out he ho
+      (advance_below p.depth (anchorEnabled p) (anchorTarget p) x.current event s.horizon hx)
+
+theorem selected_boundary_time (s : Schedule) {cfg : QueueAnchor.Config}
+    (x : Frame cfg) (selected : Selected) (hs : select s x = some selected) :
+    ∀ w, selected.event.completedWindow = some w → selected.event.time = s.times w := by
+  intro w hw
+  have he := (next_spec _ _ _ _ _ _ (selected_next s x selected hs)).2.1
+  exact (boundaryAt_some _ _ _ _ (he.symm.trans hw)).2.symm
+
+theorem trace_below (p : Parameters) (s : Schedule) (hp : WithinHorizon p s)
+    {cfg : QueueAnchor.Config} {x z : Frame cfg} {n : ℕ} (h : Trace p s x z n)
+    (hx : Below s.horizon x.path.current.session.pending) :
+    Below s.horizon z.path.current.session.pending := by
+  induction h with
+  | stop x hs => exact hx
+  | step x selected y z n hs hy rest ih =>
+    exact ih (step_below p s hp x.path y selected.event
+      (selected_boundary_time s x selected hs) hy hx)
+
+theorem successful_queue_empty (p : Parameters) (s : Schedule) (hp : WithinHorizon p s)
+    {cfg : QueueAnchor.Config} (x z : Frame cfg)
+    (hx : Below s.horizon x.path.current.session.pending)
+    (hz : z ∈ (AdaptiveRollout.run p s x).support) (hh : halted z.path = false) :
+    z.path.current.session.pending = [] := by
+  obtain ⟨n, ht⟩ := run_support_trace p s x z hz
+  have hb := trace_below p s hp ht hx
+  have hf := (successful_completion p s x z hz hh).2
+  apply List.eq_nil_iff_forall_not_mem.mpr
+  intro g hg
+  exact not_lt_of_ge (hb g hg) (hf g hg)
+
+end Thesis.Intraday.RolloutHorizon

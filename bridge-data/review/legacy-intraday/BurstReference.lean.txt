@@ -1,0 +1,163 @@
+import Intraday.ReferenceCalendar
+
+/-! # The uniform reference Burst branch in the complete adaptive rollout
+
+The configuration supplies its eligible empirical support at each event. The
+branch uses the actual uniform law over that whole support, forces the anchor
+off, and performs the same midpoint translation, typed replay and staging as
+Pair–VAR. Empty support is a retrieval failure with no fallback flag; a selected
+empty burst is a valid no-operation block. The complete termination, chronology
+and successful empty-queue results apply to this branch as well.
+
+The disabled anchor's unused target log field is the fixed placeholder zero.
+The earlier home-path/exponential-duration method has a different specification
+and is not identified with this fixed-window reference branch.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.BurstReference
+
+open SimulatorTrajectory SimulatorStep RetrievalPhase BurstInsertion ReferenceCalendar
+open scoped ENNReal
+
+def configure (p : Parameters) (support : BurstSelection.Support (p.primary ∪ p.fallback)) :
+    Parameters := { p with burst := some support }
+
+theorem anchor_disabled (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback)) :
+    anchorEnabled (configure p support) = false := rfl
+
+theorem anchor_target_unused (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback)) :
+    anchorTarget (configure p support) = fun _ => 0 := rfl
+
+theorem prepared_uniform (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput) :
+    prepareEvent (configure p support) x event =
+      BurstSelection.prepare (support.eligible event) x (nextWindow p.horizon event).isSome := rfl
+
+/-- This formula contains no fitted macro rows, basis, distance, time weight or
+anchor function. Eligibility is the already declared support policy. -/
+theorem eventLaw_formula (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : Path cfg) (event : EventReplay.EventInput) :
+    eventLaw (configure p support) x event =
+      let replayed := EventReplay.advance p.depth false (fun _ => 0) x.current event
+      executePreparation replayed event.time ((nextWindow p.horizon event).getD 0) p.library
+        (BurstSelection.prepare (support.eligible event) replayed
+          (nextWindow p.horizon event).isSome) := rfl
+
+theorem selected_probability (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (law : SelectedLaw) (h : prepareEvent (configure p support) x event = .ready law) (j : ℕ) :
+    law.distribution j =
+      if j ∈ support.eligible event then ((support.eligible event).card : ℝ≥0∞)⁻¹ else 0 :=
+  BurstSelection.ready_probability (support.eligible event) x _ law h j
+
+theorem selected_all_eligible (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (law : SelectedLaw) (h : prepareEvent (configure p support) x event = .ready law) (j : ℕ) :
+    j ∈ law.distribution.support ↔ j ∈ support.eligible event :=
+  BurstSelection.ready_support (support.eligible event) x _ law h j
+
+theorem selected_no_fallback (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventReplay.EventInput)
+    (law : SelectedLaw) (h : prepareEvent (configure p support) x event = .ready law) :
+    law.usedFallback = false :=
+  BurstSelection.ready_no_fallback (support.eligible event) x _ law h
+
+theorem empty_support_failure (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : Path cfg) (event : EventReplay.EventInput)
+    (hx : (advanced (configure p support) x event).session.replay.failure = none)
+    (hn : (nextWindow p.horizon event).isSome = true) (he : support.eligible event = ∅) :
+    eventLaw (configure p support) x event =
+      PMF.pure ⟨some (retrievalFailure (advanced (configure p support) x event)),
+        ⟨true, true, none, false, none⟩⟩ := by
+  change executePreparation _ _ _ _
+    (BurstSelection.prepare (support.eligible event) _ (nextWindow p.horizon event).isSome) = _
+  rw [he, hn, BurstSelection.prepare_active_empty _ hx]
+  rfl
+
+theorem selected_empty_burst (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : Path cfg) (event : EventReplay.EventInput)
+    (law : SelectedLaw)
+    (hprep : prepareEvent (configure p support) (advanced (configure p support) x event)
+      event = .ready law) (out : Outcome cfg)
+    (ho : out ∈ (eventLaw (configure p support) x event).support)
+    (hempty : ∀ j ∈ support.eligible event, (p.library j).burst = []) :
+    out.state = some (advanced (configure p support) x event) ∧ out.trace.usedFallback = false := by
+  change out ∈ (executePreparation _ _ _ _
+    (prepareEvent (configure p support)
+      (advanced (configure p support) x event) event)).support at ho
+  rw [hprep] at ho
+  obtain ⟨j, hj, hstate⟩ := (ready_outcome_support _ _ _ _ law out).mp ho
+  have hm := (selected_all_eligible p support _ event law hprep j).mp hj
+  have hb := stageTransition_empty (advanced (configure p support) x event) event.time
+    ((nextWindow p.horizon event).getD 0) (p.library j) (hempty j hm)
+  have hf := selected_no_fallback p support _ event law hprep
+  subst out
+  exact ⟨hb, hf⟩
+
+theorem advanced_without_correction (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    {cfg : QueueAnchor.Config} (x : Path cfg) (event : EventReplay.EventInput)
+    (hx : x.current.session.replay.failure = none) :
+    (advanced (configure p support) x event).session.replay =
+      (EventReplay.afterTick p.depth x.current event).replay ∧
+    (advanced (configure p support) x event).session.pending =
+      (EventReplay.afterTick p.depth x.current event).pending := by
+  change (EventReplay.advance p.depth false (fun _ => 0) x.current event).session.replay = _ ∧
+    (EventReplay.advance p.depth false (fun _ => 0) x.current event).session.pending = _
+  rw [EventReplay.advance_active p.depth false (fun _ => 0) x.current event hx]
+  unfold EventReplay.advanceActive EventReplay.afterAnchor
+  dsimp only
+  unfold AnchorPhase.correct
+  split <;> exact ⟨rfl, rfl⟩
+
+theorem reference_parameters_commute (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback)) :
+    ReferenceCalendar.parameters (configure p support) =
+      configure (ReferenceCalendar.parameters p) support := rfl
+
+def rollout (p : Parameters) (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin) :
+    PMF (AdaptiveRollout.Frame cfg) :=
+  ReferenceCalendar.rollout (configure p support) policy x origin he
+
+theorem rollout_chronological (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback)) (hp : AdmissibleBursts p)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin)
+    (hq : x.session.pending = []) (z : AdaptiveRollout.Frame cfg)
+    (hz : z ∈ (rollout p support policy x origin he).support) :
+    z.path.history.Pairwise (fun a b => a.event.time < b.event.time) ∧
+      ∀ entry ∈ z.path.history,
+        ReferenceCalendar.time (origin - 1) < entry.event.time ∧ entry.event.time ≤ horizon :=
+  ReferenceCalendar.rollout_chronological (configure p support) hp policy x origin he hq z hz
+
+theorem rollout_event_bound (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback))
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin)
+    (hq : x.session.pending = []) (z : AdaptiveRollout.Frame cfg)
+    (hz : z ∈ (rollout p support policy x origin he).support) :
+    z.path.history.length ≤ (StochasticQueueBounds.burstBound p + 1) * (100 - origin) :=
+  ReferenceCalendar.rollout_event_bound (configure p support) policy x origin he hq z hz
+
+theorem successful_rollout_empty (p : Parameters)
+    (support : BurstSelection.Support (p.primary ∪ p.fallback)) (hp : AdmissibleBursts p)
+    (policy : ℕ → EventQueue.BoundaryPolicy) {cfg : QueueAnchor.Config}
+    (x : EventReplay.State cfg) (origin : ℕ) (he : EligibleOrigin origin)
+    (hq : x.session.pending = []) (z : AdaptiveRollout.Frame cfg)
+    (hz : z ∈ (rollout p support policy x origin he).support) (hh : halted z.path = false) :
+    z.remaining = ∅ ∧ z.path.current.session.pending = [] :=
+  ReferenceCalendar.successful_rollout_empty (configure p support) hp policy x origin he hq z hz hh
+
+end Thesis.Intraday.BurstReference

@@ -1,0 +1,44 @@
+name: Market representations
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part I, Ch. 2 (market representations)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Foundations.MarketRepresentation.BorelProductScope
+            Thesis.Foundations.MarketRepresentation.ConfigurationScope
+            Thesis.Foundations.MarketRepresentation.DisjointUnion
+            Thesis.Foundations.MarketRepresentation.DisjointUnionTopology
+            Thesis.Foundations.MarketRepresentation.DoctoralAdmissibility
+            Thesis.Foundations.MarketRepresentation.DoctoralGeometry
+            Thesis.Foundations.MarketRepresentation.FiniteRelationClosure
+            Thesis.Foundations.MarketRepresentation.FiniteSetCompletenessExample
+            Thesis.Foundations.MarketRepresentation.FiniteSetExamples
+            Thesis.Foundations.MarketRepresentation.FiniteSets
+            Thesis.Foundations.MarketRepresentation.MetricSourceProofs
+            Thesis.Foundations.MarketRepresentation.OrderExamples
+            Thesis.Foundations.MarketRepresentation.OrderTies
+            Thesis.Foundations.MarketRepresentation.OrderTopology
+            Thesis.Foundations.MarketRepresentation.TupleIsometries
+            Thesis.Foundations.MarketRepresentation.TupleSortingAlignment
+            Thesis.Foundations.MarketRepresentation.TupleTopologyAlignment
+            Thesis.Foundations.MarketRepresentation.TuplesBasic
+            Thesis.Foundations.MarketRepresentation.TuplesMeasurableSorting
+            Thesis.Foundations.MarketRepresentation.TuplesMetricTopology
+            Thesis.Foundations.MarketRepresentation.TuplesSorting

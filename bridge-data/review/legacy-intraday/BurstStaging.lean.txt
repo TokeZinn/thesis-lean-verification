@@ -1,0 +1,192 @@
+import Intraday.QueueAnchor
+
+/-! # Translate and stage an entire typed burst once at selection
+
+The same boundary offset is used for every price-bearing addition or replacement.
+The configured grid supplies both conservative rounding and the actual Order
+price bounds. Quantity-only changes remain unpriced until live resolution.
+Absolute due times are boundary plus source-relative time. An empty burst
+succeeds with an empty queue. Missing directional grid points return an explicit
+failure; no price is silently clipped to the wrong side of the requested level.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.BurstStaging
+
+open LiveLedger LifecycleResolver TypedReplay GroupReplay StagedQueuePrices QueueAnchor
+
+def roundPrice (grid : Finset ℝ) (buy : Bool) (p : ℝ) : Option ℝ :=
+  if buy then PriceGrid.roundBuy grid p else PriceGrid.roundSell grid p
+
+theorem roundPrice_spec {grid : Finset ℝ} {buy : Bool} {p q : ℝ}
+    (h : roundPrice grid buy p = some q) :
+    q ∈ grid ∧ (if buy then q ≤ p else p ≤ q) := by
+  cases buy with
+  | false => exact ⟨(PriceGrid.roundSell_spec h).1, (PriceGrid.roundSell_spec h).2.1⟩
+  | true => exact ⟨(PriceGrid.roundBuy_spec h).1, (PriceGrid.roundBuy_spec h).2.1⟩
+
+def setPrice (o : Order) (p : Price) : Order := WithLp.toLp 1 (p, o.snd)
+
+def translateOrder (cfg : Config) (offset : ℝ) (buy : Bool) (o : Order) : Option Order :=
+  match h : roundPrice cfg.grid buy (price o + offset) with
+  | none => none
+  | some p => some (setPrice o ⟨p, cfg.gridBounds p (roundPrice_spec h).1⟩)
+
+theorem translateOrder_spec (cfg : Config) (offset : ℝ) (buy : Bool) (o result : Order)
+    (h : translateOrder cfg offset buy o = some result) :
+    price result ∈ cfg.grid ∧
+      (if buy then price result ≤ price o + offset else price o + offset ≤ price result) ∧
+      withoutPrice result = withoutPrice o := by
+  unfold translateOrder at h
+  split at h
+  · contradiction
+  · rename_i p hp
+    have he := Option.some.inj h
+    subst result
+    exact ⟨(roundPrice_spec hp).1, (roundPrice_spec hp).2, rfl⟩
+
+theorem translateOrder_quantity_time (cfg : Config) (offset : ℝ) (buy : Bool) (o result : Order)
+    (h : translateOrder cfg offset buy o = some result) :
+    quantity result = quantity o ∧ time result = time o := by
+  unfold translateOrder at h
+  split at h
+  · contradiction
+  · have he := Option.some.inj h
+    subst result
+    exact ⟨rfl, rfl⟩
+
+def translateRequest (cfg : Config) (offset : ℝ) : Request → Option Request
+  | .add key buy o => (translateOrder cfg offset buy o).map (.add key buy)
+  | .cancel key => some (.cancel key)
+  | .change key buy o => (translateOrder cfg offset buy o).map (.change key buy)
+
+def translateRecord (cfg : Config) (offset : ℝ) : SourceRecord → Option SourceRecord
+  | .lifecycle r => (translateRequest cfg offset r).map .lifecycle
+  | .quantityUpdate key q priority => some (.quantityUpdate key q priority)
+  | .instruction incoming resting immediate => some (.instruction incoming resting immediate)
+
+theorem translateRecord_spec (cfg : Config) (offset : ℝ) (r result : SourceRecord)
+    (h : translateRecord cfg offset r = some result) :
+    (∀ p ∈ recordPrices result, p ∈ cfg.grid) ∧
+      mapRecord withoutPrice result = mapRecord withoutPrice r := by
+  cases r with
+  | lifecycle request =>
+    obtain ⟨req, hreq, he⟩ := Option.map_eq_some_iff.mp h
+    subst result
+    cases request with
+    | add key buy o =>
+      obtain ⟨new, hn, he⟩ := Option.map_eq_some_iff.mp hreq
+      subst req
+      have hp := translateOrder_spec cfg offset buy o new hn
+      simpa [recordPrices, mapRecord, mapRequest, hp.2.2] using hp.1
+    | cancel key =>
+      have he : Request.cancel key = req := Option.some.inj hreq
+      subst req
+      simp [recordPrices, mapRecord, mapRequest]
+    | change key buy o =>
+      obtain ⟨new, hn, he⟩ := Option.map_eq_some_iff.mp hreq
+      subst req
+      have hp := translateOrder_spec cfg offset buy o new hn
+      simpa [recordPrices, mapRecord, mapRequest, hp.2.2] using hp.1
+  | quantityUpdate key q priority =>
+    have he := Option.some.inj h
+    subst result
+    simp [recordPrices]
+  | instruction incoming resting immediate =>
+    have he := Option.some.inj h
+    subst result
+    simp [recordPrices]
+
+def stageRecords (cfg : Config) (offset : ℝ) : List SourceRecord → Option (List SourceRecord)
+  | [] => some []
+  | r :: rs =>
+    match translateRecord cfg offset r, stageRecords cfg offset rs with
+    | some r', some rs' => some (r' :: rs')
+    | _, _ => none
+
+theorem stageRecords_spec (cfg : Config) (offset : ℝ) (rs result : List SourceRecord)
+    (h : stageRecords cfg offset rs = some result) :
+    (∀ p ∈ result.flatMap recordPrices, p ∈ cfg.grid) ∧
+      result.map (mapRecord withoutPrice) = rs.map (mapRecord withoutPrice) := by
+  induction rs generalizing result with
+  | nil =>
+    have he : result = [] := (Option.some.inj h).symm
+    simp [he]
+  | cons r rs ih =>
+    unfold stageRecords at h
+    split at h
+    · rename_i r' rs' hr hrs
+      have he := Option.some.inj h
+      subst result
+      obtain ⟨hp, hm⟩ := translateRecord_spec cfg offset r r' hr
+      obtain ⟨hps, hms⟩ := ih rs' hrs
+      constructor
+      · intro p hpall
+        rcases List.mem_append.mp hpall with hh | ht
+        · exact hp p hh
+        · exact hps p ht
+      · simp [hm, hms]
+    · contradiction
+
+structure SourceGroup where
+  relativeTime : ℝ
+  sourceKey : ℕ
+  records : List SourceRecord
+
+def stageGroup (cfg : Config) (boundary offset : ℝ) (window : ℕ)
+    (g : SourceGroup) : Option ScheduledGroup :=
+  (stageRecords cfg offset g.records).map
+    fun records => ⟨boundary + g.relativeTime, window, g.sourceKey, records⟩
+
+theorem stageGroup_spec (cfg : Config) (boundary offset : ℝ) (window : ℕ)
+    (g : SourceGroup) (result : ScheduledGroup)
+    (h : stageGroup cfg boundary offset window g = some result) :
+    result.dueTime = boundary + g.relativeTime ∧ result.window = window ∧
+      result.sourceKey = g.sourceKey ∧
+      result.records.map (mapRecord withoutPrice) = g.records.map (mapRecord withoutPrice) ∧
+      ∀ p ∈ groupPrices result, p ∈ cfg.grid := by
+  obtain ⟨records, hr, he⟩ := Option.map_eq_some_iff.mp h
+  subst result
+  obtain ⟨hp, hm⟩ := stageRecords_spec cfg offset g.records records hr
+  exact ⟨rfl, rfl, rfl, hm, hp⟩
+
+def stageBurst (cfg : Config) (boundary offset : ℝ) (window : ℕ) :
+    List SourceGroup → Option (List ScheduledGroup)
+  | [] => some []
+  | g :: gs =>
+    match stageGroup cfg boundary offset window g, stageBurst cfg boundary offset window gs with
+    | some g', some gs' => some (g' :: gs')
+    | _, _ => none
+
+theorem stageBurst_spec (cfg : Config) (boundary offset : ℝ) (window : ℕ)
+    (gs : List SourceGroup) (result : List ScheduledGroup)
+    (h : stageBurst cfg boundary offset window gs = some result) :
+    (∀ p ∈ queuePrices result, p ∈ cfg.grid) ∧
+      result.map (fun g => (g.dueTime, g.window, g.sourceKey,
+        g.records.map (mapRecord withoutPrice))) =
+      gs.map (fun g => (boundary + g.relativeTime, window, g.sourceKey,
+        g.records.map (mapRecord withoutPrice))) := by
+  induction gs generalizing result with
+  | nil =>
+    have he : result = [] := (Option.some.inj h).symm
+    simp [he, queuePrices]
+  | cons g gs ih =>
+    unfold stageBurst at h
+    split at h
+    · rename_i g' gs' hg hgs
+      have he := Option.some.inj h
+      subst result
+      obtain ⟨ht, hw, hk, hm, hp⟩ := stageGroup_spec cfg boundary offset window g g' hg
+      obtain ⟨hps, hms⟩ := ih gs' hgs
+      constructor
+      · intro p hpall
+        rcases List.mem_append.mp hpall with hh | htail
+        · exact hp p hh
+        · exact hps p htail
+      · simp [ht, hw, hk, hm, hms]
+    · contradiction
+
+theorem stageBurst_empty (cfg : Config) (boundary offset : ℝ) (window : ℕ) :
+    stageBurst cfg boundary offset window [] = some [] := rfl
+
+end Thesis.Intraday.BurstStaging

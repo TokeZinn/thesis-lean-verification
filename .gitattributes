@@ -1,0 +1,22 @@
+* text=auto
+*.lean text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+# Captured source and pre-edit archives retain their original byte hashes.
+audit/doctoral-2026-10-20/source/** -text
+audit/doctoral-2026-10-20/source-revision-*/** -text
+audit/doctoral-2026-10-20/before/** -text
+audit/doctoral-2026-10-20/legacy-*/** -text
+audit/doctoral-2026-10-20/retired-foundations/** -text
+audit/doctoral-2026-10-20/annotation-backups/** -text
+audit/doctoral-fixes-2026-10-20/source/** -text
+audit/doctoral-fixes-2026-10-20/lean-originals/** -text
+*.js text eol=lf
+*.tsv text eol=lf
+# Published copies of review inputs keep the byte hashes of the local audit originals.
+bridge-data/review/** -text
+*.svg text eol=lf

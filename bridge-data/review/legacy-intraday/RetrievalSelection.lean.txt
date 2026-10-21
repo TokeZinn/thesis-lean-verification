@@ -1,0 +1,208 @@
+import Intraday.RetrievalWeights
+import Mathlib.Data.Finset.Sort
+import Mathlib.Data.Prod.Lex
+
+/-! # Time gating and deterministic nearest-neighbour retrieval
+
+Simulator appendix, lines 124–148. Library indices encode the configured
+deterministic tie-key order. The reference key has seven starting macro
+coordinates, five live-book gauge coordinates and seven destination macro
+coordinates. This is the 19-coordinate reference specification, not the
+distinct 24-coordinate configuration behind the retained empirical paths.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.RetrievalSelection
+
+open Finset
+open scoped BigOperators
+
+structure ReferenceKey where
+  start : Fin 7 → ℝ
+  gauge : Fin 5 → ℝ
+  destination : Fin 7 → ℝ
+
+def componentDistance {n : ℕ} (query candidate scale : Fin n → ℝ) : ℝ :=
+  ∑ c, ((query c - candidate c) / scale c)^2
+
+def referenceDistance (query candidate scale : ReferenceKey) : ℝ :=
+  componentDistance query.start candidate.start scale.start +
+    componentDistance query.gauge candidate.gauge scale.gauge +
+    componentDistance query.destination candidate.destination scale.destination
+
+theorem componentDistance_nonneg {n : ℕ} (query candidate scale : Fin n → ℝ) :
+    0 ≤ componentDistance query candidate scale := sum_nonneg fun _ _ => sq_nonneg _
+
+theorem referenceDistance_nonneg (query candidate scale : ReferenceKey) :
+    0 ≤ referenceDistance query candidate scale :=
+  add_nonneg (add_nonneg (componentDistance_nonneg _ _ _) (componentDistance_nonneg _ _ _))
+    (componentDistance_nonneg _ _ _)
+
+def timeGate (pool : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ) : Finset ℕ :=
+  pool.filter fun j => |entry j - clock| ≤ (3 / 100 : ℝ)
+
+theorem mem_timeGate (pool : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ) (j : ℕ) :
+    j ∈ timeGate pool entry clock ↔ j ∈ pool ∧ |entry j - clock| ≤ (3 / 100 : ℝ) :=
+  mem_filter
+
+abbrev RankedKey := ℝ ×ₗ ℕ
+
+def key (distance : ℕ → ℝ) (j : ℕ) : RankedKey := toLex (distance j, j)
+
+theorem key_injective (distance : ℕ → ℝ) : Function.Injective (key distance) := by
+  intro i j h
+  exact congrArg (fun k : RankedKey => (ofLex k).2) h
+
+def rankedKeys (pool : Finset ℕ) (distance : ℕ → ℝ) : Finset RankedKey := by
+  classical
+  exact pool.image (key distance)
+
+def ordered (pool : Finset ℕ) (distance : ℕ → ℝ) : List RankedKey :=
+  (rankedKeys pool distance).sort (· ≤ ·)
+
+def neighborhood (pool : Finset ℕ) (distance : ℕ → ℝ) : Finset RankedKey := by
+  classical
+  exact ((ordered pool distance).take 20).toFinset
+
+theorem rankedKeys_card (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    (rankedKeys pool distance).card = pool.card := by
+  classical
+  exact card_image_of_injective pool (key_injective distance)
+
+theorem ordered_length (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    (ordered pool distance).length = pool.card := by
+  rw [ordered, length_sort, rankedKeys_card]
+
+theorem ordered_nodup (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    (ordered pool distance).Nodup := sort_nodup _ _
+
+theorem neighborhood_card (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    (neighborhood pool distance).card = min 20 pool.card := by
+  classical
+  rw [neighborhood, List.toFinset_card_of_nodup (ordered_nodup pool distance).take,
+    List.length_take, ordered_length]
+
+theorem neighborhood_nonempty (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    (neighborhood pool distance).Nonempty ↔ pool.Nonempty := by
+  rw [← card_pos, neighborhood_card, lt_min_iff, ← card_pos]
+  norm_num
+
+theorem neighborhood_subset (pool : Finset ℕ) (distance : ℕ → ℝ) :
+    neighborhood pool distance ⊆ rankedKeys pool distance := by
+  classical
+  intro k hk
+  have htake := List.mem_toFinset.mp hk
+  exact (mem_sort (r := (· ≤ ·))).mp (List.mem_of_mem_take htake)
+
+/-- Every selected key precedes every omitted eligible key. Lexicographic
+order gives increasing distance followed by the deterministic library tie key. -/
+theorem selected_le_omitted (pool : Finset ℕ) (distance : ℕ → ℝ)
+    {a b : RankedKey} (ha : a ∈ neighborhood pool distance)
+    (hb : b ∈ rankedKeys pool distance) (hbnot : b ∉ neighborhood pool distance) : a ≤ b := by
+  classical
+  have hp := pairwise_sort (rankedKeys pool distance) (· ≤ ·)
+  change (ordered pool distance).Pairwise (· ≤ ·) at hp
+  have hparts : ((ordered pool distance).take 20 ++
+      (ordered pool distance).drop 20).Pairwise (· ≤ ·) := by
+    rw [List.take_append_drop]
+    exact hp
+  have had : a ∈ (ordered pool distance).take 20 := List.mem_toFinset.mp ha
+  have hbd : b ∈ (ordered pool distance).drop 20 := by
+    have hm : b ∈ ordered pool distance := (mem_sort (r := (· ≤ ·))).mpr hb
+    rw [← List.take_append_drop 20 (ordered pool distance), List.mem_append] at hm
+    rcases hm with ht | hd
+    · exact False.elim (hbnot (List.mem_toFinset.mpr ht))
+    · exact hd
+  exact (List.pairwise_append.mp hparts).2.2 a had b hbd
+
+theorem key_le_iff (distance : ℕ → ℝ) (i j : ℕ) :
+    key distance i ≤ key distance j ↔
+      distance i < distance j ∨ distance i = distance j ∧ i ≤ j :=
+  Prod.Lex.le_iff
+
+def minimumDistance (pool : Finset ℕ) (distance : ℕ → ℝ) : ℝ :=
+  if h : (neighborhood pool distance).Nonempty then
+    (ofLex ((neighborhood pool distance).min' h)).1 else 0
+
+theorem minimumDistance_le (pool : Finset ℕ) (distance : ℕ → ℝ)
+    {k : RankedKey} (hk : k ∈ neighborhood pool distance) :
+    minimumDistance pool distance ≤ (ofLex k).1 := by
+  unfold minimumDistance
+  rw [dif_pos ⟨k, hk⟩]
+  have h := (neighborhood pool distance).min'_le k hk
+  rcases Prod.Lex.le_iff.mp h with hlt | heq
+  · exact hlt.le
+  · exact heq.1.le
+
+/-- Rebuild the neighbourhood, offset and normalised law for this support.
+The output law is on the original library identifiers. -/
+def attempt (pool : Finset ℕ) (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    Option (PMF ℕ) := by
+  classical
+  let N := neighborhood pool distance
+  let d : N → ℝ := fun k => (ofLex k.val).1
+  let g : N → ℝ := fun k => gate (ofLex k.val).2
+  exact (RetrievalWeights.checkedLaw d g (minimumDistance pool distance)
+    (fun k => hg (ofLex k.val).2)).map (fun P => P.map (fun k : N => (ofLex k.val).2))
+
+theorem attempt_none_iff (pool : Finset ℕ) (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    attempt pool distance gate hg = none ↔
+      ∀ k ∈ neighborhood pool distance, gate (ofLex k).2 = 0 := by
+  classical
+  simp only [attempt, Option.map_eq_none_iff, RetrievalWeights.checkedLaw_none_iff]
+  exact Subtype.forall
+
+theorem attempt_empty (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    attempt ∅ distance gate hg = none := by
+  apply (attempt_none_iff ∅ distance gate hg).mpr
+  intro k hk
+  have h := (neighborhood_nonempty ∅ distance).mp ⟨k, hk⟩
+  exact False.elim (not_nonempty_empty h)
+
+theorem attempt_support (pool : Finset ℕ) (distance gate : ℕ → ℝ)
+    (hg : ∀ j, 0 ≤ gate j) {P : PMF ℕ} (hP : attempt pool distance gate hg = some P)
+    {j : ℕ} (hj : j ∈ P.support) : j ∈ pool := by
+  classical
+  unfold attempt at hP
+  dsimp only at hP
+  obtain ⟨Q, _, hQ⟩ := Option.map_eq_some_iff.mp hP
+  subst P
+  obtain ⟨k, _, hk⟩ := (PMF.mem_support_map_iff _ _ _).mp hj
+  have hkpool := neighborhood_subset pool distance k.property
+  obtain ⟨i, hi, heq⟩ := mem_image.mp hkpool
+  have hid : i = j := by
+    have hcoord := congrArg (fun t : RankedKey => (ofLex t).2) heq
+    exact hcoord.trans hk
+  exact hid ▸ hi
+
+def gatedAttempt (pool : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Option (PMF ℕ) :=
+  attempt (timeGate pool entry clock) distance gate hg
+
+/-- Fallback is a fresh retrieval computation on the declared fallback pool;
+neither the old neighbourhood nor its normalising denominator is reused. -/
+def retrieve (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) : Option (PMF ℕ) :=
+  (gatedAttempt primary entry clock distance gate hg).orElse
+    (fun _ => gatedAttempt fallback entry clock distance gate hg)
+
+theorem retrieve_failure_iff (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) :
+    retrieve primary fallback entry clock distance gate hg = none ↔
+      gatedAttempt primary entry clock distance gate hg = none ∧
+      gatedAttempt fallback entry clock distance gate hg = none := by
+  unfold retrieve
+  cases gatedAttempt primary entry clock distance gate hg <;> simp
+
+theorem retrieve_uses_primary (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j) (P : PMF ℕ)
+    (h : gatedAttempt primary entry clock distance gate hg = some P) :
+    retrieve primary fallback entry clock distance gate hg = some P := by simp [retrieve, h]
+
+theorem retrieve_fallback (primary fallback : Finset ℕ) (entry : ℕ → ℝ) (clock : ℝ)
+    (distance gate : ℕ → ℝ) (hg : ∀ j, 0 ≤ gate j)
+    (h : gatedAttempt primary entry clock distance gate hg = none) :
+    retrieve primary fallback entry clock distance gate hg =
+      gatedAttempt fallback entry clock distance gate hg := by simp [retrieve, h]
+
+end Thesis.Intraday.RetrievalSelection

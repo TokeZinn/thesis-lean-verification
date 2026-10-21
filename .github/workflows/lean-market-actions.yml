@@ -1,0 +1,29 @@
+name: Market actions
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part I, Ch. 3 (market actions)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Foundations.MarketActions.ActionSourceProofs
+            Thesis.Foundations.MarketActions.Alignment
+            Thesis.Foundations.MarketActions.Analytic
+            Thesis.Foundations.MarketActions.Composite
+            Thesis.Foundations.MarketActions.Identifiers
+            Thesis.Foundations.MarketActions.Primitive

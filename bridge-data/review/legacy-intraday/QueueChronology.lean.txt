@@ -1,0 +1,180 @@
+import Intraday.StochasticQueueBounds
+
+/-! # Strictly future queues after successful reference events
+
+The library convention at simulator appendix line 122 requires strictly
+positive relative burst times. Every successful event first drains all groups
+due at its time; boundary handling can only remove more groups, and anchor
+correction preserves their times. New staged groups are consequently strictly
+future. This connects the chronology claim to the actual queue operations.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.QueueChronology
+
+open GroupReplay EventQueue EventReplay SimulatorStep RetrievalPhase BurstInsertion
+open SimulatorTrajectory StochasticQueueBounds
+
+theorem boundary_input_success (depth : ℕ) (x : EventQueue.QueueOutput)
+    (window : Option ℕ) (policy : BoundaryPolicy)
+    (h : (QueueTick.applyBoundary depth x window policy).state.failure = none) :
+    x.state.failure = none := by
+  by_cases hf : x.state.failure.isSome = true
+  · rw [QueueTick.applyBoundary_failed depth x window policy hf] at h
+    exact h
+  · simpa using hf
+
+theorem tick_pending_future (depth : ℕ) (x : GroupReplay.State)
+    (pending : List ScheduledGroup) (event : EventInput)
+    (hf : (QueueTick.tick depth x pending event.time event.completedWindow
+      event.policy).boundaryPhase.state.failure = none)
+    (g : ScheduledGroup)
+    (hg : g ∈ (QueueTick.tick depth x pending event.time event.completedWindow
+      event.policy).boundaryPhase.pending) : event.time < g.dueTime := by
+  have hd := boundary_input_success depth (drainDue depth x pending event.time)
+    event.completedWindow event.policy hf
+  have hm : g ∈ (drainDue depth x pending event.time).pending := by
+    have hpart := QueueTick.applyBoundary_accounting depth (drainDue depth x pending event.time)
+      event.completedWindow event.policy
+    apply hpart.mem_iff.mp
+    exact List.mem_append_right _ hg
+  exact drainDue_success_no_due depth x pending event.time hd hm
+
+theorem afterAnchor_times (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput) :
+    (afterAnchor depth enabled anchor x event).pending.map ScheduledGroup.dueTime =
+      (tickResult depth x event).boundaryPhase.pending.map ScheduledGroup.dueTime := by
+  have h := congrArg (List.map (fun t : ℝ × ℕ × ℕ => t.1))
+    (AnchorPhase.correct_queue_schedule cfg event.time (anchor event.time) enabled
+      (afterTick depth x event) (afterTick_invariant depth x event) (afterTick_grid depth x event))
+  simpa only [List.map_map] using h
+
+theorem advance_pending_future (depth : ℕ) (enabled : Bool) (anchor : ℝ → ℝ)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput)
+    (hx : x.session.replay.failure = none)
+    (hf : (advance depth enabled anchor x event).session.replay.failure = none)
+    (g : ScheduledGroup) (hg : g ∈ (advance depth enabled anchor x event).session.pending) :
+    event.time < g.dueTime := by
+  rw [advance_active depth enabled anchor x event hx] at hf hg
+  change (afterAnchor depth enabled anchor x event).replay.failure = none at hf
+  have hfail : (tickResult depth x event).boundaryPhase.state.failure = none :=
+    (afterAnchor_failure depth enabled anchor x event).symm.trans hf
+  have hmem : g.dueTime ∈ (afterAnchor depth enabled anchor x event).pending.map
+      ScheduledGroup.dueTime := List.mem_map.mpr ⟨g, hg, rfl⟩
+  rw [afterAnchor_times] at hmem
+  obtain ⟨g', hg', he⟩ := List.mem_map.mp hmem
+  rw [← he]
+  exact tick_pending_future depth x.session.replay x.session.pending event hfail g' hg'
+
+theorem stageBurst_future (cfg : QueueAnchor.Config) (boundary offset : ℝ) (window : ℕ)
+    (source : List BurstStaging.SourceGroup) (staged : List ScheduledGroup)
+    (h : BurstStaging.stageBurst cfg boundary offset window source = some staged)
+    (ht : ∀ g ∈ source, 0 < g.relativeTime) (g : ScheduledGroup) (hg : g ∈ staged) :
+    boundary < g.dueTime := by
+  have hs := (BurstStaging.stageBurst_spec cfg boundary offset window source staged h).2
+  have hm : (g.dueTime, g.window, g.sourceKey,
+      g.records.map (StagedQueuePrices.mapRecord StagedQueuePrices.withoutPrice)) ∈
+      staged.map (fun g => (g.dueTime, g.window, g.sourceKey,
+        g.records.map (StagedQueuePrices.mapRecord StagedQueuePrices.withoutPrice))) :=
+    List.mem_map.mpr ⟨g, hg, rfl⟩
+  rw [hs] at hm
+  obtain ⟨g', hg', he⟩ := List.mem_map.mp hm
+  have heq := congrArg Prod.fst he
+  change boundary + g'.relativeTime = g.dueTime at heq
+  rw [← heq]
+  linarith [ht g' hg']
+
+theorem stageTransition_future {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (transition : Transition) (y : EventReplay.State cfg)
+    (h : stageTransition x boundary window transition = some y)
+    (hx : ∀ g ∈ x.session.pending, boundary < g.dueTime)
+    (ht : ∀ g ∈ transition.burst, 0 < g.relativeTime)
+    (g : ScheduledGroup) (hg : g ∈ y.session.pending) : boundary < g.dueTime := by
+  by_cases hf : x.session.replay.failure.isSome = true
+  · rw [stageTransition_failed_state x boundary window transition hf] at h
+    have he := Option.some.inj h
+    subst y
+    exact hx g hg
+  · have hn : x.session.replay.failure = none := by simpa using hf
+    obtain ⟨staged, hs, he⟩ := stageTransition_queue x boundary window transition hn h
+    rw [he] at hg
+    rcases List.mem_append.mp hg with hold | hnew
+    · exact hx g hold
+    · exact stageBurst_future cfg boundary (offset x transition) window transition.burst
+        staged hs ht g hnew
+
+theorem preparation_input_success {cfg : QueueAnchor.Config} (x : EventReplay.State cfg)
+    (boundary : ℝ) (window : ℕ) (library : ℕ → Transition) (preparation : Preparation)
+    (out : Outcome cfg)
+    (ho : out ∈ (executePreparation x boundary window library preparation).support)
+    (hf : (out.state.getD x).session.replay.failure = none) : x.session.replay.failure = none := by
+  cases preparation with
+  | skipped =>
+    rw [executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    exact hf
+  | failed =>
+    rw [executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    by_cases hx : x.session.replay.failure = none
+    · exact hx
+    · have hb : x.session.replay.failure.isSome = true := by
+        cases he : x.session.replay.failure with
+        | none => exact (hx he).elim
+        | some failure => rfl
+      simpa only [Option.getD_some, retrievalFailure, hb, ↓reduceIte] using hf
+  | ready law =>
+    obtain ⟨j, _, rfl⟩ := (ready_outcome_support x boundary window library law out).mp ho
+    cases hs : stageTransition x boundary window (library j) with
+    | none => simpa only [hs, Option.getD_none] using hf
+    | some y =>
+      have he := (stageTransition_book_unchanged x boundary window (library j) hs).1
+      simpa only [hs, Option.getD_some, he] using hf
+
+def PositiveOffsets (p : Parameters) : Prop :=
+  ∀ j ∈ p.primary ∪ p.fallback, ∀ g ∈ (p.library j).burst, 0 < g.relativeTime
+
+theorem prepared_future (p : Parameters) (hp : PositiveOffsets p)
+    {cfg : QueueAnchor.Config} (x : EventReplay.State cfg) (event : EventInput) (out : Outcome cfg)
+    (ho : out ∈ (executePreparation x event.time ((nextWindow p.horizon event).getD 0)
+      p.library (StochasticQueueBounds.preparation p x event)).support)
+    (hx : ∀ g ∈ x.session.pending, event.time < g.dueTime)
+    (g : ScheduledGroup) (hg : g ∈ (out.state.getD x).session.pending) :
+    event.time < g.dueTime := by
+  cases he : StochasticQueueBounds.preparation p x event with
+  | skipped =>
+    rw [he, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    exact hx g hg
+  | failed =>
+    rw [he, executePreparation, PMF.mem_support_pure_iff] at ho
+    subst out
+    rw [Option.getD_some, (retrievalFailure_preserves_state x).2.2.1] at hg
+    exact hx g hg
+  | ready law =>
+    rw [he] at ho
+    obtain ⟨j, hj, rfl⟩ := (ready_outcome_support x event.time _ p.library law out).mp ho
+    have ht := hp j (preparation_ready_pool p x event law he j hj)
+    cases hs : stageTransition x event.time ((nextWindow p.horizon event).getD 0) (p.library j) with
+    | none => exact hx g (by simpa only [hs, Option.getD_none] using hg)
+    | some y =>
+      exact stageTransition_future x event.time _ (p.library j) y hs hx ht g
+        (by simpa only [hs, Option.getD_some] using hg)
+
+theorem step_success_future (p : Parameters) (hp : PositiveOffsets p)
+    {cfg : QueueAnchor.Config} (x y : Path cfg) (event : EventInput)
+    (hx : halted x = false) (hy : y ∈ (SimulatorTrajectory.step p x event).support)
+    (hs : halted y = false) (g : ScheduledGroup) (hg : g ∈ y.current.session.pending) :
+    event.time < g.dueTime := by
+  obtain ⟨out, ho, rfl⟩ := (step_active_support p x y event hx).mp hy
+  have hx' : x.current.session.replay.failure = none := by
+    simpa using (Bool.or_eq_false_iff.mp hx).2
+  have hs' : (accept p x event out).current.session.replay.failure = none := by
+    simpa using (Bool.or_eq_false_iff.mp hs).2
+  have hbase := preparation_input_success (advanced p x event) event.time
+    ((nextWindow p.horizon event).getD 0) p.library _ out ho hs'
+  exact prepared_future p hp (advanced p x event) event out ho
+    (advance_pending_future p.depth (anchorEnabled p) (anchorTarget p)
+      x.current event hx' hbase) g hg
+
+end Thesis.Intraday.QueueChronology

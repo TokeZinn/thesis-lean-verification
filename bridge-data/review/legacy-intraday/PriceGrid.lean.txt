@@ -1,0 +1,142 @@
+import Intraday.GeometrySweep
+import Mathlib.Data.Finset.Max
+
+/-! # Conservative translation on a configured finite simulator price grid
+
+The simulator and reconstruction appendices require buy additions to round down
+and sell additions to round up. A missing grid point in the required direction
+is returned as failure; clipping or another repair would require its own policy.
+The grid is supplied explicitly, so this does not infer historical venue limits.
+-/
+
+noncomputable section
+namespace Thesis.Intraday.PriceGrid
+
+open Finset
+
+def below (grid : Finset ℝ) (p : ℝ) : Finset ℝ := grid.filter (· ≤ p)
+def above (grid : Finset ℝ) (p : ℝ) : Finset ℝ := grid.filter (p ≤ ·)
+
+def roundBuy (grid : Finset ℝ) (p : ℝ) : Option ℝ :=
+  if h : (below grid p).Nonempty then some ((below grid p).max' h) else none
+
+def roundSell (grid : Finset ℝ) (p : ℝ) : Option ℝ :=
+  if h : (above grid p).Nonempty then some ((above grid p).min' h) else none
+
+theorem roundBuy_none (grid : Finset ℝ) (p : ℝ) :
+    roundBuy grid p = none ↔ ∀ q ∈ grid, p < q := by
+  simp [roundBuy, below, Finset.filter_nonempty_iff, not_le]
+
+theorem roundSell_none (grid : Finset ℝ) (p : ℝ) :
+    roundSell grid p = none ↔ ∀ q ∈ grid, q < p := by
+  simp [roundSell, above, Finset.filter_nonempty_iff, not_le]
+
+theorem roundBuy_spec {grid : Finset ℝ} {p q : ℝ} (h : roundBuy grid p = some q) :
+    q ∈ grid ∧ q ≤ p ∧ ∀ r ∈ grid, r ≤ p → r ≤ q := by
+  unfold roundBuy at h
+  split_ifs at h with hn
+  · have he : (below grid p).max' hn = q := Option.some.inj h
+    subst q
+    have hm := mem_filter.mp (max'_mem (below grid p) hn)
+    exact ⟨hm.1, hm.2, fun r hr hp => le_max' _ _ (mem_filter.mpr ⟨hr, hp⟩)⟩
+
+theorem roundSell_spec {grid : Finset ℝ} {p q : ℝ} (h : roundSell grid p = some q) :
+    q ∈ grid ∧ p ≤ q ∧ ∀ r ∈ grid, p ≤ r → q ≤ r := by
+  unfold roundSell at h
+  split_ifs at h with hn
+  · have he : (above grid p).min' hn = q := Option.some.inj h
+    subst q
+    have hm := mem_filter.mp (min'_mem (above grid p) hn)
+    exact ⟨hm.1, hm.2, fun r hr hp => min'_le _ _ (mem_filter.mpr ⟨hr, hp⟩)⟩
+
+theorem roundBuy_exact {grid : Finset ℝ} {p : ℝ} (hp : p ∈ grid) :
+    roundBuy grid p = some p := by
+  have hm : p ∈ below grid p := mem_filter.mpr ⟨hp, le_rfl⟩
+  rw [roundBuy, dif_pos ⟨p, hm⟩]
+  congr 1
+  apply le_antisymm
+  · exact (mem_filter.mp (max'_mem (below grid p) ⟨p, hm⟩)).2
+  · exact le_max' _ _ hm
+
+theorem roundSell_exact {grid : Finset ℝ} {p : ℝ} (hp : p ∈ grid) :
+    roundSell grid p = some p := by
+  have hm : p ∈ above grid p := mem_filter.mpr ⟨hp, le_rfl⟩
+  rw [roundSell, dif_pos ⟨p, hm⟩]
+  congr 1
+  apply le_antisymm
+  · exact min'_le _ _ hm
+  · exact (mem_filter.mp (min'_mem (above grid p) ⟨p, hm⟩)).2
+
+theorem roundBuy_monotone {grid : Finset ℝ} {p r q s : ℝ}
+    (hpr : p ≤ r) (hp : roundBuy grid p = some q) (hr : roundBuy grid r = some s) : q ≤ s :=
+  (roundBuy_spec hr).2.2 q (roundBuy_spec hp).1 ((roundBuy_spec hp).2.1.trans hpr)
+
+theorem roundSell_monotone {grid : Finset ℝ} {p r q s : ℝ}
+    (hpr : p ≤ r) (hp : roundSell grid p = some q) (hr : roundSell grid r = some s) : q ≤ s :=
+  (roundSell_spec hp).2.2 s (roundSell_spec hr).1 (hpr.trans (roundSell_spec hr).2.1)
+
+theorem conservative_pair {grid : Finset ℝ} {bid ask roundedBid roundedAsk : ℝ}
+    (hba : bid ≤ ask) (hb : roundBuy grid bid = some roundedBid)
+    (hs : roundSell grid ask = some roundedAsk) : roundedBid ≤ roundedAsk :=
+  (roundBuy_spec hb).2.1.trans (hba.trans (roundSell_spec hs).2.1)
+
+/-- Price-bearing source addition; the historical identifier is provenance.
+Fresh live identifiers are allocated separately by the lifecycle resolver. -/
+structure Addition where
+  sourceId : ℕ
+  isBuy : Bool
+  size : PositiveQuantity
+  priority : Time
+  relativeTime : ℝ
+  limit : ℝ
+
+structure StagedAddition where
+  sourceId : ℕ
+  isBuy : Bool
+  size : PositiveQuantity
+  priority : Time
+  dueTime : ℝ
+  limit : ℝ
+
+def stage (grid : Finset ℝ) (boundary offset : ℝ) (a : Addition) : Option StagedAddition :=
+  (if a.isBuy then roundBuy grid (a.limit + offset) else roundSell grid (a.limit + offset)).map
+    fun p => ⟨a.sourceId, a.isBuy, a.size, a.priority, boundary + a.relativeTime, p⟩
+
+theorem stage_spec {grid : Finset ℝ} {boundary offset : ℝ} {a : Addition} {b : StagedAddition}
+    (h : stage grid boundary offset a = some b) :
+    b.sourceId = a.sourceId ∧ b.isBuy = a.isBuy ∧ b.size = a.size ∧
+      b.priority = a.priority ∧ b.dueTime = boundary + a.relativeTime ∧ b.limit ∈ grid ∧
+      (if a.isBuy then b.limit ≤ a.limit + offset else a.limit + offset ≤ b.limit) := by
+  obtain ⟨p, hp, he⟩ := Option.map_eq_some_iff.mp h
+  subst b
+  simp only
+  split at hp
+  · have hs := roundBuy_spec hp
+    simp_all
+  · have hs := roundSell_spec hp
+    simp_all
+
+def shiftStaged (s : ℝ) (a : StagedAddition) : StagedAddition := { a with limit := a.limit + s }
+
+theorem shiftStaged_preserves (s : ℝ) (a : StagedAddition) :
+    (shiftStaged s a).sourceId = a.sourceId ∧ (shiftStaged s a).isBuy = a.isBuy ∧
+      (shiftStaged s a).size = a.size ∧ (shiftStaged s a).priority = a.priority ∧
+      (shiftStaged s a).dueTime = a.dueTime := ⟨rfl, rfl, rfl, rfl, rfl⟩
+
+theorem shiftStaged_add (s t : ℝ) (a : StagedAddition) :
+    shiftStaged s (shiftStaged t a) = shiftStaged (t + s) a := by
+  simp [shiftStaged, add_assoc]
+
+theorem shifted_stage_time {grid : Finset ℝ} {boundary offset : ℝ} {a : Addition}
+    {b : StagedAddition} (h : stage grid boundary offset a = some b) (s : ℝ) :
+    (shiftStaged s b).dueTime = boundary + a.relativeTime := (stage_spec h).2.2.2.2.1
+
+theorem shift_price_gap (s : ℝ) (a b : StagedAddition) :
+    (shiftStaged s b).limit - (shiftStaged s a).limit = b.limit - a.limit := by
+  simp [shiftStaged]
+
+theorem shift_price_order (s : ℝ) (a b : StagedAddition) :
+    (shiftStaged s a).limit ≤ (shiftStaged s b).limit ↔ a.limit ≤ b.limit := by
+  simp [shiftStaged]
+
+end Thesis.Intraday.PriceGrid

@@ -1,0 +1,91 @@
+name: Foundations
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part I (foundations)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Foundations.MarketActions.ActionSourceProofs
+            Thesis.Foundations.MarketActions.Alignment
+            Thesis.Foundations.MarketActions.Analytic
+            Thesis.Foundations.MarketActions.Composite
+            Thesis.Foundations.MarketActions.Identifiers
+            Thesis.Foundations.MarketActions.Primitive
+            Thesis.Foundations.MarketClearing.Alignment
+            Thesis.Foundations.MarketClearing.DoctoralLayerBorel
+            Thesis.Foundations.MarketClearing.DoctoralPermutation
+            Thesis.Foundations.MarketClearing.DoctoralResults
+            Thesis.Foundations.MarketClearing.DoctoralSemicontinuity
+            Thesis.Foundations.MarketClearing.DoctoralSemicontinuitySource
+            Thesis.Foundations.MarketClearing.Equilibrium
+            Thesis.Foundations.MarketClearing.MidpointPrice
+            Thesis.Foundations.MarketClearing.ProjectionSource
+            Thesis.Foundations.MarketClearing.QuantityPerturbation
+            Thesis.Foundations.MarketClearing.Selection
+            Thesis.Foundations.MarketClearing.SeparationAlgebra
+            Thesis.Foundations.MarketClearing.SeparationConcat
+            Thesis.Foundations.MarketClearing.Sorting
+            Thesis.Foundations.MarketClearing.ThresholdClearing
+            Thesis.Foundations.MarketClearing.ThresholdMarginals
+            Thesis.Foundations.MarketRepresentation.BorelProductScope
+            Thesis.Foundations.MarketRepresentation.ConfigurationScope
+            Thesis.Foundations.MarketRepresentation.DisjointUnion
+            Thesis.Foundations.MarketRepresentation.DisjointUnionTopology
+            Thesis.Foundations.MarketRepresentation.DoctoralAdmissibility
+            Thesis.Foundations.MarketRepresentation.DoctoralGeometry
+            Thesis.Foundations.MarketRepresentation.FiniteRelationClosure
+            Thesis.Foundations.MarketRepresentation.FiniteSetCompletenessExample
+            Thesis.Foundations.MarketRepresentation.FiniteSetExamples
+            Thesis.Foundations.MarketRepresentation.FiniteSets
+            Thesis.Foundations.MarketRepresentation.MetricSourceProofs
+            Thesis.Foundations.MarketRepresentation.OrderExamples
+            Thesis.Foundations.MarketRepresentation.OrderTies
+            Thesis.Foundations.MarketRepresentation.OrderTopology
+            Thesis.Foundations.MarketRepresentation.TupleIsometries
+            Thesis.Foundations.MarketRepresentation.TupleSortingAlignment
+            Thesis.Foundations.MarketRepresentation.TupleTopologyAlignment
+            Thesis.Foundations.MarketRepresentation.TuplesBasic
+            Thesis.Foundations.MarketRepresentation.TuplesMeasurableSorting
+            Thesis.Foundations.MarketRepresentation.TuplesMetricTopology
+            Thesis.Foundations.MarketRepresentation.TuplesSorting
+            Thesis.Foundations.Stochastic.AtomicDecomposition
+            Thesis.Foundations.Stochastic.DoctoralPointProcesses
+            Thesis.Foundations.Stochastic.ExtendedPointMeasures
+            Thesis.Foundations.Stochastic.FiniteMeasureBorel
+            Thesis.Foundations.Stochastic.FiniteMeasureCompleteness
+            Thesis.Foundations.Stochastic.FiniteMeasureDensity
+            Thesis.Foundations.Stochastic.FiniteMeasureProkhorov
+            Thesis.Foundations.Stochastic.GrothendieckSource
+            Thesis.Foundations.Stochastic.IntegerMeasureCompleteness
+            Thesis.Foundations.Stochastic.IntegerMeasureSeparability
+            Thesis.Foundations.Stochastic.KernelHilbert
+            Thesis.Foundations.Stochastic.KernelHilbertAlignment
+            Thesis.Foundations.Stochastic.KernelMetric
+            Thesis.Foundations.Stochastic.MatchingSourceProof
+            Thesis.Foundations.Stochastic.MatchingTuples
+            Thesis.Foundations.Stochastic.MeasurableDistinctCounts
+            Thesis.Foundations.Stochastic.MeasurableFiniteMeasures
+            Thesis.Foundations.Stochastic.MeasurableOrderedValues
+            Thesis.Foundations.Stochastic.PermutationCardinalitySource
+            Thesis.Foundations.Stochastic.PermutationMultiplicity
+            Thesis.Foundations.Stochastic.PermutedTuples
+            Thesis.Foundations.Stochastic.PointProcessAlignment
+            Thesis.Foundations.Stochastic.PointProcesses
+            Thesis.Foundations.Stochastic.TupleMeasures
+            Thesis.Foundations.Stochastic.UniformTightness

@@ -1,0 +1,32 @@
+name: Inference for point processes
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build Part III, Ch. 3 (inference for point processes)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+          build-args: >-
+            --wfail
+            Thesis.Intraday.InferencePointProcesses.BlockBootstrap
+            Thesis.Intraday.InferencePointProcesses.BookPath
+            Thesis.Intraday.InferencePointProcesses.BootstrapDistribution
+            Thesis.Intraday.InferencePointProcesses.EnsembleCalibration
+            Thesis.Intraday.InferencePointProcesses.EnsembleRanks
+            Thesis.Intraday.InferencePointProcesses.ExchangeableRanks
+            Thesis.Intraday.InferencePointProcesses.PointProcessBootstrap
+            Thesis.Intraday.InferencePointProcesses.RankLimits
+            Thesis.Intraday.InferencePointProcesses.StrictRanks
