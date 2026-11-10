@@ -27,7 +27,6 @@ jobs:
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedGeometry
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLaws
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLp
-            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedNonconvexity
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedObstruction
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedSourceExclusion
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedWitnesses

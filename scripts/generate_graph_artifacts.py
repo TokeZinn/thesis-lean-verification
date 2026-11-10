@@ -937,29 +937,6 @@ NODE_NARRATIVE_OVERRIDES = {
             "of the derivative, making the displayed derivative map well defined."
         ),
     },
-    "source:2 - day-ahead/3_functional_data_analysis.tex:104:rem:5": {
-        "explanation": (
-            "The nonzero eigenvalues can be ordered by decreasing magnitude, and "
-            "adjoining a kernel basis completes the closed-range eigenbasis. "
-            "An infinite Hilbert basis has dense span, not necessarily full algebraic span."
-        ),
-        "strategy": (
-            "Operator-norm convergence makes every positive eigenvalue superlevel "
-            "set finite. Finite predecessor counts then give an ordered natural-number "
-            "index set. A Hilbert-basis extension is proved to add exactly a dense "
-            "orthonormal family in the kernel. A vector with coordinates 2 to the "
-            "power minus n proves that algebraic span can be proper."
-        ),
-    },
-    "defn:covariance-operator": {
-        "strategy": (
-            "The covariance is the Bochner integral of centered rank-one operators. "
-            "Square integrability ensures this integral exists. Its symmetry, positivity, "
-            "and compactness are proved; compactness uses the closed convex set of "
-            "compact operators. Finite orthogonal projections also prove both directions "
-            "of the finite-rank operator-norm approximation criterion."
-        ),
-    },
     "prop:graph-defines": {
         "explanation": "A set-coded function equals its graph of Kuratowski ordered pairs.",
         "strategy": (

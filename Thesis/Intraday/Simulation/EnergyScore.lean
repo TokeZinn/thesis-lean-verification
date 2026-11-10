@@ -3,8 +3,7 @@ import Mathlib.Analysis.Convex.Function
 
 /-! # Current mixture and finite-ensemble energy scores
 
-Current labels: `defn:aa-training-energy-score`,
-`defn:intraday-ensemble-energy-score`, `prop:aa-es-convex-simplex`.
+Current label: `defn:aa-training-energy-score`.
 The finite-sum convexity reduction below isolates conditional negative
 definiteness as an explicit analytic premise. `EuclideanNegativeType` proves
 this premise for the actual unsquared Euclidean distance by scalar cut kernels
@@ -25,16 +24,6 @@ def score (D : ι → ι → ℝ) (d p : ι → ℝ) : ℝ := linear d p - pair 
 /-- Original label: `defn:aa-training-energy-score`. -/
 def mixture {d : ℕ} (outcomes : ι → Vector d) (target : Vector d) (p : ι → ℝ) : ℝ :=
   score (fun i j => ‖outcomes i - outcomes j‖) (fun i => ‖outcomes i - target‖) p
-
-/-- Original label: `defn:intraday-ensemble-energy-score`. -/
-def ensemble {B d : ℕ} (observed : Vector d) (sample : Fin B → Vector d) : ℝ :=
-  (∑ i, ‖sample i - observed‖) / B -
-    if B < 2 then 0 else
-      (∑ i, ∑ j, if i = j then 0 else ‖sample i - sample j‖) / (2 * B * (B - 1))
-
-theorem ensemble_singleton {d : ℕ} (observed : Vector d) (sample : Fin 1 → Vector d) :
-    ensemble observed sample = ‖sample 0 - observed‖ := by
-  simp [ensemble]
 
 theorem pair_add_left (D : ι → ι → ℝ) (p q r : ι → ℝ) :
     pair D (p + q) r = pair D p r + pair D q r := by
@@ -72,21 +61,5 @@ theorem mixture_defect (D : ι → ι → ℝ) (d p q : ι → ℝ) (a : ℝ) :
 
 def ConditionallyNegative (D : ι → ι → ℝ) : Prop :=
   ∀ v : ι → ℝ, (∑ i, v i) = 0 → pair D v v ≤ 0
-
-/-- Original label: `prop:aa-es-convex-simplex`.
-The general finite-dimensional convexity calculation. The analytic premise
-for the actual unsquared Euclidean norm is discharged in `EuclideanNegativeType`. -/
-theorem score_convex_on_normalised_weights (D : ι → ι → ℝ) (d : ι → ℝ)
-    (hD : ConditionallyNegative D) (p q : ι → ℝ)
-    (hp : ∑ i, p i = 1) (hq : ∑ i, q i = 1) (a : ℝ) (ha : 0 ≤ a) (ha1 : a ≤ 1) :
-    score D d (a • p + (1 - a) • q) ≤ a * score D d p + (1 - a) * score D d q := by
-  have hv : (∑ i, (p - q) i) = 0 := by simp [Pi.sub_apply, Finset.sum_sub_distrib, hp, hq]
-  have hn := hD (p-q) hv
-  have hc : 0 ≤ a * (1-a) / 2 :=
-    div_nonneg (mul_nonneg ha (sub_nonneg.mpr ha1)) (by norm_num)
-  have he := mixture_defect D d p q a
-  have hprod : 0 ≤ -(a * (1-a) / 2) * pair D (p-q) (p-q) :=
-    mul_nonneg_of_nonpos_of_nonpos (neg_nonpos.mpr hc) hn
-  linarith
 
 end Thesis.Intraday.EnergyScore

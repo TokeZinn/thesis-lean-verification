@@ -1,4 +1,7 @@
-import Thesis.DayAhead.FunctionalDataAnalysis.CompactSpectralExpansion
+import Thesis.DayAhead.FunctionalDataAnalysis.FunctionalData
+import Mathlib.Analysis.InnerProductSpace.Spectrum
+import Mathlib.Topology.UniformSpace.Ascoli
+import Mathlib.Topology.MetricSpace.UniformConvergence
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.CondJensen
 import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
 

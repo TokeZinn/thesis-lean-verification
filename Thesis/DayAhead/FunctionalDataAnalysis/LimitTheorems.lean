@@ -1,4 +1,5 @@
-import Thesis.DayAhead.FunctionalDataAnalysis.Covariance
+import Thesis.DayAhead.FunctionalDataAnalysis.FunctionalData
+import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.MeasureTheory.Function.ConvergenceInDistribution
 import Mathlib.Probability.CentralLimitTheorem
 import Mathlib.Probability.Distributions.Gaussian.Basic
@@ -22,112 +23,11 @@ open scoped BigOperators ENNReal NNReal ProbabilityTheory Topology
 
 universe u v w
 
-/--
-Thesis source:
-`2 - day-ahead/3_functional_data_analysis.tex`, strong-law clause of
-Theorem `thm:lln-clt-mean`.
-
-Original label: `thm:lln-clt-mean`.
-
-Informal statement: empirical means of independent identically distributed
-integrable Hilbert-valued random variables converge almost surely to the
-Bochner expectation.
-
-Lean strategy / thesis relation note: mathlib proves the stronger
-Banach-valued result under pairwise independence.
--/
-theorem hilbert_strong_law_ae
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [NormedSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    {μ : Measure Ω} (X : ℕ → Ω → H) (hX : Integrable (X 0) μ)
-    (hindep : Pairwise fun i j => X i ⟂ᵢ[μ] X j)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ, Tendsto
-      (fun n : ℕ => (n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, X i ω)
-      atTop (𝓝 (FunctionalData.hilbertExpectation μ (X 0))) := by
-  simpa only [FunctionalData.hilbertExpectation] using
-    ProbabilityTheory.strong_law_ae X hX hindep hident
-
 /-- Scalar projection along a fixed Hilbert-space direction. -/
 def scalarProjection
     {H : Type v} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
     (h x : H) : ℝ :=
   inner ℝ h x
-
-/--
-Thesis source: finite-dimensional marginal core of the central-limit clause of
-Theorem `thm:lln-clt-mean` in
-`2 - day-ahead/3_functional_data_analysis.tex`.
-
-Original label: `thm:lln-clt-mean`.
-
-Lean strategy / thesis relation note: every fixed scalar projection of the
-normalised Hilbert-valued sum satisfies the ordinary real central limit
-theorem. `DayAhead.HilbertCLTInfinite` combines these projections with
-uniform tightness to construct the Gaussian limit in the whole space. -/
-theorem scalarProjection_central_limit
-    {Ω : Type u} {Ω' : Type w} {H : Type v}
-    [MeasurableSpace Ω] [MeasurableSpace Ω']
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (μ' : Measure Ω') [IsProbabilityMeasure μ']
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ)
-    (h : H) (Y : Ω' → ℝ)
-    (hY : HasLaw Y
-      (gaussianReal 0
-        Var[(fun ω => scalarProjection h (X 0 ω)); μ].toNNReal) μ') :
-    TendstoInDistribution
-      (fun (n : ℕ) ω => (Real.sqrt n)⁻¹ *
-        (∑ k ∈ Finset.range n, scalarProjection h (X k ω) -
-          n * μ[fun ω => scalarProjection h (X 0 ω)]))
-      atTop Y (fun _ => μ) μ' := by
-  let Z : ℕ → Ω → ℝ := fun i ω => scalarProjection h (X i ω)
-  change HasLaw Y (gaussianReal 0 Var[Z 0; μ].toNNReal) μ' at hY
-  have hproj : Measurable (scalarProjection h) := by
-    change Measurable (fun x : H => inner ℝ h x)
-    exact (continuous_const.inner continuous_id).measurable
-  have hZ : MemLp (Z 0) 2 μ := by
-    simpa only [Z, scalarProjection] using hX.const_inner h
-  have hindepZ : iIndepFun Z μ := by
-    change iIndepFun (fun i => scalarProjection h ∘ X i) μ
-    exact hindep.comp (fun _ => scalarProjection h) (fun _ => hproj)
-  have hidentZ : ∀ i, IdentDistrib (Z i) (Z 0) μ μ := by
-    intro i
-    change IdentDistrib (scalarProjection h ∘ X i)
-      (scalarProjection h ∘ X 0) μ μ
-    exact (hident i).comp hproj
-  change TendstoInDistribution
-    (fun (n : ℕ) ω => (Real.sqrt n)⁻¹ *
-      (∑ k ∈ Finset.range n, Z k ω - n * μ[Z 0]))
-    atTop Y (fun _ => μ) μ'
-  exact ProbabilityTheory.tendstoInDistribution_inv_sqrt_mul_sum_sub
-    hY hZ hindepZ hidentZ
-
-/-- The preceding projection CLT with the identity random variable on the
-canonical centred Gaussian law as its explicit limit. -/
-theorem scalarProjection_central_limit_gaussianReal
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) (h : H) :
-    TendstoInDistribution
-      (fun (n : ℕ) ω => (Real.sqrt n)⁻¹ *
-        (∑ k ∈ Finset.range n, scalarProjection h (X k ω) -
-          n * μ[fun ω => scalarProjection h (X 0 ω)]))
-      atTop id (fun _ => μ)
-        (gaussianReal 0
-          Var[(fun ω => scalarProjection h (X 0 ω)); μ].toNNReal) := by
-  exact scalarProjection_central_limit μ
-    (gaussianReal 0
-      Var[(fun ω => scalarProjection h (X 0 ω)); μ].toNNReal)
-    X hX hindep hident h id HasLaw.id
 
 /-! ## Sample covariance -/
 
@@ -402,47 +302,6 @@ theorem unbiasedFactor_tendsto_one :
     field_simp [hn]
     ring
   · norm_num
-
-/-- Original label: `thm:lln-covariance`.
-The current thesis asks for operator-norm convergence. This proves that
-statement directly in the Banach space of bounded operators, under precisely
-the second-moment assumption; no fourth moment is needed. -/
-theorem sampleCovariance_operatorNorm_strong_law_ae
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ) (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ, Tendsto (fun k => sampleCovariance X (k + 2) ω)
-      atTop (𝓝 (FunctionalData.covarianceOperator μ (X 0))) := by
-  letI : MeasurableSpace (H →L[ℝ] H) := borel (H →L[ℝ] H)
-  letI : BorelSpace (H →L[ℝ] H) := ⟨rfl⟩
-  let R : H → H →L[ℝ] H := fun x => FunctionalData.tensorProduct x x
-  have hR : Measurable R := Covariance.continuous_tensorProduct_self.measurable
-  let Y : ℕ → Ω → H →L[ℝ] H := fun i => R ∘ X i
-  have hYint : Integrable (Y 0) μ :=
-    Covariance.integrable_tensorProduct_self_of_memLp_two μ (X 0) hX
-  have hindepY : iIndepFun Y μ := hindep.comp (fun _ => R) (fun _ => hR)
-  have hidentY : ∀ i, IdentDistrib (Y i) (Y 0) μ μ := fun i => (hident i).comp hR
-  have hraw := ProbabilityTheory.strong_law_ae Y hYint
-    (fun _ _ hij => hindepY.indepFun hij) hidentY
-  have hmean := hilbert_strong_law_ae X (hX.integrable (by norm_num))
-    (fun _ _ hij => hindep.indepFun hij) hident
-  filter_upwards [hraw, hmean] with ω hr hm
-  have hbiased : Tendsto (fun n => biasedCovarianceOperator X n ω) atTop
-      (𝓝 (FunctionalData.covarianceOperator μ (X 0))) := by
-    rw [Covariance.covarianceOperator_eq_rawSecondMoment_sub_mean μ (X 0) hX]
-    exact hr.sub (Covariance.continuous_tensorProduct_self.tendsto _ |>.comp hm)
-  have hresult := unbiasedFactor_tendsto_one.smul
-    (hbiased.comp (tendsto_add_atTop_nat 2))
-  have hresult' : Tendsto (fun k : ℕ =>
-      (((k + 2 : ℕ) : ℝ) * (((k + 2 - 1 : ℕ) : ℝ)⁻¹)) •
-        biasedCovarianceOperator X (k + 2) ω) atTop
-      (𝓝 (FunctionalData.covarianceOperator μ (X 0))) := by
-    simpa only [one_smul, Function.comp_apply] using hresult
-  exact hresult'.congr' (Filter.Eventually.of_forall fun k =>
-    (sampleCovariance_eq_unbiasedFactor_smul_biased X (k + 2) ω (by omega)).symm)
 
 /-- Extended Hilbert--Schmidt norm computed in a fixed Hilbert basis.  The
 value may be `∞` for a general bounded operator. -/

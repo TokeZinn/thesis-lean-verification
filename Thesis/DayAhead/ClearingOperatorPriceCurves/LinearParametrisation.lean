@@ -293,7 +293,6 @@ theorem linearParametrisationBanachLp_isWeaklyConvex
         β • linearParametrisationBanachLp μ g := rfl
 
 /-- Original label: `prop:linear-parametrisation-convex`.
-Original block id: `source:2 - day-ahead/2_clearing_operator_price_curves.tex:261:cor:11`
 The linear image remains weakly convex in the Euclidean-valued Hilbert space. -/
 theorem linearParametrisationLp_isWeaklyConvex
     (μ : Measure Parameter) [IsFiniteMeasure μ] :

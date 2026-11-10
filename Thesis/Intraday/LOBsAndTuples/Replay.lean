@@ -2,7 +2,7 @@ import Thesis.Intraday.LOBsAndTuples.Visibility
 import Thesis.Intraday.LOBsAndTuples.MarketSorting
 import Thesis.Foundations.MarketActions.Composite
 
-/-! # Joint measurability of the full-book depth-restricted update -/
+/-! # The depth-restricted step: full-book clearing observed through the visible projection -/
 
 noncomputable section
 namespace Thesis.Intraday.Replay
@@ -36,31 +36,37 @@ theorem continuous_applyScript :
   rw [market_topology_eq, tupleHausdorffMetricTopology_eq_sigma (X := Action)] at h
   exact h
 
-/-- Original label: `fig:visible-latent-book`, formula m unlhd c.
-The script acts on the complete book, then sorting precedes projection.
-The thesis uses k = 100. -/
-def depthStep (k : ℕ) (x : Market × Script) : Market :=
-  depthClear k (sortMarket (applyCompositeAction x.1 x.2))
+/-- The full-book update underlying `defn:depth-restricted-step`: the script acts
+on the complete book, the result is sorted, and the whole sorted book is cleared.
+No latent tail is set aside before clearing. -/
+def depthStep (x : Market × Script) : Market :=
+  clearMarket (sortMarket (applyCompositeAction x.1 x.2))
 
-theorem measurable_depthStep (k : ℕ) : Measurable (depthStep k) :=
-  (measurable_depthClear k).comp (measurable_sortMarket.comp continuous_applyScript.measurable)
+theorem measurable_depthStep : Measurable depthStep :=
+  measurable_clearMarket.comp (measurable_sortMarket.comp continuous_applyScript.measurable)
 
-theorem depthStep_sorted (k : ℕ) (x : Market × Script) : SortedMarket (depthStep k x) :=
-  depthClear_sorted k (sortMarket_sorted _)
+theorem depthStep_sorted (x : Market × Script) : SortedMarket (depthStep x) :=
+  clearMarket_sorted (sortMarket_sorted _)
 
 /-- Original label: `defn:depth-restricted-step`.
-The actual jointly measurable update, with the thesis's sorted codomain. -/
-def sortedDepthStep (k : ℕ) (x : {m : Market // SortedMarket m} × Script) :
-    {m : Market // SortedMarket m} := ⟨depthStep k (x.1.val, x.2), depthStep_sorted k _⟩
+The step operator with the thesis's sorted domain and codomain: full-book
+clearing of the sorted post-action book. -/
+def sortedDepthStep (x : {m : Market // SortedMarket m} × Script) :
+    {m : Market // SortedMarket m} := ⟨depthStep (x.1.val, x.2), depthStep_sorted _⟩
+
+/-- The visible book after a step is the visible projection of the cleared full
+book. The thesis uses k = 100. -/
+def visibleBook (k : ℕ) (x : {m : Market // SortedMarket m} × Script) : Market :=
+  visible k (sortedDepthStep x).val
+
+theorem visibleBook_sorted (k : ℕ) (x : {m : Market // SortedMarket m} × Script) :
+    SortedMarket (visibleBook k x) :=
+  visible_sorted k (sortedDepthStep x).property
 
 /-- Restricting the input to sorted books preserves joint measurability. -/
-theorem measurable_depthStep_sorted_input (k : ℕ) :
-    Measurable (fun x : {m : Market // SortedMarket m} × Script => depthStep k (x.1.val, x.2)) :=
-  (measurable_depthStep k).comp
+theorem measurable_depthStep_sorted_input :
+    Measurable (fun x : {m : Market // SortedMarket m} × Script => depthStep (x.1.val, x.2)) :=
+  measurable_depthStep.comp
     ((measurable_subtype_coe.comp measurable_fst).prodMk measurable_snd)
-
-/-- Original label: `prop:visible-step-measurable`. -/
-theorem measurable_sortedDepthStep (k : ℕ) : Measurable (sortedDepthStep k) :=
-  (measurable_depthStep_sorted_input k).subtype_mk
 
 end Thesis.Intraday.Replay

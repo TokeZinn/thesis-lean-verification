@@ -23,7 +23,6 @@ jobs:
             --wfail
             Thesis.DayAhead.ForecastingImpact.AttributionVersions
             Thesis.DayAhead.ForecastingImpact.BoostingLoss
-            Thesis.DayAhead.ForecastingImpact.ConditionalDecoding
             Thesis.DayAhead.ForecastingImpact.ConditionalSimulation
             Thesis.DayAhead.ForecastingImpact.EmpiricalGeometry
             Thesis.DayAhead.ForecastingImpact.Forecasting
@@ -37,6 +36,5 @@ jobs:
             Thesis.DayAhead.ForecastingImpact.Shapley
             Thesis.DayAhead.ForecastingImpact.ShapleyPermutations
             Thesis.DayAhead.ForecastingImpact.ShapleySampling
-            Thesis.DayAhead.ForecastingImpact.ShapleyWeights
             Thesis.DayAhead.ForecastingImpact.SpectralSplitBound
             Thesis.DayAhead.ForecastingImpact.TreeImpurity

@@ -159,19 +159,6 @@
     "statementSha256": "890e8231af1d3c194a6e26bf8d304ac88fa34e7ae5d37a5423bdc4c509412110",
     "svg": "thesis-svg/cor__grothendieck-vectorization-inner-product-space.svg"
   },
-  "cor:iterated-single-stage-measurable": {
-    "env": "cor",
-    "line": 274,
-    "number": "16.9",
-    "proofLine": 276,
-    "proofRepoPath": "graph-artifacts/thesis-svg/cor__iterated-single-stage-measurable__proof.svg",
-    "proofSha256": "63850719a1249f2e062b34cdb01251710da859c0dc145794956938297e1b6b04",
-    "proofSvg": "thesis-svg/cor__iterated-single-stage-measurable__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/cor__iterated-single-stage-measurable.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "64c40cae4dabeeb48c582653c523fbe2764659a1da5bf9be3dc0d9cc16560e29",
-    "svg": "thesis-svg/cor__iterated-single-stage-measurable.svg"
-  },
   "cor:local-continuity-sorting": {
     "env": "cor",
     "line": 1763,
@@ -200,7 +187,7 @@
     "number": "6.4",
     "proofLine": 91,
     "proofRepoPath": "graph-artifacts/thesis-svg/cor__measurable-index-filter-for-countable-borel-family__proof.svg",
-    "proofSha256": "6f8adf360dc0661921d04cca883137edbb8d002ce0d80d246bf87759625bbc61",
+    "proofSha256": "e20ad7cde386247e0ab80376d022b4650671337fdb9d1527d8ef592acedb9427",
     "proofSvg": "thesis-svg/cor__measurable-index-filter-for-countable-borel-family__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/cor__measurable-index-filter-for-countable-borel-family.svg",
     "source": "1 - theoretical foundations/4_market_clearing.tex",
@@ -271,32 +258,6 @@
     "source": "A - appendices/analysis.tex",
     "statementSha256": "f793456ff6b4a8f332f88cf2c249f65e050c59d0d6ab922f1f502cede1d6b31e",
     "svg": "thesis-svg/cor__pseudometric-metric-relation.svg"
-  },
-  "cor:retagging-measurable": {
-    "env": "cor",
-    "line": 293,
-    "number": "16.11",
-    "proofLine": 299,
-    "proofRepoPath": "graph-artifacts/thesis-svg/cor__retagging-measurable__proof.svg",
-    "proofSha256": "972d418b24785aca7da2a4530a79916815ce86eb5f94f9379c6ab0d68e6a16ef",
-    "proofSvg": "thesis-svg/cor__retagging-measurable__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/cor__retagging-measurable.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "4434c22309ef53ae332ba24fed9105f4c49b170c2f75d836a7aa30e1f51770c6",
-    "svg": "thesis-svg/cor__retagging-measurable.svg"
-  },
-  "cor:sided-parametrisation-not-weakly-convex": {
-    "env": "cor",
-    "line": 443,
-    "number": "10.17",
-    "proofLine": 445,
-    "proofRepoPath": "graph-artifacts/thesis-svg/cor__sided-parametrisation-not-weakly-convex__proof.svg",
-    "proofSha256": "591395b85b0bdb2301b9c296462e916f4b08616e709dbd68d64337f5d5ec0f93",
-    "proofSvg": "thesis-svg/cor__sided-parametrisation-not-weakly-convex__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/cor__sided-parametrisation-not-weakly-convex.svg",
-    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
-    "statementSha256": "fb1f7f6acc0841280ee6992ed8543de9e6692434a321112604e72ffc53624161",
-    "svg": "thesis-svg/cor__sided-parametrisation-not-weakly-convex.svg"
   },
   "cor:sorted-operations-measurable": {
     "env": "cor",
@@ -426,31 +387,22 @@
     "statementSha256": "77206b44b98dc00c6b668f69a72a5c6580354f26d6c06df1329d2a5c66e387d1",
     "svg": "thesis-svg/defn__Hausdorff-distance.svg"
   },
-  "defn:aa-encoder": {
-    "env": "defn",
-    "line": 588,
-    "number": "19.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__aa-encoder.svg",
-    "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "31b1bc8e16b5dfb525d4852816e2aedbaeb0fe8a95a689b49ab5dda51813b6cf",
-    "svg": "thesis-svg/defn__aa-encoder.svg"
-  },
   "defn:aa-retrieval-policy": {
     "env": "defn",
-    "line": 611,
-    "number": "19.2",
+    "line": 609,
+    "number": "19.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__aa-retrieval-policy.svg",
     "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "ad00f34cf22214ee8c21d6c622e263da13fbbda593459c26e8f12ea28ac0e6af",
+    "statementSha256": "fc0b614276fb06879f8ac62f176412f0de5856e2f596ba8c249d6447af08dd1d",
     "svg": "thesis-svg/defn__aa-retrieval-policy.svg"
   },
   "defn:aa-training-energy-score": {
     "env": "defn",
-    "line": 651,
-    "number": "19.4",
+    "line": 645,
+    "number": "19.2",
     "repoPath": "graph-artifacts/thesis-svg/defn__aa-training-energy-score.svg",
     "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "218b33717e8fc6485b9c8731475795a3b5f20c0305b79dacbd9a8e2ac026b51a",
+    "statementSha256": "50122f7a9048e1215028fb3a2da2bac42bcaac276151d861d3926da6873671e5",
     "svg": "thesis-svg/defn__aa-training-energy-score.svg"
   },
   "defn:abelian-group": {
@@ -491,8 +443,8 @@
   },
   "defn:admissible-price-curve-parametrisation": {
     "env": "defn",
-    "line": 173,
-    "number": "10.8",
+    "line": 167,
+    "number": "10.7",
     "repoPath": "graph-artifacts/thesis-svg/defn__admissible-price-curve-parametrisation.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "dbd1642d04c7ec913e60a1a632ffc57244a74611256e94a9fd90cd513d45b60c",
@@ -506,15 +458,6 @@
     "source": "A - appendices/sets.tex",
     "statementSha256": "f2cc9c758254c55747f939c0302a2bace7276fede045c39a8439867027817402",
     "svg": "thesis-svg/defn__arbitrary-product-space.svg"
-  },
-  "defn:asinh-price-transform": {
-    "env": "defn",
-    "line": 85,
-    "number": "12.2",
-    "repoPath": "graph-artifacts/thesis-svg/defn__asinh-price-transform.svg",
-    "source": "2 - day-ahead/4_price_curve_analysis.tex",
-    "statementSha256": "74d92c2179178346dc26c782839bb4b0e84b365c261760f46412405fc5fe2015",
-    "svg": "thesis-svg/defn__asinh-price-transform.svg"
   },
   "defn:atom-diffuse": {
     "env": "defn",
@@ -536,8 +479,8 @@
   },
   "defn:battery-schedule-set": {
     "env": "defn",
-    "line": 252,
-    "number": "14.2",
+    "line": 249,
+    "number": "14.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__battery-schedule-set.svg",
     "source": "2 - day-ahead/6_applications.tex",
     "statementSha256": "d7029d03d65cbb956ce04e11dad8e96073a529bd89a0efaefba2696cfd6c2167",
@@ -545,8 +488,8 @@
   },
   "defn:battery-value-functions": {
     "env": "defn",
-    "line": 283,
-    "number": "14.3",
+    "line": 280,
+    "number": "14.2",
     "repoPath": "graph-artifacts/thesis-svg/defn__battery-value-functions.svg",
     "source": "2 - day-ahead/6_applications.tex",
     "statementSha256": "e3727d727f03b4f93fa9e070cc9cfdad8405173d345174b29f418bd1f35247e4",
@@ -554,8 +497,8 @@
   },
   "defn:best-price-and-tradeprice": {
     "env": "defn",
-    "line": 136,
-    "number": "16.4",
+    "line": 108,
+    "number": "16.2",
     "repoPath": "graph-artifacts/thesis-svg/defn__best-price-and-tradeprice.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "ed5d3a28f3cb6af0823e479ea69d8a2a586672e941eb38c5b9951857a60c7d4b",
@@ -635,8 +578,8 @@
   },
   "defn:cell-impurity-split": {
     "env": "defn",
-    "line": 160,
-    "number": "13.3",
+    "line": 156,
+    "number": "13.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__cell-impurity-split.svg",
     "source": "2 - day-ahead/5_forecasting_impact.tex",
     "statementSha256": "b8e1678811de71b8140d749669543ecd228e2ff587ae2c2b77839ffe02e352b8",
@@ -644,8 +587,8 @@
   },
   "defn:clearing-operator": {
     "env": "defn",
-    "line": 314,
-    "number": "16.12",
+    "line": 250,
+    "number": "16.7",
     "repoPath": "graph-artifacts/thesis-svg/defn__clearing-operator.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "2ce2d92435482755a1f81bfa4c79a9ccfd406a6f08c7a17587bbfe89fe62f518",
@@ -723,24 +666,6 @@
     "statementSha256": "6cf4581c46b00dd70b4b8a9e8890f0e69ad6adab2bbd26d06f5118b3166c700c",
     "svg": "thesis-svg/defn__convex-cone.svg"
   },
-  "defn:coordinate-scaling-operators": {
-    "env": "defn",
-    "line": 95,
-    "number": "12.3",
-    "repoPath": "graph-artifacts/thesis-svg/defn__coordinate-scaling-operators.svg",
-    "source": "2 - day-ahead/4_price_curve_analysis.tex",
-    "statementSha256": "fa9b111ed1a7b85054632fffe410a48895267b599a777119f5b276add44362b3",
-    "svg": "thesis-svg/defn__coordinate-scaling-operators.svg"
-  },
-  "defn:covariance-operator": {
-    "env": "defn",
-    "line": 73,
-    "number": "11.3",
-    "repoPath": "graph-artifacts/thesis-svg/defn__covariance-operator.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "c0bb0dbb8e184bab221629f277d029bb513b66e081ea6bd9df374cb18c8bcf5d",
-    "svg": "thesis-svg/defn__covariance-operator.svg"
-  },
   "defn:crossing-price-and-equilibrium-operator": {
     "env": "defn",
     "line": 74,
@@ -752,11 +677,11 @@
   },
   "defn:depth-restricted-step": {
     "env": "defn",
-    "line": 438,
-    "number": "16.18",
+    "line": 372,
+    "number": "16.12",
     "repoPath": "graph-artifacts/thesis-svg/defn__depth-restricted-step.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "4b2b3cb4b76e863d28b28cfd6ae14d463adf1e60de815e4262aaa0bdd0367643",
+    "statementSha256": "b7c1c6b3c5a8d96986f0667f190108b7fa452155eb08b712bbd407e095211bda",
     "svg": "thesis-svg/defn__depth-restricted-step.svg"
   },
   "defn:disjoint-union": {
@@ -795,15 +720,6 @@
     "statementSha256": "2879e75644d449fad5ccc203b60337a632be81ed82f37bf2b547804d8d012db9",
     "svg": "thesis-svg/defn__dual-space.svg"
   },
-  "defn:empirical-coordinate-scales": {
-    "env": "defn",
-    "line": 47,
-    "number": "12.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__empirical-coordinate-scales.svg",
-    "source": "2 - day-ahead/4_price_curve_analysis.tex",
-    "statementSha256": "0914c1417ea37f7764facfdff276bc4cb94f5414447d016067738e8914c88b83",
-    "svg": "thesis-svg/defn__empirical-coordinate-scales.svg"
-  },
   "defn:empty-set": {
     "env": "defn",
     "line": 62,
@@ -815,11 +731,11 @@
   },
   "defn:ensemble-mid-rank-coverage": {
     "env": "defn",
-    "line": 177,
-    "number": "17.5",
+    "line": 160,
+    "number": "17.3",
     "repoPath": "graph-artifacts/thesis-svg/defn__ensemble-mid-rank-coverage.svg",
     "source": "3 - intraday/3_inference_for_point_processes.tex",
-    "statementSha256": "f6bf8c6300d7c28becb4844d0bddebcbc9a106a6cafe5ca27a39ad675026f401",
+    "statementSha256": "95a7c4e6808a68d8f9382bbe7eafe3f104f42c1cb40ba5ae68a7ffa99d1912f2",
     "svg": "thesis-svg/defn__ensemble-mid-rank-coverage.svg"
   },
   "defn:equivalence-class": {
@@ -848,15 +764,6 @@
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "48a5388ab6ee15522c842a852dc625eed6826eafca7c73e203f554d5c4b8f116",
     "svg": "thesis-svg/defn__excess-supply-and-completed-graph.svg"
-  },
-  "defn:expected-hilbert": {
-    "env": "defn",
-    "line": 37,
-    "number": "11.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__expected-hilbert.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "075f7c71a3a4358736b4c1a99a1130e3fbc1665408d47f59901197cb96858c51",
-    "svg": "thesis-svg/defn__expected-hilbert.svg"
   },
   "defn:expected-value": {
     "env": "defn",
@@ -977,8 +884,8 @@
   },
   "defn:graph-tracing-pairs": {
     "env": "defn",
-    "line": 350,
-    "number": "10.14",
+    "line": 338,
+    "number": "10.12",
     "repoPath": "graph-artifacts/thesis-svg/defn__graph-tracing-pairs.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "be19fbd61b7ace9dfe0611a692464a21d0eb9f431d1a1c725503d512bca0fe13",
@@ -993,15 +900,6 @@
     "statementSha256": "1d92173e6e46ada9da57aed37aeff716eb35bb8ab0033b3f6a9cd42665194063",
     "svg": "thesis-svg/defn__grothendieck-group.svg"
   },
-  "defn:hilbert-shapley-value": {
-    "env": "defn",
-    "line": 378,
-    "number": "13.6",
-    "repoPath": "graph-artifacts/thesis-svg/defn__hilbert-shapley-value.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "34d87093511350e205971a2e30e82e0db238636a627094cb07a7382a6a0212ec",
-    "svg": "thesis-svg/defn__hilbert-shapley-value.svg"
-  },
   "defn:identifier-cancel": {
     "env": "defn",
     "line": 141,
@@ -1013,8 +911,8 @@
   },
   "defn:identifier-clearing-operator": {
     "env": "defn",
-    "line": 365,
-    "number": "16.15",
+    "line": 299,
+    "number": "16.9",
     "repoPath": "graph-artifacts/thesis-svg/defn__identifier-clearing-operator.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "5fa3f0deb24e86109cd24ec0102dcf81d68f8ab3b5400ff4f425cc50508951fd",
@@ -1047,24 +945,6 @@
     "statementSha256": "850ba158ee26beba018096a51e270ff8868825bcf3b14be66ba2e76f4aac5940",
     "svg": "thesis-svg/defn__inner-product-kernel-space.svg"
   },
-  "defn:intraday-ensemble-energy-score": {
-    "env": "defn",
-    "line": 777,
-    "number": "20.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__intraday-ensemble-energy-score.svg",
-    "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "05ddc48095533e0aa595345c32235275115aaea9aad9bdede3e96da855bd6441",
-    "svg": "thesis-svg/defn__intraday-ensemble-energy-score.svg"
-  },
-  "defn:intraday-order-space": {
-    "env": "defn",
-    "line": 9,
-    "number": "16.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__intraday-order-space.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "2d1ca3a60ec9e74d72100f0078c9a3159921ef7efcbdf05b4e0af4b279e637a8",
-    "svg": "thesis-svg/defn__intraday-order-space.svg"
-  },
   "defn:isotonic-decoding-grid": {
     "env": "defn",
     "line": 29,
@@ -1076,21 +956,12 @@
   },
   "defn:iterated-single-stage-clearing": {
     "env": "defn",
-    "line": 262,
-    "number": "16.8",
+    "line": 221,
+    "number": "16.5",
     "repoPath": "graph-artifacts/thesis-svg/defn__iterated-single-stage-clearing.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "fff04ae64b78e9c8e86ba9a038698ce33c92356ffa5db1d8f1fee85558cac9d9",
     "svg": "thesis-svg/defn__iterated-single-stage-clearing.svg"
-  },
-  "defn:k-leaf-tree-class": {
-    "env": "defn",
-    "line": 145,
-    "number": "13.2",
-    "repoPath": "graph-artifacts/thesis-svg/defn__k-leaf-tree-class.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "e7226f8ef2aa0f49a7e756989d2109a1b0e0ad0af63d899f78c6bb0ced6efaee",
-    "svg": "thesis-svg/defn__k-leaf-tree-class.svg"
   },
   "defn:kallenberg-random-measure": {
     "env": "defn",
@@ -1110,19 +981,10 @@
     "statementSha256": "ac933d0eddb5c88a8d3b141dde653fcabf96d28758e365d1e0122d2fd3c921c0",
     "svg": "thesis-svg/defn__labelled-finite-sets.svg"
   },
-  "defn:lifted-price-scale-smearing": {
-    "env": "defn",
-    "line": 672,
-    "number": "13.7",
-    "repoPath": "graph-artifacts/thesis-svg/defn__lifted-price-scale-smearing.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "65cf1fece06a5dfb533faa54e0ff77b1a21785931ebbd1b57b36eee7ca744aec",
-    "svg": "thesis-svg/defn__lifted-price-scale-smearing.svg"
-  },
   "defn:linear-parametrisation-operator": {
     "env": "defn",
-    "line": 203,
-    "number": "10.9",
+    "line": 197,
+    "number": "10.8",
     "repoPath": "graph-artifacts/thesis-svg/defn__linear-parametrisation-operator.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "14f9e50e02312399f6203e59d95027481cca131e309cd2c90354160acac4bd80",
@@ -1251,7 +1113,7 @@
     "number": "17.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__order-book-path-point-process.svg",
     "source": "3 - intraday/3_inference_for_point_processes.tex",
-    "statementSha256": "baa2ec384a66a722403265492c187594a2102318bae7cb85451772121616ae34",
+    "statementSha256": "7acd6fb189f095a158ddc8fa7e3970c2432e80c132afe2b38fd57416b7630b83",
     "svg": "thesis-svg/defn__order-book-path-point-process.svg"
   },
   "defn:ordered-sets": {
@@ -1274,8 +1136,8 @@
   },
   "defn:parametrisation-operator": {
     "env": "defn",
-    "line": 328,
-    "number": "10.13",
+    "line": 316,
+    "number": "10.11",
     "repoPath": "graph-artifacts/thesis-svg/defn__parametrisation-operator.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "60b958d5b5b33381badb14059fad186f8ece3d9b19b95a940471b5cdedc1b11c",
@@ -1346,8 +1208,8 @@
   },
   "defn:price-time-priority-metric": {
     "env": "defn",
-    "line": 68,
-    "number": "16.2",
+    "line": 66,
+    "number": "16.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__price-time-priority-metric.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "45626b8bbaf526937de5332422d6c6e35319ad05a8f08abc109718f7a284b525",
@@ -1389,15 +1251,6 @@
     "statementSha256": "6812d2454baf909387c962a54f598d1f8f75be67907f906792a7fd0ad0042eb8",
     "svg": "thesis-svg/defn__real-vector-space.svg"
   },
-  "defn:rectangular-simple-function": {
-    "env": "defn",
-    "line": 35,
-    "number": "13.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__rectangular-simple-function.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "3ca0f2e7297a6d4be677061d410036938b6855599dfee4df1f344899babdad4f",
-    "svg": "thesis-svg/defn__rectangular-simple-function.svg"
-  },
   "defn:reflexive-transitive-closure": {
     "env": "defn",
     "line": 1379,
@@ -1427,8 +1280,8 @@
   },
   "defn:retagging": {
     "env": "defn",
-    "line": 282,
-    "number": "16.10",
+    "line": 236,
+    "number": "16.6",
     "repoPath": "graph-artifacts/thesis-svg/defn__retagging.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "71a8abc07c5d81be14fd0489bd3e3473f5fee35e839386344de2dd043e6447ac",
@@ -1436,11 +1289,11 @@
   },
   "defn:rolling-coordinate-scales": {
     "env": "defn",
-    "line": 193,
-    "number": "12.4",
+    "line": 187,
+    "number": "12.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__rolling-coordinate-scales.svg",
     "source": "2 - day-ahead/4_price_curve_analysis.tex",
-    "statementSha256": "8408b73b9dfc580b78b7ac8a8c69b1be1d3c2f4b0aee717eb1941c20e1e3a818",
+    "statementSha256": "7f2ab7397943861e01ee5394d7ff25ef69d602e6b5d72797ca26ea53120b939f",
     "svg": "thesis-svg/defn__rolling-coordinate-scales.svg"
   },
   "defn:se-mandate": {
@@ -1449,7 +1302,7 @@
     "number": "21.1",
     "repoPath": "graph-artifacts/thesis-svg/defn__se-mandate.svg",
     "source": "3 - intraday/5_applications.tex",
-    "statementSha256": "deb85ebca3753339571139819e034f3eadd3dedf291bb04b0832c067af29caa3",
+    "statementSha256": "5e8bfc4d33de9831f0b891e21004acb5768280fa44169fdfbd13706beb6ffa85",
     "svg": "thesis-svg/defn__se-mandate.svg"
   },
   "defn:second-countable": {
@@ -1490,8 +1343,8 @@
   },
   "defn:sided-essential-decomposition": {
     "env": "defn",
-    "line": 282,
-    "number": "10.12",
+    "line": 270,
+    "number": "10.10",
     "repoPath": "graph-artifacts/thesis-svg/defn__sided-essential-decomposition.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "ab36500ce1fedbcbbc84ed2a2bd155f1a0471096c131cf592db991e4379f67d3",
@@ -1508,11 +1361,11 @@
   },
   "defn:single-stage-clearing-map": {
     "env": "defn",
-    "line": 181,
-    "number": "16.6",
+    "line": 140,
+    "number": "16.3",
     "repoPath": "graph-artifacts/thesis-svg/defn__single-stage-clearing-map.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "0e61a99bc82d55d7076326405a589ac911fb1918a2fb86f5e5288e18e1583f36",
+    "statementSha256": "e5329dd49840fe3ec1e3a25a29a2e00088a646030a3844c4d4dfd054526a38f0",
     "svg": "thesis-svg/defn__single-stage-clearing-map.svg"
   },
   "defn:sorted-cancel": {
@@ -1596,15 +1449,6 @@
     "statementSha256": "1d6d729ea78f43d3fe45a9e4102367da1e1afcb1fc686db785ce0fce80bf2645",
     "svg": "thesis-svg/defn__standard-borel-space.svg"
   },
-  "defn:state-dependent-selection-probabilities": {
-    "env": "defn",
-    "line": 162,
-    "number": "17.4",
-    "repoPath": "graph-artifacts/thesis-svg/defn__state-dependent-selection-probabilities.svg",
-    "source": "3 - intraday/3_inference_for_point_processes.tex",
-    "statementSha256": "9fbabc7c180b448a3cebe69b02a1dfaea6d6cb330e648118b17089fde0577beb",
-    "svg": "thesis-svg/defn__state-dependent-selection-probabilities.svg"
-  },
   "defn:subset": {
     "env": "defn",
     "line": 32,
@@ -1631,15 +1475,6 @@
     "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
     "statementSha256": "f8e50b7c3d17f2a52c777f35b0c6502182d74ab03c445692b1c06b04d43e67ac",
     "svg": "thesis-svg/defn__tau.svg"
-  },
-  "defn:tensor-product": {
-    "env": "defn",
-    "line": 62,
-    "number": "11.2",
-    "repoPath": "graph-artifacts/thesis-svg/defn__tensor-product.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "afb20e788a1300915ce40e98108c20aacc430e1e65d8ca2e4a37575d072e7f4d",
-    "svg": "thesis-svg/defn__tensor-product.svg"
   },
   "defn:trace-sigma-algebra": {
     "env": "defn",
@@ -1695,19 +1530,10 @@
     "statementSha256": "12325883c9adbdf9282eff37f81efe7e1ce78e67c3fbdbd0e477f25e159d34fe",
     "svg": "thesis-svg/defn__uniformly-discrete.svg"
   },
-  "defn:viability-screen-impact-cost": {
-    "env": "defn",
-    "line": 42,
-    "number": "14.1",
-    "repoPath": "graph-artifacts/thesis-svg/defn__viability-screen-impact-cost.svg",
-    "source": "2 - day-ahead/6_applications.tex",
-    "statementSha256": "11eb09ab55258c01260a045d9369c75c694a33ce5f3518a5c4075d8f7ae3972c",
-    "svg": "thesis-svg/defn__viability-screen-impact-cost.svg"
-  },
   "defn:visible-order-book": {
     "env": "defn",
-    "line": 420,
-    "number": "16.17",
+    "line": 354,
+    "number": "16.11",
     "repoPath": "graph-artifacts/thesis-svg/defn__visible-order-book.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
     "statementSha256": "02efd2a5b8a26f398f9ea75e03b300b86301a920f7b8d0ad3ad487350f1536e4",
@@ -1733,8 +1559,8 @@
   },
   "defn:weak-stationarity": {
     "env": "defn",
-    "line": 218,
-    "number": "11.10",
+    "line": 208,
+    "number": "11.3",
     "repoPath": "graph-artifacts/thesis-svg/defn__weak-stationarity.svg",
     "source": "2 - day-ahead/3_functional_data_analysis.tex",
     "statementSha256": "c8f85390ed689830183026ed1b81789d926fae6f932c8c8aa43bd3a76ab837b7",
@@ -1800,7 +1626,7 @@
     "number": "5.10",
     "repoPath": "graph-artifacts/thesis-svg/exmp__identifier-coordinates.svg",
     "source": "1 - theoretical foundations/3_market_actions.tex",
-    "statementSha256": "3dca5c03b3a6480038030ec4a225c2d618c5e3fc47ed762d63fbbd399e039e35",
+    "statementSha256": "cafe01762fc93c1fa74024fbaf3253c1f5fffc39f611bdeb73689f4a41d0e253",
     "svg": "thesis-svg/exmp__identifier-coordinates.svg"
   },
   "exmp:partial-order-static-market": {
@@ -1814,8 +1640,8 @@
   },
   "exmp:sided-average-not-canonical": {
     "env": "exmp",
-    "line": 395,
-    "number": "10.16",
+    "line": 383,
+    "number": "10.14",
     "repoPath": "graph-artifacts/thesis-svg/exmp__sided-average-not-canonical.svg",
     "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
     "statementSha256": "4c791d27a975dbe40f375ac7b4be5223f0027d3961d030a86f4c82c408b87727",
@@ -1860,19 +1686,6 @@
     "source": "1 - theoretical foundations/4_market_clearing.tex",
     "statementSha256": "680a3345edf7b9e6f68382ef56da7cb7ea4dc6fb218bc8b1db5fc397c65b9660",
     "svg": "thesis-svg/lem__bounded-sets-measurable.svg"
-  },
-  "lem:cell-risk-minimiser": {
-    "env": "lem",
-    "line": 179,
-    "number": "13.4",
-    "proofLine": 187,
-    "proofRepoPath": "graph-artifacts/thesis-svg/lem__cell-risk-minimiser__proof.svg",
-    "proofSha256": "9a66530564c4ac164217ed8873a11c491cc8343dbe3790aabb9383ff417bee19",
-    "proofSvg": "thesis-svg/lem__cell-risk-minimiser__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/lem__cell-risk-minimiser.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "0cda9feacc5a7be1f1c4cef3a0333af1497cd81e2041cb6e7062b8f3355e920c",
-    "svg": "thesis-svg/lem__cell-risk-minimiser.svg"
   },
   "lem:cumulative-summation-continuous": {
     "env": "lem",
@@ -2035,37 +1848,11 @@
     "statementSha256": "5051843c592be6acae7b1a5aff97a89a671f1b5c9845223984542c3e25ed1296",
     "svg": "thesis-svg/lem__tuple-space-measurable-2.svg"
   },
-  "prop:aa-attention-equivalence": {
-    "env": "prop",
-    "line": 623,
-    "number": "19.3",
-    "proofLine": 628,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__aa-attention-equivalence__proof.svg",
-    "proofSha256": "235936faa1191a2c19645802ea1804cc2211b30362af8667679cf2f35122e798",
-    "proofSvg": "thesis-svg/prop__aa-attention-equivalence__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__aa-attention-equivalence.svg",
-    "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "03df00296404498b7634e27cb16a8bd74daafc0613d02aa0add8eaa6b1a1b323",
-    "svg": "thesis-svg/prop__aa-attention-equivalence.svg"
-  },
-  "prop:aa-es-convex-simplex": {
-    "env": "prop",
-    "line": 658,
-    "number": "19.5",
-    "proofLine": 660,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__aa-es-convex-simplex__proof.svg",
-    "proofSha256": "1faff61fa3a4516ffc712bd3fbd2ed9479912d64a0d0edc988959ad3ebeac104",
-    "proofSvg": "thesis-svg/prop__aa-es-convex-simplex__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__aa-es-convex-simplex.svg",
-    "source": "3 - intraday/4_simulation_of_the_lob.tex",
-    "statementSha256": "97dc3c2a7404317e591c13f80785194fa8b8d147e814d1583095ace286db61bf",
-    "svg": "thesis-svg/prop__aa-es-convex-simplex.svg"
-  },
   "prop:admissible-parametrisations-cone": {
     "env": "prop",
-    "line": 361,
-    "number": "10.15",
-    "proofLine": 367,
+    "line": 349,
+    "number": "10.13",
+    "proofLine": 355,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__admissible-parametrisations-cone__proof.svg",
     "proofSha256": "39be337511f30edd8085e1ac5ace1082fa33108530a8aaa913d85a598439d5f9",
     "proofSvg": "thesis-svg/prop__admissible-parametrisations-cone__proof.svg",
@@ -2115,9 +1902,9 @@
   },
   "prop:battery-sublinear-scaling": {
     "env": "prop",
-    "line": 384,
-    "number": "14.4",
-    "proofLine": 389,
+    "line": 381,
+    "number": "14.3",
+    "proofLine": 386,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__battery-sublinear-scaling__proof.svg",
     "proofSha256": "22d2829d1705178da957d8557f16a502987d3e97c2b79912c0a593ddd8b8d199",
     "proofSvg": "thesis-svg/prop__battery-sublinear-scaling__proof.svg",
@@ -2138,19 +1925,6 @@
     "source": "A - appendices/sets.tex",
     "statementSha256": "f5246475817560ad8314b0061d7021eb8f0a04e8550149fa629b0164123d3ea2",
     "svg": "thesis-svg/prop__binary-product-space.svg"
-  },
-  "prop:block-bootstrap-invariance": {
-    "env": "prop",
-    "line": 98,
-    "number": "17.3",
-    "proofLine": 104,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__block-bootstrap-invariance__proof.svg",
-    "proofSha256": "ae13d84aa2f614b90715fbb748388c8787ac79fec1cabdccb1086fdc7b4849ec",
-    "proofSvg": "thesis-svg/prop__block-bootstrap-invariance__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__block-bootstrap-invariance.svg",
-    "source": "3 - intraday/3_inference_for_point_processes.tex",
-    "statementSha256": "522904fba929f90f38a8b20a6297306d7ba8b0757675743d5fe5d3844bb65518",
-    "svg": "thesis-svg/prop__block-bootstrap-invariance.svg"
   },
   "prop:bochner-integrability": {
     "env": "prop",
@@ -2189,11 +1963,11 @@
     "number": "I.3",
     "proofLine": 86,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__cdf-constraint-properties__proof.svg",
-    "proofSha256": "be4fc703bf9ae5d45e06d489eba3b19be68045515e63561de8a8af7ea6f0ada6",
+    "proofSha256": "ef9ea5f5100c2a41863d4e636fef364bfe3c25d3a11ad3ecfd71d410ae6ffa42",
     "proofSvg": "thesis-svg/prop__cdf-constraint-properties__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__cdf-constraint-properties.svg",
     "source": "A - appendices/extended-research-directions.tex",
-    "statementSha256": "846818e35e56ab70e9f9b3d536c666c5f733f0cd74e67611c0859482eedf8ee0",
+    "statementSha256": "ae7fc43c299326d3121f17faa0e57faa54440f1215d46a4c54240a332438e058",
     "svg": "thesis-svg/prop__cdf-constraint-properties.svg"
   },
   "prop:characteristic-functions-tuple": {
@@ -2243,19 +2017,6 @@
     "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
     "statementSha256": "7ff01813a41fa60bd1626456c78b1f587d81aa2d8a1670c0741a3e6c5c9b3a39",
     "svg": "thesis-svg/prop__countable-finite-sets.svg"
-  },
-  "prop:crossing-set-closed": {
-    "env": "prop",
-    "line": 162,
-    "number": "16.5",
-    "proofLine": 169,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__crossing-set-closed__proof.svg",
-    "proofSha256": "57e67d6dde312d4b3bfd77f5204f0990b06bac5cf96460e9946f1fc000700b65",
-    "proofSvg": "thesis-svg/prop__crossing-set-closed__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__crossing-set-closed.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "9b92ac1328502e250b83bcd5d4ab8a4aa9fe1ec1c5471dbf5968aa24a64076d9",
-    "svg": "thesis-svg/prop__crossing-set-closed.svg"
   },
   "prop:disjoint-isomorphism": {
     "env": "prop",
@@ -2360,19 +2121,6 @@
     "source": "A - appendices/sets.tex",
     "statementSha256": "8cde0a5c0b786ddc200117391c275bc03da054d22244586b3d6b54c76847dfed",
     "svg": "thesis-svg/prop__empty-set-unique.svg"
-  },
-  "prop:everett-lagrangian-separation": {
-    "env": "prop",
-    "line": 416,
-    "number": "14.5",
-    "proofLine": 422,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__everett-lagrangian-separation__proof.svg",
-    "proofSha256": "124c2bdc7e5483bf438440f008b287142e069bcda294f6a1fc081cec027905ce",
-    "proofSvg": "thesis-svg/prop__everett-lagrangian-separation__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__everett-lagrangian-separation.svg",
-    "source": "2 - day-ahead/6_applications.tex",
-    "statementSha256": "4827bb98a3a768d22d482e9e5ac0ea2fca80b4a54c8f8f47574100147b3ddc7c",
-    "svg": "thesis-svg/prop__everett-lagrangian-separation.svg"
   },
   "prop:executable-volume-uniform-price": {
     "env": "prop",
@@ -2511,15 +2259,15 @@
   },
   "prop:gram-split-gain-bound": {
     "env": "prop",
-    "line": 253,
-    "number": "13.5",
-    "proofLine": 276,
+    "line": 236,
+    "number": "13.2",
+    "proofLine": 259,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__gram-split-gain-bound__proof.svg",
-    "proofSha256": "4e32f232bdb70fa8d1a0bab5451059ce8d3f8dd41a7725a3e7adc1436288fe8a",
+    "proofSha256": "1995b575867676d27aeec6e8ba17d4306f05e99686edffad9b5ff4c0652b1bce",
     "proofSvg": "thesis-svg/prop__gram-split-gain-bound__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__gram-split-gain-bound.svg",
     "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "239e9c31b7422b36d5ccf9f5306486bb98153e08756a5458622ede768529597d",
+    "statementSha256": "d48f836d2553a57cd0e7dc3d9a683445dec569a10287847d1566f718b28a842a",
     "svg": "thesis-svg/prop__gram-split-gain-bound.svg"
   },
   "prop:graph-defines": {
@@ -2589,14 +2337,14 @@
     "proofSvg": "thesis-svg/prop__identifier-cancel-continuous__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__identifier-cancel-continuous.svg",
     "source": "1 - theoretical foundations/3_market_actions.tex",
-    "statementSha256": "71559a745c6e275dc58495a4efcfc94c14730d8eee325ca7ad498fa9a2361f12",
+    "statementSha256": "0fbc2d3d6061f76226421d2f7bc320259462e0b740a6438b46e5ee7c6275595e",
     "svg": "thesis-svg/prop__identifier-cancel-continuous.svg"
   },
   "prop:identifier-clearing-properties": {
     "env": "prop",
-    "line": 395,
-    "number": "16.16",
-    "proofLine": 400,
+    "line": 329,
+    "number": "16.10",
+    "proofLine": 334,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__identifier-clearing-properties__proof.svg",
     "proofSha256": "54053a0c52c78bb07b7d91c2750990d3a8576f67ffbb2cb6b53bdf561925252b",
     "proofSvg": "thesis-svg/prop__identifier-clearing-properties__proof.svg",
@@ -2628,7 +2376,7 @@
     "proofSvg": "thesis-svg/prop__identifier-tie-breaking-borel__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__identifier-tie-breaking-borel.svg",
     "source": "1 - theoretical foundations/3_market_actions.tex",
-    "statementSha256": "8402cba0e9e1ed07217c25ed43796d4f4970eb02cb6530160d04ff94a99f5386",
+    "statementSha256": "a97d9c0338ca49813f8e7cf3e11fafa786274fecdb4e612daa29386af0ab3431",
     "svg": "thesis-svg/prop__identifier-tie-breaking-borel.svg"
   },
   "prop:induced-sorting": {
@@ -2707,9 +2455,9 @@
   },
   "prop:linear-parametrisation-convex": {
     "env": "prop",
-    "line": 221,
-    "number": "10.10",
-    "proofLine": 223,
+    "line": 215,
+    "number": "10.9",
+    "proofLine": 217,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__linear-parametrisation-convex__proof.svg",
     "proofSha256": "bb9c88dc761220bb7352718ed846128465af4b829599b4ec2e8032ba074b5163",
     "proofSvg": "thesis-svg/prop__linear-parametrisation-convex__proof.svg",
@@ -2733,11 +2481,11 @@
     "number": "21.2",
     "proofLine": 28,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__mandate-martingale__proof.svg",
-    "proofSha256": "c53c665be723808a5d8260dff5b26f59a86bcb0c0b7594938a8abec6cf403ce2",
+    "proofSha256": "5107b666ad12170fc612e12b6241feca5964938732fa70957f8df6b2d9e257bd",
     "proofSvg": "thesis-svg/prop__mandate-martingale__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__mandate-martingale.svg",
     "source": "3 - intraday/5_applications.tex",
-    "statementSha256": "b5cd9dd9d51d8ab4e2db501c591855524539a85f822e8747798cb79efdef6405",
+    "statementSha256": "abc9c5993aa829985605f68bebe128d4242a79f5e0ff7112c08a4acd8e654d76",
     "svg": "thesis-svg/prop__mandate-martingale.svg"
   },
   "prop:mean-measure": {
@@ -2746,7 +2494,7 @@
     "number": "H.26",
     "repoPath": "graph-artifacts/thesis-svg/prop__mean-measure.svg",
     "source": "A - appendices/measure.tex",
-    "statementSha256": "0885aedf4a7577f8d54bfcbf33b93958ca7826fe8c2e9e2d1a870880872d8abc",
+    "statementSha256": "81c9c1f40e97d42f6334e1c16abafd2acb19bc8114f9728f9783125a1d94960a",
     "svg": "thesis-svg/prop__mean-measure.svg"
   },
   "prop:measurable-partition-sorting": {
@@ -2790,15 +2538,15 @@
   },
   "prop:midrank-coverage-expectations": {
     "env": "prop",
-    "line": 196,
-    "number": "17.6",
-    "proofLine": 204,
+    "line": 179,
+    "number": "17.4",
+    "proofLine": 187,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__midrank-coverage-expectations__proof.svg",
-    "proofSha256": "5c9f9ce5a26d9e42e72745ff7e600be01f726ba23834ab9ca34a21ab41a1ff92",
+    "proofSha256": "bbc7cceb280bbf41853d622dc6c632ca3a75e78705166936348c841c6e10013b",
     "proofSvg": "thesis-svg/prop__midrank-coverage-expectations__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__midrank-coverage-expectations.svg",
     "source": "3 - intraday/3_inference_for_point_processes.tex",
-    "statementSha256": "d2f878124cbfdd730d74959733cec3878fa4bf9c2f52c46335a25fa9e5dcefdf",
+    "statementSha256": "d67e6b8f1a367b7ba1c0a5cbb3ebe544bd06659e0fc52ad7da42b9c4e1b7752b",
     "svg": "thesis-svg/prop__midrank-coverage-expectations.svg"
   },
   "prop:minimal-sorting-measurable": {
@@ -2826,19 +2574,6 @@
     "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
     "statementSha256": "75f06ecac855c1d47e36a9a3bb76bde45fa3ecfd696df976c9368ce499fe822f",
     "svg": "thesis-svg/prop__minimum-sorting-map-is-sorting-map.svg"
-  },
-  "prop:monotone-decoding-nonexpansive": {
-    "env": "prop",
-    "line": 697,
-    "number": "13.8",
-    "proofLine": 710,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__monotone-decoding-nonexpansive__proof.svg",
-    "proofSha256": "d648c132762d310ae021915f07261202a032c0f858248bc41568e5858986bc71",
-    "proofSvg": "thesis-svg/prop__monotone-decoding-nonexpansive__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__monotone-decoding-nonexpansive.svg",
-    "source": "2 - day-ahead/5_forecasting_impact.tex",
-    "statementSha256": "1ee0a75d05da7bbe265909de798a79da60f5580b5b1d06afb357717b5dbc9ab8",
-    "svg": "thesis-svg/prop__monotone-decoding-nonexpansive.svg"
   },
   "prop:norm-induced-by-inner-product": {
     "env": "prop",
@@ -2951,9 +2686,9 @@
   },
   "prop:pl-encoding-measurable": {
     "env": "prop",
-    "line": 496,
-    "number": "10.18",
-    "proofLine": 502,
+    "line": 479,
+    "number": "10.15",
+    "proofLine": 485,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__pl-encoding-measurable__proof.svg",
     "proofSha256": "de9ed40ef31737ce10129f6c3cf91cf21e5565ab91ef96a09e1956d51ffe80c8",
     "proofSvg": "thesis-svg/prop__pl-encoding-measurable__proof.svg",
@@ -3010,19 +2745,6 @@
     "statementSha256": "cc8e14d248c760a6176a46469cfed24e881f105685022d2dabb23096c679b5fe",
     "svg": "thesis-svg/prop__separation-continuous.svg"
   },
-  "prop:separation-preserves-price-time": {
-    "env": "prop",
-    "line": 107,
-    "number": "16.3",
-    "proofLine": 112,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__separation-preserves-price-time__proof.svg",
-    "proofSha256": "a13bcf46cca5f550ae3a96098216e4f146052f305209c71e9e9cbe220ec36abf",
-    "proofSvg": "thesis-svg/prop__separation-preserves-price-time__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__separation-preserves-price-time.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "f4ea938c8ab76a1e2415f160e22d5b1bd6b1aa89f6ef6ba78764080862fad961",
-    "svg": "thesis-svg/prop__separation-preserves-price-time.svg"
-  },
   "prop:sim-equivalence": {
     "env": "prop",
     "line": 1421,
@@ -3038,11 +2760,11 @@
   },
   "prop:single-stage-execution": {
     "env": "prop",
-    "line": 211,
-    "number": "16.7",
-    "proofLine": 222,
+    "line": 170,
+    "number": "16.4",
+    "proofLine": 181,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__single-stage-execution__proof.svg",
-    "proofSha256": "2f0280d198cddbe5862a3a01d4d87daf186d25b9e9cb55475ba67ded04ca80ea",
+    "proofSha256": "cf07e08faec99807b626f4d1d4131bb8efae322a058e6587dd7394dedc8ddf23",
     "proofSvg": "thesis-svg/prop__single-stage-execution__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__single-stage-execution.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
@@ -3219,19 +2941,6 @@
     "statementSha256": "aaba431a25bd7c41c7ae1d843b2bfa112b1a8b058c1be08cdfc212690fb834f7",
     "svg": "thesis-svg/prop__vector-space-extension.svg"
   },
-  "prop:visible-step-measurable": {
-    "env": "prop",
-    "line": 501,
-    "number": "16.19",
-    "proofLine": 503,
-    "proofRepoPath": "graph-artifacts/thesis-svg/prop__visible-step-measurable__proof.svg",
-    "proofSha256": "ab10faf0b6e59f87886223610d988925aba9296cf04efc444096be75c5b7dbe7",
-    "proofSvg": "thesis-svg/prop__visible-step-measurable__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/prop__visible-step-measurable.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "73be865f558689cd2b117cd88af19e2ec270977539650f5c5b9b4993a8c4df68",
-    "svg": "thesis-svg/prop__visible-step-measurable.svg"
-  },
   "prop:weak-linear-kernel-inner-product-space": {
     "env": "prop",
     "line": 916,
@@ -3247,15 +2956,15 @@
   },
   "prop:weak-stationarity": {
     "env": "prop",
-    "line": 230,
-    "number": "11.11",
-    "proofLine": 240,
+    "line": 220,
+    "number": "11.4",
+    "proofLine": 230,
     "proofRepoPath": "graph-artifacts/thesis-svg/prop__weak-stationarity__proof.svg",
-    "proofSha256": "e233cdbfb23fdf2da0f1e43f95086e1cc5f7024db3a374f4b1423b219d4bb2fe",
+    "proofSha256": "597f117a6003195fb58351f884ad333a654dccf8d025ac3fc4e3d3b084e786d7",
     "proofSvg": "thesis-svg/prop__weak-stationarity__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/prop__weak-stationarity.svg",
     "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "3e3226a2295783e647fdf0f6b2ded4866460947258473fd9b5ffed7d5664da19",
+    "statementSha256": "7aa020cd22305dfe47288cf23da87f308268cf41352d0cb640eb382d920286bd",
     "svg": "thesis-svg/prop__weak-stationarity.svg"
   },
   "rem:bijection-not-homeomorphism": {
@@ -3466,7 +3175,7 @@
     "number": "4.48",
     "repoPath": "graph-artifacts/thesis-svg/source__1---theoretical-foundations-2_chapter_market_representations.tex__1840__rem__91.svg",
     "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
-    "statementSha256": "d338d152df1e8371637c7e27004c05f53bee04315014fd4b9feec5922e08c512",
+    "statementSha256": "abdb6589fdfa76998ceff2ce108a2b5ac5928fb5cb93d4dc63ea5902399079ad",
     "svg": "thesis-svg/source__1---theoretical-foundations-2_chapter_market_representations.tex__1840__rem__91.svg"
   },
   "source:1 - theoretical foundations/2_chapter_market_representations.tex:1899:rem:95": {
@@ -3549,46 +3258,6 @@
     "source": "1 - theoretical foundations/5_stochastic_markets.tex",
     "statementSha256": "58c3cf7503bacab86c5206e2f9fd201f903ec058989978d09c682fe3814d3326",
     "svg": "thesis-svg/source__1---theoretical-foundations-5_stochastic_markets.tex__1296__cor__45.svg"
-  },
-  "source:2 - day-ahead/2_clearing_operator_price_curves.tex:166:defn:7": {
-    "env": "defn",
-    "line": 166,
-    "number": "10.7",
-    "repoPath": "graph-artifacts/thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__166__defn__7.svg",
-    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
-    "statementSha256": "0283edc98a19cbd878e9a3898840ed0e499997829b247cf916e6c400ccf8eaa9",
-    "svg": "thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__166__defn__7.svg"
-  },
-  "source:2 - day-ahead/2_clearing_operator_price_curves.tex:261:cor:11": {
-    "env": "cor",
-    "line": 261,
-    "number": "10.11",
-    "proofLine": 263,
-    "proofRepoPath": "graph-artifacts/thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__261__cor__11__proof.svg",
-    "proofSha256": "b263c01a6dc979bd7f13b94aab7e97db2d1a25d463bd4582ac2a20459c9972c0",
-    "proofSvg": "thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__261__cor__11__proof.svg",
-    "repoPath": "graph-artifacts/thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__261__cor__11.svg",
-    "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
-    "statementSha256": "c58199b2e697ace1a8d383b456fa4e42ea270e0bbf30a8cf6e25703437c1502c",
-    "svg": "thesis-svg/source__2---day-ahead-2_clearing_operator_price_curves.tex__261__cor__11.svg"
-  },
-  "source:2 - day-ahead/3_functional_data_analysis.tex:105:rem:5": {
-    "env": "rem",
-    "line": 105,
-    "number": "11.5",
-    "repoPath": "graph-artifacts/thesis-svg/source__2---day-ahead-3_functional_data_analysis.tex__105__rem__5.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "33a5a1970cab57c0953752d83a28d719ef946071b2bdfcb8746c710b9d871e8d",
-    "svg": "thesis-svg/source__2---day-ahead-3_functional_data_analysis.tex__105__rem__5.svg"
-  },
-  "source:3 - intraday/2_lobs_and_tuples.tex:331:rem:13": {
-    "env": "rem",
-    "line": 331,
-    "number": "16.13",
-    "repoPath": "graph-artifacts/thesis-svg/source__3---intraday-2_lobs_and_tuples.tex__331__rem__13.svg",
-    "source": "3 - intraday/2_lobs_and_tuples.tex",
-    "statementSha256": "e9e39248e6c6d0ba4cd8556c6837e568b5278cd9d713ab5e7206ddb2758fe76e",
-    "svg": "thesis-svg/source__3---intraday-2_lobs_and_tuples.tex__331__rem__13.svg"
   },
   "source:A - appendices/analysis.tex:104:defn:9": {
     "env": "defn",
@@ -3810,11 +3479,11 @@
   },
   "thm:clearing-measurable": {
     "env": "thm",
-    "line": 334,
-    "number": "16.14",
-    "proofLine": 336,
+    "line": 268,
+    "number": "16.8",
+    "proofLine": 270,
     "proofRepoPath": "graph-artifacts/thesis-svg/thm__clearing-measurable__proof.svg",
-    "proofSha256": "2224426556966a7d628f0744090215b7905d29902994d23d92eee5f48c904594",
+    "proofSha256": "4a4da89b08b0dd76cb66fda7dbdea29b310d9cc64afe37bb528380690446e963",
     "proofSvg": "thesis-svg/thm__clearing-measurable__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/thm__clearing-measurable.svg",
     "source": "3 - intraday/2_lobs_and_tuples.tex",
@@ -3858,15 +3527,15 @@
   },
   "thm:conditional-expect-Hilbert": {
     "env": "thm",
-    "line": 144,
-    "number": "11.8",
-    "proofLine": 150,
+    "line": 132,
+    "number": "11.1",
+    "proofLine": 138,
     "proofRepoPath": "graph-artifacts/thesis-svg/thm__conditional-expect-Hilbert__proof.svg",
-    "proofSha256": "440d6fa694398963a810b733e67b25cda7e0aeb6ef461c98563187e0b63899f7",
+    "proofSha256": "1ade17656643c2582f695f1a5330c0e261e3e778fd960cc1478787c257c2a257",
     "proofSvg": "thesis-svg/thm__conditional-expect-Hilbert__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/thm__conditional-expect-Hilbert.svg",
     "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "d6bb5735ebdc3b745cc4e39f1a0e97592b9c1d21d5708b72d7530a03f6cca657",
+    "statementSha256": "1995c76f51ab9cc1a7a9411d1623568fbb8d4f5cf95759626e3294198332dd92",
     "svg": "thesis-svg/thm__conditional-expect-Hilbert.svg"
   },
   "thm:equilibrium-quantity-measurable": {
@@ -3933,24 +3602,6 @@
     "source": "1 - theoretical foundations/2_chapter_market_representations.tex",
     "statementSha256": "e4f8b011e02f56c032004e0ce7a4dfa3c2d5d1b8e996455556ad978c6e112a19",
     "svg": "thesis-svg/thm__labelled-properties.svg"
-  },
-  "thm:lln-clt-mean": {
-    "env": "thm",
-    "line": 113,
-    "number": "11.6",
-    "repoPath": "graph-artifacts/thesis-svg/thm__lln-clt-mean.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "563983ac0a9216fdc49650b0573a660f852a905d3c6c52b855ad07e7d10bb65e",
-    "svg": "thesis-svg/thm__lln-clt-mean.svg"
-  },
-  "thm:lln-covariance": {
-    "env": "thm",
-    "line": 125,
-    "number": "11.7",
-    "repoPath": "graph-artifacts/thesis-svg/thm__lln-covariance.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "43f1db235a3e3434cdac57396e51dee4ab3b659704a31861993ee00e6df448de",
-    "svg": "thesis-svg/thm__lln-covariance.svg"
   },
   "thm:measurable-partition": {
     "env": "thm",
@@ -4107,11 +3758,11 @@
   },
   "thm:regression-theorem": {
     "env": "thm",
-    "line": 186,
-    "number": "11.9",
+    "line": 174,
+    "number": "11.2",
     "repoPath": "graph-artifacts/thesis-svg/thm__regression-theorem.svg",
     "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "5e2037754a5f15cf71a191846ddb6807cb1b1955739ff7841b1e52565d6493d8",
+    "statementSha256": "9a54d143e9faeaec1a10c74eeb9bcb218e5fa9a8789ece486bc4fef45ed5320f",
     "svg": "thesis-svg/thm__regression-theorem.svg"
   },
   "thm:regular-conditional-distribution": {
@@ -4134,25 +3785,16 @@
   },
   "thm:scores-sigma-algebra": {
     "env": "thm",
-    "line": 297,
-    "number": "11.12",
-    "proofLine": 311,
+    "line": 287,
+    "number": "11.5",
+    "proofLine": 301,
     "proofRepoPath": "graph-artifacts/thesis-svg/thm__scores-sigma-algebra__proof.svg",
-    "proofSha256": "a884a81cc2b9566f8cbdd298949778db15a5a73e1667e1264ee9ace4f58d93cc",
+    "proofSha256": "6e81a9271656c2e03cabe2449dfab86f191208807df6fa7153969be08835205c",
     "proofSvg": "thesis-svg/thm__scores-sigma-algebra__proof.svg",
     "repoPath": "graph-artifacts/thesis-svg/thm__scores-sigma-algebra.svg",
     "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "cee52d3d995a97ce58ac8bf4950f7e9507b57bc4fa6301ad5130812f3c7ea052",
+    "statementSha256": "99147cca272e4f979430ffa8844f977c6f4d791be48b106ad5e4bc05ba032b02",
     "svg": "thesis-svg/thm__scores-sigma-algebra.svg"
-  },
-  "thm:spectral-thm": {
-    "env": "thm",
-    "line": 98,
-    "number": "11.4",
-    "repoPath": "graph-artifacts/thesis-svg/thm__spectral-thm.svg",
-    "source": "2 - day-ahead/3_functional_data_analysis.tex",
-    "statementSha256": "e30fc2b2c6ce0eae5218100d45ea6714296d29f8e695db89857080e7870d1725",
-    "svg": "thesis-svg/thm__spectral-thm.svg"
   },
   "thm:sufficient-decomposition": {
     "env": "thm",

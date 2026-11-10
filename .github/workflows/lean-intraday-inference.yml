@@ -21,9 +21,7 @@ jobs:
           build: true
           build-args: >-
             --wfail
-            Thesis.Intraday.InferencePointProcesses.BlockBootstrap
             Thesis.Intraday.InferencePointProcesses.BookPath
-            Thesis.Intraday.InferencePointProcesses.BootstrapDistribution
             Thesis.Intraday.InferencePointProcesses.EnsembleCalibration
             Thesis.Intraday.InferencePointProcesses.EnsembleRanks
             Thesis.Intraday.InferencePointProcesses.ExchangeableRanks

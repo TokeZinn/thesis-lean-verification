@@ -16,29 +16,18 @@
       "correction": "Use exactly (x,i)=(y,j) OR h(x)<h(y) OR (h(x)=h(y) AND i<j), as in the cited foundation proposition; define h as the side-price-time key. Alternatively restrict the domain to distinct identifiers and define priority-key ties explicitly.",
       "issue": "ID03",
       "kind": "undefined-and-inconsistent-relation",
-      "line": 368,
+      "line": 302,
       "proofSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "source": "3 - intraday/2_lobs_and_tuples.tex",
       "statementSha256": "5fa3f0deb24e86109cd24ec0102dcf81d68f8ab3b5400ff4f425cc50508951fd",
       "status": "incorrect-statement",
       "summary": "The displayed identifier relation is the partial order from prop:identifier-tie-breaking."
     },
-    "prop:monotone-decoding-nonexpansive": {
-      "correction": "Assume E[||W||]<infinity (or square integrability).",
-      "issue": "DA26-05",
-      "kind": "missing-integrability-hypothesis",
-      "line": 703,
-      "proofSha256": "d648c132762d310ae021915f07261202a032c0f858248bc41568e5858986bc71",
-      "source": "2 - day-ahead/5_forecasting_impact.tex",
-      "statementSha256": "1ee0a75d05da7bbe265909de798a79da60f5580b5b1d06afb357717b5dbc9ab8",
-      "status": "incorrect-statement",
-      "summary": "Every random W valued in the quantity/price monotonicity product admits the stated conditional expectation."
-    },
     "prop:pl-encoding-measurable": {
       "correction": "Add Q(m)>0 to L, or define generalized-inverse curves for every state and separately restrict their trading interpretation.",
       "issue": "DA26-01",
       "kind": "ill-defined-domain",
-      "line": 497,
+      "line": 480,
       "proofSha256": "de9ed40ef31737ce10129f6c3cf91cf21e5565ab91ef96a09e1956d51ffe80c8",
       "source": "2 - day-ahead/2_clearing_operator_price_curves.tex",
       "statementSha256": "5d510acf2191977a55c025c34bef9b05bd0b08b889fa99c4a44cc26261dff97a",
@@ -57,7 +46,7 @@
         "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
       ],
       "id": "DA26-01",
-      "line": 497,
+      "line": 480,
       "severity": "high",
       "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
     },
@@ -68,7 +57,7 @@
       "evidence": "Under the chosen midpoint inverse, P_m(0)=(P_m(0-)+P_m(0+))/2. Thus the retained limits determine the selected crossing price. Repeated at line579 and numerical appendix22.",
       "evidenceFiles": [],
       "id": "DA26-02",
-      "line": 347,
+      "line": 335,
       "severity": "medium",
       "source": "2 - day-ahead/2_clearing_operator_price_curves.tex"
     },
@@ -81,7 +70,7 @@
         "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
       ],
       "id": "DA26-03",
-      "line": 197,
+      "line": 187,
       "severity": "medium",
       "source": "2 - day-ahead/3_functional_data_analysis.tex"
     },
@@ -94,7 +83,7 @@
         "Thesis/DayAhead/ForecastingImpact/AttributionVersions.lean"
       ],
       "id": "DA26-04",
-      "line": 417,
+      "line": 398,
       "severity": "high",
       "source": "2 - day-ahead/5_forecasting_impact.tex"
     },
@@ -105,7 +94,7 @@
       "evidence": "The quantity cone is unbounded. Set all its entries equal to a nonnegative nonintegrable scalar random variable, and take bounded constant prices. The cone hypothesis holds but the Bochner conditional expectation of W is undefined.",
       "evidenceFiles": [],
       "id": "DA26-05",
-      "line": 703,
+      "line": 681,
       "severity": "high",
       "source": "2 - day-ahead/5_forecasting_impact.tex"
     },
@@ -132,7 +121,7 @@
         "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean"
       ],
       "id": "DA26-07",
-      "line": 864,
+      "line": 839,
       "severity": "medium",
       "source": "2 - day-ahead/5_forecasting_impact.tex"
     },
@@ -145,7 +134,7 @@
         "Thesis/Intraday/Simulation/PriceTranslation.lean"
       ],
       "id": "ID01",
-      "line": 705,
+      "line": 694,
       "relatedSources": [
         {
           "line": 17,
@@ -191,7 +180,7 @@
         "Thesis/Intraday/LOBsAndTuples/CurrentSourceIssues.lean"
       ],
       "id": "ID03",
-      "line": 368,
+      "line": 302,
       "relatedSources": [
         {
           "line": 191,
@@ -211,7 +200,7 @@
       ],
       "formalEvidenceScope": "Finite counts and dependence arithmetic only; the infinite product probability construction and randomized PIT bridge are the explicit mathematical argument above.",
       "id": "RD01",
-      "line": 142,
+      "line": 140,
       "severity": "medium",
       "source": "A - appendices/extended-research-directions.tex"
     },
@@ -224,7 +213,7 @@
       "line": 109,
       "relatedSources": [
         {
-          "line": 722,
+          "line": 711,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
@@ -248,7 +237,7 @@
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
-          "line": 765,
+          "line": 754,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
@@ -312,11 +301,11 @@
       "line": 65,
       "relatedSources": [
         {
-          "line": 603,
+          "line": 602,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
-          "line": 618,
+          "line": 616,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
@@ -336,11 +325,11 @@
       "line": 67,
       "relatedSources": [
         {
-          "line": 637,
+          "line": 631,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
-          "line": 769,
+          "line": 758,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         },
         {
@@ -364,7 +353,7 @@
       "line": 67,
       "relatedSources": [
         {
-          "line": 699,
+          "line": 688,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -396,7 +385,7 @@
       "line": 69,
       "relatedSources": [
         {
-          "line": 761,
+          "line": 750,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -412,7 +401,7 @@
       "line": 69,
       "relatedSources": [
         {
-          "line": 660,
+          "line": 652,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -428,7 +417,7 @@
       "line": 69,
       "relatedSources": [
         {
-          "line": 765,
+          "line": 754,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -448,7 +437,7 @@
       "line": 48,
       "relatedSources": [
         {
-          "line": 695,
+          "line": 674,
           "source": "2 - day-ahead/5_forecasting_impact.tex"
         },
         {
@@ -481,7 +470,7 @@
       "evidence": "A stationary AR(1) with coefficient0.99 has high persistence yet is neither integrated nor nonstationary.",
       "evidenceFiles": [],
       "id": "DA26-08",
-      "line": 189,
+      "line": 183,
       "severity": "low",
       "source": "2 - day-ahead/4_price_curve_analysis.tex"
     },
@@ -497,7 +486,7 @@
       "line": 10,
       "relatedSources": [
         {
-          "line": 91,
+          "line": 89,
           "source": "3 - intraday/2_lobs_and_tuples.tex"
         }
       ],
@@ -516,7 +505,7 @@
       "line": 69,
       "relatedSources": [
         {
-          "line": 797,
+          "line": 784,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -534,7 +523,7 @@
       "line": 69,
       "relatedSources": [
         {
-          "line": 806,
+          "line": 793,
           "source": "3 - intraday/4_simulation_of_the_lob.tex"
         }
       ],
@@ -549,36 +538,36 @@
   "sourceHashes": {
     "0 - introduction/1_climatechange.tex": "64dc4a332fafbef1f322b735af65fa8e3d029cc2f7112ca78fe11fae0781125d",
     "0 - introduction/2_description.tex": "c0b2ae08e757402738d9b70868894ea13879aba2b984be20bcfa4a9600b02903",
-    "0 - introduction/3_finance.tex": "8fbcd1ad9099373d618dc675cee6d64cf26ad2584336a51a0ae2151c2951483e",
-    "0 - introduction/4_problemstatement.tex": "fb8bd18c61cef75885ac3b0555e6fa88655bc271a5d35d30d24b5aa1ace82010",
+    "0 - introduction/3_finance.tex": "7f7af5746fa26aca0a4a3648f89a9bc262a6732f0307be8ccc5325b3c07076df",
+    "0 - introduction/4_problemstatement.tex": "0f757c432613fb13ce6edd6a1d6515b73fea83fefd8ca1f11ce45dc1596d5cae",
     "1 - theoretical foundations/1_economics.tex": "6b876e87a16e1bd3f7caf5775cdd40849d35290810682930c5cf7f7a016cff01",
-    "1 - theoretical foundations/2_chapter_market_representations.tex": "1ee103fcb3cd542fe3822050dad3e4834413ac26ad0e5a641c2a8966940d7a50",
-    "1 - theoretical foundations/3_market_actions.tex": "b83497af3d11bf19f6cc5b2deb0e74267944123e29c6d2836c686c2fd999b4f2",
-    "1 - theoretical foundations/4_market_clearing.tex": "257cc6548aeda8175fd72ca7c2b63f5f031d3e45e6c12a67da4b34ffaef89ddb",
+    "1 - theoretical foundations/2_chapter_market_representations.tex": "cb8fb3fa39821f6f20b435d4e606b75550f5ec96f89e0feff64a1b59295c32af",
+    "1 - theoretical foundations/3_market_actions.tex": "0fb9ebbe7bafc7e15c787b43b94c1ea5bffb4b2b87987f0a8ecdbb41efb2cc89",
+    "1 - theoretical foundations/4_market_clearing.tex": "8c42ad012bd8c14eca7d695b77f4174b0fa4a87a3b0f504f69ba2ffc814cd4b1",
     "1 - theoretical foundations/5_stochastic_markets.tex": "a02b093976dcb14937ea0fa52c56882ef1c5ceded7ed3e33824ba8bff2815112",
     "2 - day-ahead/1_introduction.tex": "0e35fc0f1cc7d8d25752c8dde3f645c051ed6e8bccbea03650739ac432307937",
-    "2 - day-ahead/2_clearing_operator_price_curves.tex": "d4e57157598bf86bf00f0ead05a2750d48899529d09e2ce1ef0e0eea2a2d07fe",
-    "2 - day-ahead/3_functional_data_analysis.tex": "72f165a00e4e5c388571dddd4abe531ef2d9b9b95c11c641e366bf6f91bc7882",
-    "2 - day-ahead/4_price_curve_analysis.tex": "85b324d3718e150e2b8132f45de062c70fd56adbb757303137a2aec8a16bbc42",
-    "2 - day-ahead/5_forecasting_impact.tex": "f37d82b3aecadba4c11ee57d3bc46bab794c363d8b0e2fc1047779616ca1c5c5",
-    "2 - day-ahead/6_applications.tex": "818f9b85955ad4674ea6027cc7cbc01d7199544899dd86abd520008d604bd7a0",
+    "2 - day-ahead/2_clearing_operator_price_curves.tex": "3a24bfbb75cfbd31e72c24be3282744681590aceba3b379c47389f6de508b92e",
+    "2 - day-ahead/3_functional_data_analysis.tex": "36ad2e0c320add57676eb6e608f219e0b8a1c6d5c4ef7e8612fcf717358b0006",
+    "2 - day-ahead/4_price_curve_analysis.tex": "0c333c3136c3b386dcbb081f67347eeb72d47d597f09f4f751299dceb72a3f95",
+    "2 - day-ahead/5_forecasting_impact.tex": "420c9cc537aff66a53893d171eedd111048ec441560c5d7173af344814799da0",
+    "2 - day-ahead/6_applications.tex": "def52e4ba80f2aabdfc19addddd6857aa5807a099339e88012ebbe5aa0d5a36f",
     "3 - intraday/1_introduction.tex": "a19aa509aefd24edabdc60e968ef72b82b99697331811fe689fd9fa9d49678c3",
-    "3 - intraday/2_lobs_and_tuples.tex": "29b057655bec4997e29a54183007efae7484ec731598a510e2cc2a04f1035dca",
-    "3 - intraday/3_inference_for_point_processes.tex": "deec4fa438dd1a5f738eff53ae1c0e2d2362df4e4297e16d00e60517ebb25b78",
-    "3 - intraday/4_simulation_of_the_lob.tex": "d4277d795bdbf30a20eb7ea8ecb889c1316a5ddf0a2b444448a37fb107c893e1",
-    "3 - intraday/5_applications.tex": "3dadbaae03f5b0946941dbe6d026c836b1e043c22d68c9b797e63ae5923fba93",
-    "4 - conclusion/conclusion.tex": "d396aa6eac18ca1902158237e9edcc948f9c273895ac6765965c1ef87c2d5506",
+    "3 - intraday/2_lobs_and_tuples.tex": "085b8fb5b42207f85286c465483a11f08bba52944b3b9c75d125488ea4856dbd",
+    "3 - intraday/3_inference_for_point_processes.tex": "79428a5bb510efbbdf7fd7aab3d35b54df58feb4e1238c99dede304a093799d9",
+    "3 - intraday/4_simulation_of_the_lob.tex": "c7fd1ff7e75d7f0fb0f93e8c43d96cbf83e6fcfcc646826af518991f0c087d8c",
+    "3 - intraday/5_applications.tex": "f5c734abb6139583b8de0ca8d82145c62e63d00aa55bd5c301ba6b1167747191",
+    "4 - conclusion/conclusion.tex": "cf0258020d437fb3fb17ee7bcdd27dabf1c408913a49e7670d463643040ea8e8",
     "A - appendices/algebra.tex": "edd104db54c54c63c4799ca8fa5824ce058e6719fb0e1f1e50453f25c4588e08",
     "A - appendices/analysis.tex": "b61b8180119afa0157e488e285dc624118a50fceef845a20f3c846ea02859575",
     "A - appendices/day-ahead-battery-panels.tex": "dbea55d8241947ae00d4e406eee183649cfc8e1b838fe7a106578d12ebb1841c",
-    "A - appendices/day-ahead-numerical-implementation.tex": "5b258d95e96c18f2264bf640539a3326a4c3c90dad6e594d6b06153f2e5f9f29",
-    "A - appendices/extended-research-directions.tex": "20465836909471e012da679216150ca9befe9427434824c082562bdf4f89fcf7",
+    "A - appendices/day-ahead-numerical-implementation.tex": "de7b011c61cba2d1c3c4e5fb3447447099d749b56b7c72087e1310437978fc8f",
+    "A - appendices/extended-research-directions.tex": "f04986fd0b54f15293304f3100a25d9f5563a8dcfccbb502bb609858899f7bb8",
     "A - appendices/functional-analysis.tex": "6f77914a39ef9f37ca938f4df3997d79c345bbd2dee7f46bfab12db2b4070cb6",
-    "A - appendices/intraday-policy-details.tex": "c21d71c8b80deb16989e6a937eae0bf8cf579f212d39125f0d86dbe82b2b2e90",
+    "A - appendices/intraday-policy-details.tex": "b547a2455ea49d289eace57c905af902c154c75c13ce63ee0268c279650e5e8a",
     "A - appendices/intraday-reconstruction-details.tex": "7c7a52fea2de46babd1d92fcfce144e8c685f643ccdf7de12c7ed203929de29c",
-    "A - appendices/intraday-simulator-details.tex": "823ed5964120c60f1101e18986e2e0faaa3008576e47129ffab482e3ea13c141",
+    "A - appendices/intraday-simulator-details.tex": "037ca6d5870fa8624a82ae7858a88c503ff8a19caddadb48a45c6e6f3f71074b",
     "A - appendices/intraday-technical-implementation.tex": "349ce28818863f2b20ac0f2cb6bb813cef8c647e8bbccb804c9f5cb2bac4b67c",
-    "A - appendices/measure.tex": "8139e0af1c8f4ca9301be286cfe848505c0e03b5a7de9bcc6e6b5ab640d4866c",
+    "A - appendices/measure.tex": "d8f673500563f4623748fccb4db46002fc56308a3ffa3328f389772bc672b6ad",
     "A - appendices/sets.tex": "12240e16b2970e8d9363342d73742aa3160f59fc78b4ffb6432565c4bd977e2c",
     "fig/theory/addition.tex": "159fe729ea991595ae67d99ea1d5782fc31d2379b5ebb87e1f7cfd1deeeae606",
     "fig/theory/composite-action.tex": "95934e66a0bb9f4f0e3d7e7e322738ab9b4d30d50c0d73f2c6c160dfbd6ac864",
@@ -593,12 +582,12 @@
     "fig/theory/tuplefilter.tex": "b8b727beff41ccc15d9968b0aa7da239dddcfc928ca1bfa9361d3a9f9d7eea79",
     "fig/tikz/aau-badge.tex": "2b9685568a7fca40f843eb15810af77deb41e3e4b698c25bb3a79c91ee5d37a2",
     "fig/tuplehausdorff-corrected.tex": "b5c656199f69eb795eac8d846ff0638972a537eaa2a580a7a0c5ae7fb63410e7",
-    "incl/misc/abstract.tex": "4c83cf9b7ef67506b807248a43ca5f4eaa59abaea3c2320506eb9a04cbb2ad33",
+    "incl/misc/abstract.tex": "04ba809ff6bd5e1376e4b332cf9b0d7b00d2267d281b126c9a6785eb405c26c7",
     "incl/misc/contents.tex": "b46d0abea24a4067f0f6b60942ed6e456c9e92e10d5b02013827fdac27c14a69",
     "incl/misc/frontpage.tex": "9e2c1052ec3d2920a08273296b72c7220e48829376e739209e6774cee4775392",
-    "incl/misc/notation.tex": "bcb2eb6e04f44dda0ac232b7d92588addd3ce978fe6f7e1412342d01a29a4c16",
+    "incl/misc/notation.tex": "b6f378127b0ac214541ef3e71ed35b1b143840d87abb06fe7b14f89d111a9358",
     "incl/misc/preface.tex": "01fcac383f81604bd0a25a7c7db7d00ba0995cfc3e833e912ed197fcbf943fc0",
-    "incl/misc/resume.tex": "604165063ab29d564dfdd78bac33a91a66d3e592a2abbb808ec9a8b07c12196c",
+    "incl/misc/resume.tex": "fd9c1e90f02c7984581d174fe9e730e99da10cc53688bff49bd08b608a21732d",
     "incl/misc/titlepage.tex": "55a2d92f45c0eff30264e978f2e03395e3fb07420b2eb122c3059052b64afee6",
     "master.tex": "8bc95974e87d98d84bda4ef63751ede8f108278846383406aa2a67193435f749",
     "parts/0-introduction.tex": "b229573967733fe04894b179f84c492c9de80eb401a171c9c246fb1fa6dcc5b2",

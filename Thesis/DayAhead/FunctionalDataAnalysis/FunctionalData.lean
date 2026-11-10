@@ -41,12 +41,6 @@ variable {ι : Type*}
 /-! ## Expectation, rank-one operators, and covariance -/
 
 /--
-Thesis source:
-`2 - day-ahead/3_functional_data_analysis.tex`,
-Definition `defn:expected-hilbert`.
-
-Original label: `defn:expected-hilbert`.
-
 Informal statement: the expectation of an integrable Hilbert-valued random
 variable is its Bochner integral.
 
@@ -69,12 +63,6 @@ theorem inner_hilbertExpectation
   exact (integral_inner hX u).symm
 
 /--
-Thesis source:
-`2 - day-ahead/3_functional_data_analysis.tex`,
-Definition `defn:tensor-product`.
-
-Original label: `defn:tensor-product`.
-
 Informal statement: `(u ⊗ v)(w) = ⟪u,w⟫ v`.
 
 Lean strategy / thesis relation note: mathlib's `rankOne ℝ x y` acts as
@@ -99,23 +87,6 @@ theorem norm_tensorProduct
     (u v : H) :
     ‖tensorProduct u v‖ = ‖u‖ * ‖v‖ := by
   simp [tensorProduct, mul_comm]
-
-/--
-Thesis source:
-`2 - day-ahead/3_functional_data_analysis.tex`,
-Definition `defn:covariance-operator`.
-
-Original label: `defn:covariance-operator`.
-
-Informal statement: the covariance operator is the Bochner expectation of
-the rank-one operator formed from the centred random element.
--/
-noncomputable def covarianceOperator
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    (μ : Measure Ω) (X : Ω → H) : H →L[ℝ] H :=
-  let μX := hilbertExpectation μ X
-  ∫ ω, tensorProduct (X ω - μX) (X ω - μX) ∂μ
 
 /-! ## Scores and basis reconstruction -/
 

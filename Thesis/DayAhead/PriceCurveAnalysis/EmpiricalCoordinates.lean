@@ -15,22 +15,6 @@ open MeasureTheory
 open scoped BigOperators
 open PriceCurveHilbert
 
-/-- Original label: `defn:empirical-coordinate-scales`. -/
-def empiricalMean {ι H : Type*} [AddCommGroup H] [Module ℝ H]
-    (s : Finset ι) (Z : ι → H) : H := (s.card : ℝ)⁻¹ • ∑ i ∈ s, Z i
-
-def empiricalScale {ι H G : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]
-    [NormedAddCommGroup G] [NormedSpace ℝ G]
-    (s : Finset ι) (Z : ι → H) (coordinate : H →L[ℝ] G) : ℝ :=
-  (s.card : ℝ)⁻¹ * ∑ i ∈ s, ‖coordinate (Z i - empiricalMean s Z)‖
-
-theorem empiricalScale_nonneg {ι H G : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]
-    [NormedAddCommGroup G] [NormedSpace ℝ G]
-    (s : Finset ι) (Z : ι → H) (coordinate : H →L[ℝ] G) :
-    0 ≤ empiricalScale s Z coordinate := by
-  unfold empiricalScale
-  positivity
-
 def coordinate (i : Fin 2) : PricePair →L[ℝ] ℝ :=
   (if i = 0 then ContinuousLinearMap.fst ℝ ℝ ℝ else ContinuousLinearMap.snd ℝ ℝ ℝ).comp
     pairEquiv.symm.toContinuousLinearMap
@@ -55,23 +39,6 @@ theorem pairScaling_inverse (a b : ℝ) (ha : a ≠ 0) (hb : b ≠ 0) (x : Price
   simp only [pairScaling_apply]
   congr 1
   ext <;> simp [ha, hb]
-
-/-- Original label: `defn:coordinate-scaling-operators`.
-This is an operator on the actual Euclidean-valued L² carrier. -/
-def scalingLp {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (a b : ℝ) :
-    PriceHilbertSpace μ →L[ℝ] PriceHilbertSpace μ := (pairScaling a b).compLpL 2 μ
-
-theorem scalingLp_inverse {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
-    (a b : ℝ) (ha : a ≠ 0) (hb : b ≠ 0) (f : PriceHilbertSpace μ) :
-    scalingLp μ a⁻¹ b⁻¹ (scalingLp μ a b f) = f := by
-  apply Lp.ext
-  filter_upwards [(pairScaling a b).coeFn_compLpL f,
-    (pairScaling a⁻¹ b⁻¹).coeFn_compLpL (scalingLp μ a b f)] with ω hi ho
-  calc
-    scalingLp μ a⁻¹ b⁻¹ (scalingLp μ a b f) ω =
-      pairScaling a⁻¹ b⁻¹ (scalingLp μ a b f ω) := ho
-    _ = pairScaling a⁻¹ b⁻¹ (pairScaling a b (f ω)) := congrArg _ hi
-    _ = f ω := pairScaling_inverse a b ha hb _
 
 /-- The daily mean squared coordinate norm uses all 24 hours. -/
 def dailySquaredScale {H G : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]

@@ -23,9 +23,7 @@ jobs:
             --wfail
             Thesis.Intraday.Applications.Mandate
             Thesis.Intraday.Applications.MandateGaussian
-            Thesis.Intraday.InferencePointProcesses.BlockBootstrap
             Thesis.Intraday.InferencePointProcesses.BookPath
-            Thesis.Intraday.InferencePointProcesses.BootstrapDistribution
             Thesis.Intraday.InferencePointProcesses.EnsembleCalibration
             Thesis.Intraday.InferencePointProcesses.EnsembleRanks
             Thesis.Intraday.InferencePointProcesses.ExchangeableRanks
@@ -49,7 +47,6 @@ jobs:
             Thesis.Intraday.Simulation.Conservation
             Thesis.Intraday.Simulation.DepthProfile
             Thesis.Intraday.Simulation.DomainExtensions
-            Thesis.Intraday.Simulation.EncoderSourceDefinition
             Thesis.Intraday.Simulation.EnergyScore
             Thesis.Intraday.Simulation.EuclideanNegativeType
             Thesis.Intraday.Simulation.GeometrySweep

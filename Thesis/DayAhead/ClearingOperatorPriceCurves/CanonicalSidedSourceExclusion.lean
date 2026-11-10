@@ -74,45 +74,4 @@ theorem selected_average_not_ae_in_canonical_range_source :
     selectedTwoThreeAverage_endpoints.2.2.2.2] at hquarter
   norm_num at hquarter
 
-/-- Original label: `cor:sided-parametrisation-not-weakly-convex`.
-The exact source witnesses exclude midpoint closure after a.e. identification. -/
-theorem canonical_not_weaklyConvexAE_source :
-    ¬ IsWeaklyConvexAE canonicalSidedEncoding := by
-  intro hweak
-  obtain ⟨f, hf⟩ := hweak twoBlockCurve threeBlockCurve (1/2) (1/2)
-    (by norm_num) (by norm_num)
-  exact selected_average_not_ae_in_canonical_range_source ⟨f, hf⟩
-
-/-- The pointwise image is excluded by the same source witness. -/
-theorem canonical_not_weaklyConvex_source : ¬ IsWeaklyConvex canonicalSidedEncoding := by
-  intro hweak
-  apply canonical_not_weaklyConvexAE_source
-  intro f g α β hα hβ
-  obtain ⟨k, hk⟩ := hweak f g α β hα hβ
-  exact ⟨k, Filter.Eventually.of_forall (fun x => congrFun hk (clampParameter x))⟩
-
-open PriceCurveHilbert Foundations.Stochastic.KernelHilbert in
-/-- Original label: `cor:sided-parametrisation-not-weakly-convex`.
-The Hilbert-valued operator fails weak convexity by the same source graph
-exclusion, after transferring the quotient equality to representatives. -/
-theorem canonicalLp_not_weaklyConvex_source :
-    ¬ WeaklyConvexOperator PriceCurve (PriceHilbertSpace sidedLebesgueMeasure)
-      canonicalSidedEncodingLpReal := by
-  intro hweak
-  apply canonical_not_weaklyConvexAE_source
-  intro f g α β hα hβ
-  obtain ⟨h, hh⟩ := hweak hα hβ f g
-  refine ⟨h, ?_⟩
-  filter_upwards [coeFn_canonicalSidedEncodingLpReal h,
-    coeFn_canonicalSidedEncodingLpReal f, coeFn_canonicalSidedEncodingLpReal g,
-    Lp.coeFn_add (α • canonicalSidedEncodingLpReal f) (β • canonicalSidedEncodingLpReal g),
-    Lp.coeFn_smul α (canonicalSidedEncodingLpReal f),
-    Lp.coeFn_smul β (canonicalSidedEncodingLpReal g)] with x hH hF hG hadd hsmulF hsmulG
-  apply pairEquiv.injective
-  have hx := congrArg (fun v : PriceHilbertSpace sidedLebesgueMeasure => v x) hh
-  dsimp only at hx
-  dsimp only [Pi.add_apply, Pi.smul_apply] at hadd hsmulF hsmulG
-  rw [hH, hadd, hsmulF, hsmulG, hF, hG] at hx
-  simpa only [representativeCombination, map_add, map_smul] using hx
-
 end Thesis.DayAhead.SidedSourceExclusion

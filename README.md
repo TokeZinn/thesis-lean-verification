@@ -2,7 +2,7 @@
 
 [![Lean Global](https://github.com/TokeZinn/thesis-lean-verification/actions/workflows/lean-global.yml/badge.svg?branch=main)](https://github.com/TokeZinn/thesis-lean-verification/actions/workflows/lean-global.yml)
 
-Lean 4 / Mathlib formalization of the mathematical content of the doctoral thesis *Mathematical Modelling of Financial Markets — with emphasis on European power markets*. The Lean sources mirror the thesis's Parts and chapters. Every theorem-style block of the thesis (408 definitions, results and remarks) has kernel-checked Lean counterparts, and the proofs follow the thesis's own arguments. No axioms beyond `propext`, `Classical.choice` and `Quot.sound`; no `sorry`.
+Lean 4 / Mathlib formalization of the mathematical content of the doctoral thesis *Mathematical Modelling of Financial Markets — with emphasis on European power markets*. The Lean sources mirror the thesis's Parts and chapters. Every theorem-style block of the thesis (374 definitions, results and remarks) has kernel-checked Lean counterparts, and the proofs follow the thesis's own arguments. No axioms beyond `propext`, `Classical.choice` and `Quot.sound`; no `sorry`.
 
 Each badge is the GitHub Actions build (`lake build --wfail`) of exactly the modules in that directory; the Global badge builds the whole formalization, audits its axioms and checks the generated thesis↔Lean bridge data.
 

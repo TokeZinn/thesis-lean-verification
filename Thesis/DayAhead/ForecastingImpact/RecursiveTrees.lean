@@ -16,22 +16,6 @@ namespace Thesis.DayAhead.RecursiveTrees
 
 open Set MeasureTheory
 
-/-- Original label: `defn:rectangular-simple-function`.
-An arbitrary finite family of interval rectangles is allowed; recursive tree
-partitions form a particular subclass. -/
-structure RectangularSimpleFunction (p : ℕ) (H : Type*) where
-  domain : Set (Fin p → ℝ)
-  count : ℕ
-  count_pos : 0 < count
-  intervals : Fin count → Fin p → Set ℝ
-  interval : ∀ k j, OrdConnected (intervals k j)
-  value : Fin count → H
-
-def RectangularSimpleFunction.eval {p : ℕ} {H : Type*} [AddCommMonoid H]
-    (r : RectangularSimpleFunction p H) (x : r.domain) : H := by
-  classical
-  exact ∑ k, if ∀ j, x.val j ∈ r.intervals k j then r.value k else 0
-
 inductive Tree (p : ℕ) (H : Type*) where
   | leaf (value : H)
   | split (coordinate : Fin p) (cut : ℝ) (left right : Tree p H)
@@ -182,10 +166,5 @@ theorem rectangularSum_root [AddCommMonoid H] (t : Tree p H) :
   simpa using rectangularSum_leavesOn t Set.univ x
 
 end Tree
-
-/-- Original label: `defn:k-leaf-tree-class`.
-Exact finite recursive class with K nonempty terminal regions. -/
-def treeClass (p : ℕ) (H : Type*) (K : ℕ) : Set ((Fin p → ℝ) → H) :=
-  {f | ∃ t : Tree p H, t.ValidOn Set.univ ∧ t.leafCount = K ∧ t.eval = f}
 
 end Thesis.DayAhead.RecursiveTrees

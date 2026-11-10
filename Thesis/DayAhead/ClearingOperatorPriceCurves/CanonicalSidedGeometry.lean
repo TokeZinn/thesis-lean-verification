@@ -59,8 +59,8 @@ def sidedSpan : Submodule ℝ Ambient :=
 
 instance : CompleteSpace sidedSpan := Submodule.topologicalClosure.completeSpace _
 
-/-- Supporting lemma for the prose around `cor:sided-parametrisation-not-weakly-convex`
-(not the mapped statement).  Its following paragraph uses this complete
+/-- Supporting lemma for the thesis prose on the non-convexity of the sided
+parametrisation (not a mapped statement).  Its following paragraph uses this complete
 inner-product space. -/
 theorem sidedSpan_hilbert :
     Nonempty (InnerProductSpace ℝ sidedSpan) ∧ Nonempty (CompleteSpace sidedSpan) :=
@@ -94,8 +94,8 @@ theorem sidedCone_minimal {C : Set sidedSpan} (himage : range encodingInSpan ⊆
     (hcone : ConvexCone C) (hclosed : IsClosed C) (hzero : 0 ∈ C) : sidedCone ⊆ C :=
   fun _ hx => hx C ⟨himage, hcone, hclosed, hzero⟩
 
-/-- Supporting lemma for the prose around `cor:sided-parametrisation-not-weakly-convex`
-(not the mapped statement).  The generated cone in the actual closed span has a
+/-- Supporting lemma for the thesis prose on the non-convexity of the sided
+parametrisation (not a mapped statement).  The generated cone in the actual closed span has a
 unique metric projection. -/
 theorem sidedCone_projection_existsUnique (u : sidedSpan) :
     ∃! p : sidedSpan, p ∈ sidedCone ∧

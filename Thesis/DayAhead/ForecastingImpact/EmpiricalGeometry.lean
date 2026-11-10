@@ -75,9 +75,7 @@ theorem sum_sub_cellMean {ι : Type*} (s : Finset ι) (hs : s.Nonempty) (y : ι 
   rw [Finset.sum_sub_distrib, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℝ]
   simp only [cellMean, smul_smul, mul_inv_cancel₀ hn, one_smul, sub_self]
 
-/-- The sum-of-squares decomposition displayed in Chapter 5, lines 336–342. 
-
- Original label: `lem:cell-risk-minimiser`. -/
+/-- The sum-of-squares decomposition displayed in Chapter 5, lines 336–342. -/
 theorem cell_sum_squares {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
     (y : ι → H) (z : H) :
     ∑ i ∈ s, ‖y i - z‖ ^ 2 =
@@ -91,25 +89,5 @@ theorem cell_sum_squares {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
   simp_rw [hterm]
   rw [Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, hinner]
   simp [norm_sub_rev, nsmul_eq_mul]
-
-/-- The empirical mean is the unique minimizer; completeness is unnecessary. 
-
- Original label: `lem:cell-risk-minimiser`. -/
-theorem cellMean_unique_minimizer {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
-    (y : ι → H) (z : H) :
-    (∑ i ∈ s, ‖y i - z‖ ^ 2) ≤ (∑ i ∈ s, ‖y i - cellMean s y‖ ^ 2) ↔
-      z = cellMean s y := by
-  rw [cell_sum_squares s hs y z]
-  have hn : (0 : ℝ) < s.card := by exact_mod_cast hs.card_pos
-  constructor
-  · intro h
-    have hsq : ‖z - cellMean s y‖ ^ 2 ≤ 0 :=
-      (mul_le_mul_iff_right₀ hn).mp (show (s.card : ℝ) * ‖z - cellMean s y‖ ^ 2 ≤
-        (s.card : ℝ) * 0 by linarith)
-    have hzero : ‖z - cellMean s y‖ = 0 := by
-      nlinarith [sq_nonneg ‖z - cellMean s y‖]
-    exact sub_eq_zero.mp (norm_eq_zero.mp hzero)
-  · rintro rfl
-    simp
 
 end Thesis.DayAhead.EmpiricalGeometry

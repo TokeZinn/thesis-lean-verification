@@ -60,9 +60,6 @@ def outcome (start finish : State) : AnalogueAttention.Vector 33 :=
     displacement finish (DepthProfile.outputNode i) -
       displacement start (DepthProfile.outputNode i)
 
-def encode (e : AnalogueAttention.Encoder) (b : State) (minutes : ℝ) :
-    AnalogueAttention.Vector 32 := AnalogueAttention.encode e (features b) minutes
-
 theorem depth_nonneg (orders : List ReplayOrder) : 0 ≤ depth orders := by
   exact List.sum_nonneg (fun q hq => by
     obtain ⟨o, _, rfl⟩ := List.mem_map.mp hq
@@ -134,13 +131,5 @@ theorem features_toReplay (b : Execution.State) (i : Fin 41) :
 theorem outcome_toReplay (start finish : Execution.State) :
     outcome (toReplayState start) (toReplayState finish) = DepthProfile.outcome start finish := by
   simp only [outcome, DepthProfile.outcome, displacement_toReplay]
-
-theorem encode_toReplay (e : AnalogueAttention.Encoder) (b : Execution.State) (minutes : ℝ) :
-    encode e (toReplayState b) minutes = AnalogueAttention.encode e (DepthProfile.features b)
-      minutes := by
-  simp only [encode]
-  congr 1
-  funext i
-  exact features_toReplay b i
 
 end Thesis.Intraday.ReplayGeometry

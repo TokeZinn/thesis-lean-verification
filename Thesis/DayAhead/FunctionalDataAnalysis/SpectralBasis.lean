@@ -5,8 +5,9 @@ import Mathlib.Analysis.SpecificLimits.Normed
 /-!
 # The spectral-basis convention is attainable
 
-This supplies the existence claims in the unlabelled remark following
-`thm:spectral-thm`. The nonzero eigenvectors can be indexed by a subset of
+This supplies the existence claims in the thesis prose on the spectral
+decomposition of compact self-adjoint operators. The nonzero eigenvectors can be
+indexed by a subset of
 the natural numbers, with their eigenvalue magnitudes in decreasing order.
 The range basis can separately be completed by vectors in the kernel.
 -/
@@ -142,109 +143,5 @@ theorem finite_eigenvalue_superlevels {ι : Type v} (A : H →L[ℝ] H)
   rw [ContinuousLinearMap.sub_apply, hPi, sub_zero, heigen, norm_smul,
     he.norm_eq_one i, mul_one, mul_one, Real.norm_eq_abs] at hbound
   exact (not_lt_of_ge hi) (hbound.trans_lt hnorm)
-
-set_option maxHeartbeats 1000000 in
--- Reindexing the operator-valued series elaborates both finite and infinite basis constructions.
-/-- Thesis source: the eigenvalue-ordering clause in the spectral remark.
-
-Original block id: `source:2 - day-ahead/3_functional_data_analysis.tex:105:rem:5`
-
-This is an actual ordered nonzero eigenbasis and operator-norm expansion,
-including empty and finite-dimensional range cases. -/
-theorem compact_selfAdjoint_ordered_rankOne_expansion [CompleteSpace H]
-    [SecondCountableTopology H] (A : H →L[ℝ] H)
-    (hcompact : IsCompactOperator A) (hsymm : A.toLinearMap.IsSymmetric) :
-    ∃ (I : Set ℕ) (e : I → H) (eigenvalue : I → ℝ),
-      Orthonormal ℝ e ∧
-      (∀ i, eigenvalue i ≠ 0) ∧
-      Antitone (fun i => |eigenvalue i|) ∧
-      (Submodule.span ℝ (Set.range e)).topologicalClosure =
-        (LinearMap.range A.toLinearMap).topologicalClosure ∧
-      (∀ i, A (e i) = eigenvalue i • e i) ∧
-      HasSum (fun i => eigenvalue i • FunctionalData.tensorProduct (e i) (e i)) A := by
-  classical
-  have hdata : ∃ (ι : Type) (_ : Countable ι) (e : ι → H) (eigenvalue : ι → ℝ),
-      Orthonormal ℝ e ∧ (∀ i, eigenvalue i ≠ 0) ∧
-      (∀ i, A (e i) = eigenvalue i • e i) ∧
-      HasSum (fun i => eigenvalue i • FunctionalData.tensorProduct (e i) (e i)) A := by
-    by_cases hfinite : FiniteDimensional ℝ H
-    · letI := hfinite
-      exact finiteDimensional_rankOne_expansion_data A hsymm
-    · exact compact_selfAdjoint_rankOne_expansion_external A hcompact hsymm hfinite
-  obtain ⟨ι, hι, e, eigenvalue, he, hne, heigen, hseries⟩ := hdata
-  letI := hι
-  obtain ⟨I, r, hr⟩ := exists_antitone_reindex (fun i => |eigenvalue i|)
-    (fun i => abs_pos.mpr (hne i))
-    (finite_eigenvalue_superlevels A e eigenvalue he heigen hseries)
-  have hseries' : HasSum
-      (fun i : I => eigenvalue (r i) • FunctionalData.tensorProduct (e (r i)) (e (r i))) A :=
-    r.hasSum_iff.mpr hseries
-  refine ⟨I, e ∘ r, eigenvalue ∘ r, he.comp r r.injective,
-    fun i => hne (r i), hr, ?_, fun i => heigen (r i), hseries'⟩
-  exact closedSpan_eq_closure_range_of_rankOne_expansion A (e ∘ r) (eigenvalue ∘ r)
-    (fun i => hne (r i)) (fun i => heigen (r i)) hseries'
-
-/-- Thesis source: the kernel-extension clause in the spectral remark.
-
-Original block id: `source:2 - day-ahead/3_functional_data_analysis.tex:105:rem:5`
-
-An orthonormal basis of the closed range extends to a Hilbert basis of the
-whole space, and the newly adjoined orthonormal vectors have closed span
-exactly the kernel. Ordering is asserted for the nonzero range eigenvalues
-separately; it is not imposed on a natural-number enumeration of this union. -/
-theorem range_basis_extension_by_kernel [CompleteSpace H]
-    (A : H →L[ℝ] H) (hsymm : A.toLinearMap.IsSymmetric)
-    {ι : Type v} (e : ι → H) (he : Orthonormal ℝ e)
-    (hspan : (Submodule.span ℝ (Set.range e)).topologicalClosure =
-      (LinearMap.range A.toLinearMap).topologicalClosure) :
-    ∃ (w : Set H) (b : HilbertBasis w ℝ H),
-      Set.range e ⊆ w ∧ ⇑b = (Subtype.val : w → H) ∧
-      (∀ x ∈ w \ Set.range e, A x = 0) ∧
-      (Submodule.span ℝ (w \ Set.range e)).topologicalClosure =
-        LinearMap.ker A.toLinearMap := by
-  classical
-  obtain ⟨w, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
-  have hzero (x : H) (hx : x ∈ w \ Set.range e) : A x = 0 := by
-    have hxspan : Submodule.span ℝ (Set.range e) ≤ (innerSL ℝ x).ker := by
-      apply Submodule.span_le.mpr
-      rintro y ⟨i, rfl⟩
-      have hne : (⟨x, hx.1⟩ : w) ≠ ⟨e i, hsub (Set.mem_range_self i)⟩ := by
-        intro h
-        exact hx.2 ⟨i, (congrArg Subtype.val h).symm⟩
-      have hinner := orthonormal_iff_ite.mp b.orthonormal
-        (⟨x, hx.1⟩ : w) ⟨e i, hsub (Set.mem_range_self i)⟩
-      simpa [hb, hne] using hinner
-    have hclosed := (Submodule.span ℝ (Set.range e)).topologicalClosure_minimal
-      hxspan (innerSL ℝ x).isClosed_ker
-    rw [hspan] at hclosed
-    apply ext_inner_left ℝ
-    intro y
-    rw [inner_zero_right]
-    calc
-      inner ℝ y (A x) = inner ℝ (A y) x := (hsymm y x).symm
-      _ = inner ℝ x (A y) := real_inner_comm _ _
-      _ = 0 := hclosed ((LinearMap.range A.toLinearMap).le_topologicalClosure
-        (LinearMap.mem_range_self A.toLinearMap y))
-  refine ⟨w, b, hsub, hb, hzero, ?_⟩
-  apply le_antisymm
-  · apply Submodule.topologicalClosure_minimal
-    · exact Submodule.span_le.mpr fun x hx => hzero x hx
-    · exact A.isClosed_ker
-  · intro x hx
-    let W := Submodule.span ℝ (w \ Set.range e)
-    have hterm (i : w) : b.repr x i • b i ∈ W := by
-      by_cases hi : b i ∈ Set.range e
-      · have hmem : b i ∈ (LinearMap.ker A.toLinearMap)ᗮ := by
-          rw [← selfAdjoint_closure_range_eq_orthogonal_ker A hsymm, ← hspan]
-          exact (Submodule.span ℝ (Set.range e)).le_topologicalClosure
-            (Submodule.subset_span hi)
-        have hcoeff : b.repr x i = 0 := by
-          rw [b.repr_apply_apply, real_inner_comm]
-          exact hmem x hx
-        simp [hcoeff]
-      · exact W.smul_mem _ (Submodule.subset_span ⟨by simp [hb], hi⟩)
-    exact (Submodule.isClosed_topologicalClosure W).mem_of_tendsto (b.hasSum_repr x)
-      (Filter.Eventually.of_forall fun s => W.le_topologicalClosure
-        (Submodule.sum_mem W fun i _ => hterm i))
 
 end Thesis.DayAhead.SpectralTheorem

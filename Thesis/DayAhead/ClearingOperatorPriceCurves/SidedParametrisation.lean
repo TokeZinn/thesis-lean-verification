@@ -903,8 +903,8 @@ theorem twoThreeAverage_not_in_minimal_range :
   exact (lt_irrefl 0 hstrict)
 
 /--
-Alternative route for `cor:sided-parametrisation-not-weakly-convex` (not the
-mapped proof): representative clause of the corollary in
+Alternative route for the non-convexity of the sided parametrisation, stated in
+thesis prose (not a mapped proof): representative clause of the corollary in
 `2 - day-ahead/2_clearing_operator_price_curves.tex`, proved here by an exhaustive
 case split over the possible block counts.  The mapped proof, which follows the
 thesis's explicit two-block/three-block example with the continuity and
@@ -1472,8 +1472,9 @@ theorem twoThreeAverage_not_ae_in_minimal_range :
     norm_num at hbad
 
 /--
-Alternative route for `cor:sided-parametrisation-not-weakly-convex` (not the
-mapped proof): Hilbert-valued (almost-everywhere quotient) clause of the corollary
+Alternative route for the non-convexity of the sided parametrisation, stated in
+thesis prose (not a mapped proof): Hilbert-valued (almost-everywhere quotient)
+clause of the corollary
 in `2 - day-ahead/2_clearing_operator_price_curves.tex`, proved here by an
 exhaustive case split over the possible block counts.  The mapped proof, which
 follows the thesis's explicit example with the continuity and graph-recovery

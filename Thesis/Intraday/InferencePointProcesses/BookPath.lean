@@ -27,12 +27,13 @@ def run {X A : Type*} (step : X → A → X) : X → List (ℝ × A) → ℝ →
       run step (if event.1 ≤ t then step x event.2 else x) events t
 
 /-- Original label: `defn:order-book-path-point-process`.
-Literal depth-restricted book recursion; source inputs have strictly increasing
+Literal book recursion under the depth-restricted (full-book clearing) step;
+source inputs have strictly increasing
 positive times, so reached events are exactly a prefix of the supplied list. -/
-def bookPath (depth : ℕ) (initial : {m : Clearing.Market // Clearing.SortedMarket m})
+def bookPath (initial : {m : Clearing.Market // Clearing.SortedMarket m})
     (events : List (ℝ × Replay.Script)) (t : ℝ) :
     {m : Clearing.Market // Clearing.SortedMarket m} :=
-  run (fun state action => Replay.sortedDepthStep depth (state, action)) initial events t
+  run (fun state action => Replay.sortedDepthStep (state, action)) initial events t
 
 theorem run_same_comparisons {X A : Type*} (step : X → A → X) (x : X)
     (events : List (ℝ × A)) (u v : ℝ)
@@ -95,7 +96,7 @@ theorem run_cadlag {X A : Type*} [MetricSpace X] (step : X → A → X) (x : X)
 /-- Truncating the source's extended tuple metric preserves its uniformity
 and topology. Thus the literal sorted-book process is cadlag in the source
 topology, including paths whose books change tuple length. -/
-theorem bookPath_cadlag (depth : ℕ)
+theorem bookPath_cadlag
     (initial : {m : Clearing.Market // Clearing.SortedMarket m})
     (events : List (ℝ × Replay.Script)) :
     letI : EMetricSpace Clearing.TaggedOrder :=
@@ -103,7 +104,7 @@ theorem bookPath_cadlag (depth : ℕ)
     letI : MetricSpace {m : Clearing.Market // Clearing.SortedMarket m} :=
       Foundations.Preliminary.BoundedMetric.truncatedMetricSpace _
     IsOneSidedRegularPath .cadlag
-      (fun t : ClosedInterval 0 1 => bookPath depth initial events t) := by
+      (fun t : ClosedInterval 0 1 => bookPath initial events t) := by
   letI : EMetricSpace Clearing.TaggedOrder := DisjointUnionTopology.disjointUnionEMetricSpace
   letI : MetricSpace {m : Clearing.Market // Clearing.SortedMarket m} :=
     Foundations.Preliminary.BoundedMetric.truncatedMetricSpace _

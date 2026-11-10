@@ -159,18 +159,6 @@ theorem minimalSidedParametrisationBanachLpReal_not_weaklyConvex :
   simpa [H, F, G, minimalSidedRepresentativeReal,
     representativeCombination] using hae
 
-/-- Original label: `cor:sided-parametrisation-not-weakly-convex`.
-The non-convexity obstruction holds in the thesis's Euclidean Hilbert norm. -/
-theorem minimalSidedParametrisationLpReal_not_weaklyConvex :
-    ¬ WeaklyConvexOperator MinimalCanonicalSidedCurve
-      (PriceHilbertSpace sidedLebesgueMeasure) minimalSidedParametrisationLpReal := by
-  intro hweak
-  apply minimalSidedParametrisationBanachLpReal_not_weaklyConvex
-  intro α β hα hβ f g
-  obtain ⟨h, hh⟩ := hweak hα hβ f g
-  refine ⟨h, liftLp_injective sidedLebesgueMeasure ?_⟩
-  simpa only [map_add, map_smul] using hh
-
 noncomputable instance : Nonempty MinimalCanonicalSidedCurve :=
   ⟨minimalTwoBlockCurve⟩
 
@@ -189,17 +177,6 @@ theorem range_minimalSidedParametrisationOperator_not_convexCone :
     hα hβ
   refine ⟨h, ?_⟩
   simpa [representativeCombination] using hh
-
-/-- Equivalently, the image of the literal `L²`-valued sided operator is not
-a convex cone, completing the final clause of the replacement proposition.
-
-Original label: `cor:sided-parametrisation-not-weakly-convex`. -/
-theorem range_minimalSidedParametrisationLpReal_not_convexCone :
-    ¬ ConvexCone (Set.range minimalSidedParametrisationLpReal) := by
-  intro hcone
-  exact minimalSidedParametrisationLpReal_not_weaklyConvex
-    ((weaklyConvexOperator_iff_range_convexCone
-      minimalSidedParametrisationLpReal).mpr hcone)
 
 end
 

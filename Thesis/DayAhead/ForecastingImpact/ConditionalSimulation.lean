@@ -127,33 +127,4 @@ theorem sampleCoalition_sub (M : ℕ) (f : (Fin n → ℝ) → H) (x : Fin n →
       (M : ℝ)⁻¹ • ∑ m, (f (completeInput x A (z m)) - f (completeInput x B (w m))) := by
   simp only [sampleCoalition, sum_sub_distrib, smul_sub]
 
-omit [CompleteSpace H] [MeasurableSpace H] [BorelSpace H] [MeasurableSpace Ω] in
-theorem value_tendsto {ι : Type*} {l : Filter ι} {V : ι → Finset (Fin n) → H}
-    {W : Finset (Fin n) → H} (hV : ∀ A, Tendsto (fun m => V m A) l (𝓝 (W A)))
-    (i : Fin n) : Tendsto (fun m => Shapley.value (V m) i) l (𝓝 (Shapley.value W i)) := by
-  unfold Shapley.value Shapley.marginal
-  apply tendsto_finset_sum
-  intro A _
-  exact ((hV (insert i A)).sub (hV A)).const_smul _
-
-/-- All finitely many simulated coalition values can be substituted into the Shapley formula.
-Different coalitions may share randomness; each coalition's sequence must satisfy its own law
-and independence assumptions. -/
-theorem simulation_attribution_tendsto_ae (f : (Fin n → ℝ) → H) (x : Fin n → ℝ)
-    (ν : Finset (Fin n) → Measure (Fin n → ℝ)) (hf : Measurable f)
-    (hint : ∀ A, Integrable (fun z => f (completeInput x A z)) (ν A))
-    (z : Finset (Fin n) → ℕ → Ω → (Fin n → ℝ))
-    (hlaw : ∀ A m, HasLaw (z A m) (ν A) μ)
-    (hindep : ∀ A, Pairwise fun b c => z A b ⟂ᵢ[μ] z A c) (i : Fin n) :
-    ∀ᵐ ω ∂μ, Tendsto
-      (fun M => Shapley.value (fun A => sampleCoalition M f x A (fun m => z A m.val ω)) i)
-      atTop (𝓝 (Shapley.value (fun A => coalitionValue f x A (ν A)) i)) := by
-  have hall : ∀ᵐ ω ∂μ, ∀ A, Tendsto
-      (fun M => sampleCoalition M f x A (fun m => z A m.val ω))
-      atTop (𝓝 (coalitionValue f x A (ν A))) :=
-    ae_all_iff.mpr fun A =>
-      sampleCoalition_tendsto_ae f x A (ν A) hf (hint A) (z A) (hlaw A) (hindep A)
-  filter_upwards [hall] with ω hω
-  exact value_tendsto hω i
-
 end Thesis.DayAhead.ConditionalSimulation

@@ -1,5 +1,7 @@
 import Thesis.DayAhead.ClearingOperatorPriceCurves.SelectedGraphAdmissible
-import Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedNonconvexity
+import Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedObstruction
+import Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedWitnesses
+import Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLp
 
 /-! # The exact two-curve nonconvexity example, with selected knot values -/
 

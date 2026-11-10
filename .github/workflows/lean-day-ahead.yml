@@ -31,7 +31,6 @@ jobs:
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedGeometry
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLaws
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedLp
-            Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedNonconvexity
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedObstruction
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedSourceExclusion
             Thesis.DayAhead.ClearingOperatorPriceCurves.CanonicalSidedWitnesses
@@ -119,7 +118,6 @@ jobs:
             Thesis.DayAhead.ClearingOperatorPriceCurves.VendorPLVertices
             Thesis.DayAhead.ForecastingImpact.AttributionVersions
             Thesis.DayAhead.ForecastingImpact.BoostingLoss
-            Thesis.DayAhead.ForecastingImpact.ConditionalDecoding
             Thesis.DayAhead.ForecastingImpact.ConditionalSimulation
             Thesis.DayAhead.ForecastingImpact.EmpiricalGeometry
             Thesis.DayAhead.ForecastingImpact.Forecasting
@@ -133,19 +131,10 @@ jobs:
             Thesis.DayAhead.ForecastingImpact.Shapley
             Thesis.DayAhead.ForecastingImpact.ShapleyPermutations
             Thesis.DayAhead.ForecastingImpact.ShapleySampling
-            Thesis.DayAhead.ForecastingImpact.ShapleyWeights
             Thesis.DayAhead.ForecastingImpact.SpectralSplitBound
             Thesis.DayAhead.ForecastingImpact.TreeImpurity
-            Thesis.DayAhead.FunctionalDataAnalysis.CompactCovariance
-            Thesis.DayAhead.FunctionalDataAnalysis.CompactSpectralExpansion
             Thesis.DayAhead.FunctionalDataAnalysis.ConditionalBasisSource
-            Thesis.DayAhead.FunctionalDataAnalysis.Covariance
             Thesis.DayAhead.FunctionalDataAnalysis.FunctionalData
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLT
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTBasic
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTInfinite
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTMoments
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTTightness
             Thesis.DayAhead.FunctionalDataAnalysis.HilbertSchmidtCovariance
             Thesis.DayAhead.FunctionalDataAnalysis.LimitTheorems
             Thesis.DayAhead.FunctionalDataAnalysis.ProcessStationarity
@@ -153,7 +142,6 @@ jobs:
             Thesis.DayAhead.FunctionalDataAnalysis.RegressionMeanSquare
             Thesis.DayAhead.FunctionalDataAnalysis.ScoreInformationSource
             Thesis.DayAhead.FunctionalDataAnalysis.ScoreLevyL2Source
-            Thesis.DayAhead.FunctionalDataAnalysis.SpectralAmbiguity
             Thesis.DayAhead.FunctionalDataAnalysis.SpectralBasis
             Thesis.DayAhead.FunctionalDataAnalysis.SpectralTheorem
             Thesis.DayAhead.PriceCurveAnalysis.EmpiricalCoordinates

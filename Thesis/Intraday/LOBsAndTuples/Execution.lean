@@ -84,13 +84,6 @@ is the proposition `crossing_closed` below. The same closed condition works even
 restriction to sorted books. -/
 def Crossing (x : State) : Prop := best (-10000) x.1 ≥ best 10000 x.2
 
-/-- Original label: `prop:crossing-set-closed`.
-The crossing set is closed: it is the preimage of the closed half-plane `{(a, b) | b ≤ a}`
-under the continuous pair of best quotes. -/
-theorem crossing_closed : IsClosed {x : State | Crossing x} :=
-  isClosed_le ((continuous_best 10000).comp continuous_snd)
-    ((continuous_best (-10000)).comp continuous_fst)
-
 theorem crossing_nonempty {x : State} (h : Crossing x) : 0 < x.1.1 ∧ 0 < x.2.1 := by
   rcases x with ⟨⟨n, b⟩, ⟨m, s⟩⟩
   cases n with
@@ -182,7 +175,7 @@ theorem measurable_step : Measurable step := by
 /-- Original label: `defn:iterated-single-stage-clearing`. -/
 def iterateStep (n : ℕ) : State → State := step^[n]
 
-/-- Original label: `cor:iterated-single-stage-measurable`. -/
+/-- Every iterate of the single-stage clearing map is measurable. -/
 theorem measurable_step_iterate (n : ℕ) : Measurable step^[n] := measurable_step.iterate n
 
 /-- Price-time key; buys prefer high prices and sells prefer low prices. -/

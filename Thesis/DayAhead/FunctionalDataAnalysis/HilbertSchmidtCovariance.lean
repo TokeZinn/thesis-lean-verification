@@ -346,42 +346,6 @@ noncomputable def biasedCovarianceCoordinates
   rawSecondMomentCoordinates b X n ω -
     rankOneCoordinates b (LimitTheorems.empiricalMean X n ω)
 
-/-- The biased covariance coordinates converge almost surely in their
-`ℓ²(ι×ι)` norm. -/
-theorem biasedCovarianceCoordinates_strong_law_ae
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (b : HilbertBasis ι ℝ H)
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ, Tendsto
-      (fun n ↦ biasedCovarianceCoordinates b X n ω) atTop
-      (𝓝 (covarianceCoordinates μ b (X 0))) := by
-  have hpair : Pairwise fun i j ↦ X i ⟂ᵢ[μ] X j :=
-    fun i j hij ↦ hindep.indepFun hij
-  have hmeanLaw : ∀ᵐ ω ∂μ, Tendsto
-      (fun n ↦ LimitTheorems.empiricalMean X n ω) atTop
-      (𝓝 (FunctionalData.hilbertExpectation μ (X 0))) := by
-    simpa only [LimitTheorems.empiricalMean] using
-      LimitTheorems.hilbert_strong_law_ae X
-        (hX.integrable (by norm_num)) hpair hident
-  filter_upwards
-    [rawSecondMomentCoordinates_strong_law_ae μ b X hX hindep hident,
-      hmeanLaw] with ω hraw hmean
-  have hrankOne : Tendsto
-      (fun n ↦ rankOneCoordinates b
-        (LimitTheorems.empiricalMean X n ω))
-      atTop
-      (𝓝 (rankOneCoordinates b
-        (FunctionalData.hilbertExpectation μ (X 0)))) :=
-    ((continuous_rankOneCoordinates b).tendsto
-      (FunctionalData.hilbertExpectation μ (X 0))).comp hmean
-  simpa only [biasedCovarianceCoordinates, covarianceCoordinates] using
-    hraw.sub hrankOne
-
 /-- The thesis's unbiased covariance estimator in Hilbert--Schmidt
 coordinates. -/
 noncomputable def sampleCovarianceCoordinates
@@ -480,93 +444,6 @@ theorem sampleCovarianceCoordinates_eq_unbiasedFactor_smul_biased
       X n ω hn]
   simp only [ContinuousLinearMap.smul_apply, real_inner_smul_right]
 
-/-- The exact unbiased covariance estimator converges almost surely in the
-`ℓ²(ι×ι)` Hilbert--Schmidt coordinate norm. -/
-theorem sampleCovarianceCoordinates_strong_law_ae
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (b : HilbertBasis ι ℝ H)
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ, Tendsto
-      (fun k ↦ sampleCovarianceCoordinates b X (k + 2) ω)
-      atTop (𝓝 (covarianceCoordinates μ b (X 0))) := by
-  filter_upwards
-    [biasedCovarianceCoordinates_strong_law_ae
-      μ b X hX hindep hident] with ω hω
-  have hshift : Tendsto (fun k : ℕ ↦ k + 2) atTop atTop :=
-    tendsto_add_atTop_nat 2
-  have hproduct := LimitTheorems.unbiasedFactor_tendsto_one.smul
-    (hω.comp hshift)
-  have hproduct' : Tendsto
-      (fun k : ℕ ↦
-        (((k + 2 : ℕ) : ℝ) *
-          (((k + 2 - 1 : ℕ) : ℝ)⁻¹)) •
-          biasedCovarianceCoordinates b X (k + 2) ω)
-      atTop (𝓝 (covarianceCoordinates μ b (X 0))) := by
-    simpa only [one_smul] using hproduct
-  refine hproduct'.congr'
-    (Filter.Eventually.of_forall fun k ↦ ?_)
-  exact (sampleCovarianceCoordinates_eq_unbiasedFactor_smul_biased
-    b X (k + 2) ω (by omega)).symm
-
-/-- The population coordinate object is exactly the matrix of the population
-covariance operator in the chosen Hilbert basis. -/
-theorem covarianceCoordinates_apply_eq_matrixCoefficient
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (b : HilbertBasis ι ℝ H) (X : Ω → H)
-    (hX : MemLp X 2 μ) (i j : ι) :
-    covarianceCoordinates μ b X (i, j) =
-      inner ℝ (b i) (FunctionalData.covarianceOperator μ X (b j)) := by
-  have hcoordInt : Integrable (fun ω ↦ rankOneCoordinates b (X ω)) μ :=
-    integrable_rankOneCoordinates_of_memLp_two μ b X hX
-  have hopInt : Integrable
-      (fun ω ↦ FunctionalData.tensorProduct (X ω) (X ω)) μ :=
-    Covariance.integrable_tensorProduct_self_of_memLp_two μ X hX
-  let eval : (HilbertSchmidtCoordinatesOn ι) →L[ℝ] ℝ :=
-    lp.evalCLM ℝ (fun _ : ι × ι ↦ ℝ) 2 (i, j)
-  have hevalIntegral :
-      (∫ ω, rankOneCoordinates b (X ω) ∂μ) (i, j) =
-        ∫ ω, rankOneCoordinates b (X ω) (i, j) ∂μ := by
-    have hcomm := eval.integral_comp_comm hcoordInt
-    exact hcomm.symm
-  rw [covarianceCoordinates, lp.coeFn_sub, Pi.sub_apply,
-    Covariance.covarianceOperator_eq_rawSecondMoment_sub_mean μ X hX,
-    ContinuousLinearMap.sub_apply, inner_sub_right]
-  rw [hevalIntegral, rankOneCoordinates_eq_matrixCoefficient]
-  congr 1
-  rw [ContinuousLinearMap.integral_apply hopInt (b j)]
-  have hopApplyInt : Integrable
-      (fun ω ↦ FunctionalData.tensorProduct (X ω) (X ω) (b j)) μ :=
-    ((ContinuousLinearMap.apply ℝ H) (b j)).integrable_comp hopInt
-  rw [← integral_inner hopApplyInt (b i)]
-  apply integral_congr_ae
-  exact Filter.Eventually.of_forall fun ω ↦
-    rankOneCoordinates_eq_matrixCoefficient b (X ω) i j
-
-/-- Coordinate differences agree pointwise with the matrix coefficients of
-the corresponding operator difference. -/
-theorem sampleCovarianceCoordinates_sub_covariance_apply
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (b : HilbertBasis ι ℝ H) (X : ℕ → Ω → H)
-    (hX : MemLp (X 0) 2 μ) (n : ℕ) (ω : Ω) (i j : ι) :
-    (sampleCovarianceCoordinates b X n ω -
-      covarianceCoordinates μ b (X 0)) (i, j) =
-      inner ℝ (b i)
-        ((LimitTheorems.sampleCovariance X n ω -
-          FunctionalData.covarianceOperator μ (X 0)) (b j)) := by
-  rw [lp.coeFn_sub, Pi.sub_apply,
-    sampleCovarianceCoordinates_apply_eq_matrixCoefficient,
-    covarianceCoordinates_apply_eq_matrixCoefficient μ b (X 0) hX,
-    ContinuousLinearMap.sub_apply, inner_sub_right]
-
 /-- Any bounded operator whose matrix coefficients are represented by an
 `ℓ²(ι×ι)` element has extended Hilbert--Schmidt norm equal to the
 ordinary norm of that coordinate element. -/
@@ -632,68 +509,6 @@ theorem hilbertSchmidtENorm_eq_of_coordinates
   convert ENNReal.pow_rpow_inv_natCast
     (by norm_num : (2 : ℕ) ≠ 0) (ENNReal.ofReal ‖C‖) using 1
   all_goals norm_num
-
-/--
-Thesis source:
-`2 - day-ahead/3_functional_data_analysis.tex`,
-Theorem `thm:lln-covariance`.
-
-Original label: `thm:lln-covariance`.
-
-The exact unbiased sample covariance converges almost surely to the population
-covariance in Hilbert--Schmidt norm.  The proof realises rank-one operators in
-the complete coordinate space `ℓ²(ι×ι)`, applies Mathlib's Banach-valued
-strong law there, and then identifies the coordinate norm with the basis
-definition of the extended Hilbert--Schmidt norm.
--/
-theorem sampleCovariance_hilbertSchmidt_strong_law_ae
-    {Ω : Type u} {H : Type v} [MeasurableSpace Ω]
-    [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
-    [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
-    (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (b : HilbertBasis ι ℝ H)
-    (X : ℕ → Ω → H) (hX : MemLp (X 0) 2 μ)
-    (hindep : iIndepFun X μ)
-    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ, Tendsto
-      (fun k ↦ LimitTheorems.hilbertSchmidtENorm b
-        (LimitTheorems.sampleCovariance X (k + 2) ω -
-          FunctionalData.covarianceOperator μ (X 0)))
-      atTop (𝓝 0) := by
-  filter_upwards
-    [sampleCovarianceCoordinates_strong_law_ae
-      μ b X hX hindep hident] with ω hω
-  have hdiff := hω.sub
-    (tendsto_const_nhds : Tendsto
-      (fun _ : ℕ ↦ covarianceCoordinates μ b (X 0))
-      atTop (𝓝 (covarianceCoordinates μ b (X 0))))
-  have hdiff0 : Tendsto
-      (fun k ↦ sampleCovarianceCoordinates b X (k + 2) ω -
-        covarianceCoordinates μ b (X 0))
-      atTop (𝓝 0) := by
-    simpa using hdiff
-  have hnorm : Tendsto
-      (fun k ↦ ‖sampleCovarianceCoordinates b X (k + 2) ω -
-        covarianceCoordinates μ b (X 0)‖)
-      atTop (𝓝 0) := by
-    simpa using hdiff0.norm
-  have henorm : Tendsto
-      (fun k ↦ ENNReal.ofReal
-        ‖sampleCovarianceCoordinates b X (k + 2) ω -
-          covarianceCoordinates μ b (X 0)‖)
-      atTop (𝓝 0) := by
-    simpa only [Function.comp_apply, ENNReal.ofReal_zero] using
-      (ENNReal.continuous_ofReal.tendsto 0).comp hnorm
-  refine henorm.congr' (Filter.Eventually.of_forall fun k ↦ ?_)
-  symm
-  apply hilbertSchmidtENorm_eq_of_coordinates b
-    (LimitTheorems.sampleCovariance X (k + 2) ω -
-      FunctionalData.covarianceOperator μ (X 0))
-    (sampleCovarianceCoordinates b X (k + 2) ω -
-      covarianceCoordinates μ b (X 0))
-  intro i j
-  exact sampleCovarianceCoordinates_sub_covariance_apply
-    μ b X hX (k + 2) ω i j
 
 end HilbertSchmidtCovariance
 end DayAhead

@@ -80,19 +80,6 @@ theorem decoded_price_loss_le (lo hi : ℝ) (h : lo ≤ hi) (forecast target : G
     (GridFits.priceFit_squaredLoss_to_target_le lo hi h _ _ ⟨hp, hb⟩)
     (width_pos (m := 500) (by norm_num)).le
 
-/-- Original label: `prop:monotone-decoding-nonexpansive`.
-Deterministic contraction; the corrected integrable conditional-expectation
-clause is proved by coordinate order preservation in `ConditionalDecoding`.
-The analogous quantity guarantee is in the trapezoid-weighted node
-geometry, as required by the current proposition, not the affine mass form. -/
-theorem decoded_quantity_loss_le (lo hi : ℝ) (h : lo ≤ hi)
-    (forecast target : GridValues) (hq : Monotone target.quantity) :
-    quantityNodeLoss (m := 500) (decoded lo hi h forecast).quantity target.quantity ≤
-      quantityNodeLoss (m := 500) forecast.quantity target.quantity := by
-  exact WeightedIsotonic.weighted_quantityFit_to_target_le (n := 1001)
-    (nodeWeight 500) (nodeWeight_pos (m := 500) (by norm_num))
-    (WithLp.toLp 2 forecast.quantity) (WithLp.toLp 2 target.quantity) hq
-
 /-- Original label: `prop:app-isotonic-properties`.
 The actual current node samples and cell integrals of a monotone bounded
 pointwise pair are fixed by decoding. -/

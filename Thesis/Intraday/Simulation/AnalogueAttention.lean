@@ -6,8 +6,7 @@ import Mathlib.Probability.Distributions.Gaussian.Real
 
 /-! # Current Analogue-Attention encoder and retrieval
 
-Current labels: `defn:aa-encoder`, `defn:aa-retrieval-policy`, and
-`prop:aa-attention-equivalence`. The two-layer GELU network is explicit.
+Current label: `defn:aa-retrieval-policy`. The two-layer GELU network is explicit.
 Layer normalisation uses exposed positive epsilon and affine parameters;
 the source does not fix their numerical convention or fitted values.
 The retrieval is over the entire supplied finite candidate gate.
@@ -48,20 +47,6 @@ this same finite softmax. The latter sets both bias vectors to zero. -/
 def policy {ι : Type*} [Fintype ι] {d : ℕ} (query : Vector d)
     (key : ι → Vector d) (bias : ι → ℝ) : ι → ℝ :=
   softmax (retrievalScore query key bias)
-
-/-- Original label: `prop:aa-attention-equivalence`.
-For arbitrary finite embedding dimension.
-No equal-key-norm assumption is used; the key norm is an additive bias. -/
-theorem attention_equivalence {ι : Type*} [Fintype ι] {d : ℕ}
-    (query : Vector d) (key : ι → Vector d) (bias : ι → ℝ) (i : ι) :
-    policy query key bias i = softmax (fun j =>
-      ⟪query, key j⟫_ℝ / (1 / 2) - ‖key j‖ ^ 2 + bias j) i := by
-  have hs : retrievalScore query key bias = fun j =>
-      (⟪query, key j⟫_ℝ / (1 / 2) - ‖key j‖ ^ 2 + bias j) + (-‖query‖ ^ 2) := by
-    funext j
-    simp only [retrievalScore, norm_sub_sq_real]
-    ring
-  rw [policy, hs, softmax_shift]
 
 theorem bias_shift_invariance {ι : Type*} [Fintype ι] {d : ℕ}
     (query : Vector d) (key : ι → Vector d) (bias : ι → ℝ) (c : ℝ) :
@@ -148,21 +133,7 @@ def clock (minutes : ℝ) : Vector 4 := WithLp.toLp 2 ![
   Real.sin (2 * Real.pi * minutes / 1440), Real.cos (2 * Real.pi * minutes / 1440),
   Real.sin (4 * Real.pi * minutes / 1440), Real.cos (4 * Real.pi * minutes / 1440)]
 
-/-- Original label: `defn:aa-encoder`.
-The literal GELU network and affine layer normalisations have explicit
-parameters. A fitted implementation must supply the source's unstated epsilon
-and affine conventions before numerical correspondence can be certified. -/
-def encode (e : Encoder) (features : Fin 41 → Vector 4) (minutes : ℝ) : Vector 32 :=
-  let y := postFeedforward e (embedded e features)
-  let pooled := ∑ i, softmax (fun j => ⟪e.pooling, y j⟫_ℝ) i • y i
-  applyMatrix e.output
-    (WithLp.toLp 2 (Fin.append (WithLp.ofLp pooled) (WithLp.ofLp (clock minutes))))
-
 theorem attentionWeights_sum (e : Encoder) (z : Fin 41 → Vector 64) (i : Fin 41) :
     ∑ j, attentionWeights e z i j = 1 := softmax_sum _
-
-/-- Original label: `defn:state-dependent-selection-probabilities`. -/
-def gaussianPolicy {ι : Type*} [Fintype ι] {d : ℕ} (query : Vector d)
-    (key : ι → Vector d) : ι → ℝ := policy query key (fun _ => 0)
 
 end Thesis.Intraday.AnalogueAttention

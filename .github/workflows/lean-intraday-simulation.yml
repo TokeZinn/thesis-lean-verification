@@ -28,7 +28,6 @@ jobs:
             Thesis.Intraday.Simulation.Conservation
             Thesis.Intraday.Simulation.DepthProfile
             Thesis.Intraday.Simulation.DomainExtensions
-            Thesis.Intraday.Simulation.EncoderSourceDefinition
             Thesis.Intraday.Simulation.EnergyScore
             Thesis.Intraday.Simulation.EuclideanNegativeType
             Thesis.Intraday.Simulation.GeometrySweep

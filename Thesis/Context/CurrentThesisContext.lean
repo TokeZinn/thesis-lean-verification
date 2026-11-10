@@ -37,12 +37,6 @@ theorem tuple_length_rigid {X : Type u} [EMetricSpace X] {x y : Tuple X}
     (h : edist x y < 1) : x.length = y.length :=
   length_eq_of_edist_lt_one h
 
-/-- Original block id: `source:2 - day-ahead/2_clearing_operator_price_curves.tex:166:defn:7`
-A parametrisation of an arbitrary set by a parameter set is a surjection. -/
-structure Parametrisation (U : Type u) (X : Type v) where
-  toFun : U → X
-  surjective : Function.Surjective toFun
-
 /-- Original labels: `rem:pointwise-versus-lp`, `rem:lp-point-evaluation`.
 On a nonatomic space, a change at a prescribed point does not change the
 almost-everywhere class. Both representatives are in every finite-exponent

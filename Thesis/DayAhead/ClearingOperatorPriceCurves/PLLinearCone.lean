@@ -284,9 +284,7 @@ theorem linearEncodingLp_combination (μ : Measure PriceCurves.Parameter) [IsFin
   rw [linearEncoding_combination]
   simp only [Pi.add_apply, Pi.smul_apply, map_add, map_smul]
 
-/-- Original block id:
-`source:2 - day-ahead/2_clearing_operator_price_curves.tex:261:cor:11`.
-Weak convexity holds on the full finite-affine curve carrier in the actual
+/-- Weak convexity holds on the full finite-affine curve carrier in the actual
 Euclidean-valued Hilbert space. -/
 theorem linearEncodingLp_weaklyConvex (μ : Measure PriceCurves.Parameter) [IsFiniteMeasure μ] :
     WeaklyConvexOperator Curve (PriceHilbertSpace μ) (linearEncodingLp μ) := by

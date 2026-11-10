@@ -33,7 +33,7 @@ class GraphArtifactTests(unittest.TestCase):
         self.assertEqual({n["id"] for n in self.graph["nodes"] if not n.get("graphHidden")}, self.formal)
         self.assertEqual(self.metadata["sourceRoot"], stored_path_name(self.snapshot["sourceRoot"]))
         self.assertNotIn("prin:finitism", self.formal)
-        self.assertIn("defn:state-dependent-selection-probabilities", self.formal)
+        self.assertIn("defn:aa-retrieval-policy", self.formal)
 
     def test_edges_and_proof_moves_resolve(self):
         for edge in self.graph["edges"]:

@@ -21,16 +21,8 @@ jobs:
           build: true
           build-args: >-
             --wfail
-            Thesis.DayAhead.FunctionalDataAnalysis.CompactCovariance
-            Thesis.DayAhead.FunctionalDataAnalysis.CompactSpectralExpansion
             Thesis.DayAhead.FunctionalDataAnalysis.ConditionalBasisSource
-            Thesis.DayAhead.FunctionalDataAnalysis.Covariance
             Thesis.DayAhead.FunctionalDataAnalysis.FunctionalData
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLT
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTBasic
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTInfinite
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTMoments
-            Thesis.DayAhead.FunctionalDataAnalysis.HilbertCLTTightness
             Thesis.DayAhead.FunctionalDataAnalysis.HilbertSchmidtCovariance
             Thesis.DayAhead.FunctionalDataAnalysis.LimitTheorems
             Thesis.DayAhead.FunctionalDataAnalysis.ProcessStationarity
@@ -38,6 +30,5 @@ jobs:
             Thesis.DayAhead.FunctionalDataAnalysis.RegressionMeanSquare
             Thesis.DayAhead.FunctionalDataAnalysis.ScoreInformationSource
             Thesis.DayAhead.FunctionalDataAnalysis.ScoreLevyL2Source
-            Thesis.DayAhead.FunctionalDataAnalysis.SpectralAmbiguity
             Thesis.DayAhead.FunctionalDataAnalysis.SpectralBasis
             Thesis.DayAhead.FunctionalDataAnalysis.SpectralTheorem

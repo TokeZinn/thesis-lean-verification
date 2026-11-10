@@ -227,14 +227,4 @@ theorem optimalValue_scale_le {n : ℕ} (G R : Finset ℝ) (η : Efficiency)
   optimalValue_scale_le_of_monotoneOn G R η cost start stop domain P
     (fun h => (hP h).monotoneOn _) hd hz α hα aLarge aSmall hlarge hsmallmax
 
-/-- Original label: `prop:everett-lagrangian-separation`.
-No convexity, compactness, or duality-gap assumption is needed. -/
-theorem everett_lagrangian_separation {X : Type*} (R T : X → ℝ)
-    (cost : ℝ) (hcost : 0 ≤ cost) (selected : X)
-    (hmax : ∀ x, R x - cost * T x ≤ R selected - cost * T selected)
-    (x : X) (hx : T x ≤ T selected) : R x ≤ R selected := by
-  have h := hmax x
-  have hcost := mul_le_mul_of_nonneg_left hx hcost
-  linarith
-
 end Thesis.DayAhead.BatteryValuation

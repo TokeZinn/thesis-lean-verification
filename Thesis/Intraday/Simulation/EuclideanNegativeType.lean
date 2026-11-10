@@ -147,40 +147,6 @@ theorem gaussian_projection_abs_mean (x : E) :
     _ = ‖x‖ * gaussianAbsMean := by
       simp only [abs_mul, abs_of_nonneg (norm_nonneg x), integral_const_mul, gaussianAbsMean]
 
-/-- Original label: `prop:aa-es-convex-simplex`.
-Schoenberg's conditional negative-type inequality for the unsquared
-Euclidean distance, proved from scalar cuts and Gaussian projections. -/
-theorem euclidean_distance_conditionallyNegative (x : ι → E) :
-    EnergyScore.ConditionallyNegative (fun i j => ‖x i - x j‖) := by
-  intro v hv
-  have hpoint (z : E) :
-      EnergyScore.pair (fun i j => |inner ℝ (x i - x j) z|) v v ≤ 0 := by
-    have h := real_distance_conditionallyNegative (fun i => inner ℝ (x i) z) v hv
-    simpa only [inner_sub_left] using h
-  have hid : (∫ z, EnergyScore.pair (fun i j => |inner ℝ (x i - x j) z|) v v
-        ∂stdGaussian E) =
-      gaussianAbsMean * EnergyScore.pair (fun i j => ‖x i - x j‖) v v := by
-    unfold EnergyScore.pair
-    rw [integral_finset_sum]
-    · rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      rw [integral_finset_sum]
-      · rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro j _
-        rw [integral_const_mul, gaussian_projection_abs_mean]
-        ring
-      · exact fun j _ => (gaussian_projection_abs_integrable (x i - x j)).const_mul _
-    · intro i _
-      exact integrable_finset_sum _ fun j _ =>
-        (gaussian_projection_abs_integrable (x i - x j)).const_mul _
-  have hnonpos : (∫ z, EnergyScore.pair (fun i j => |inner ℝ (x i - x j) z|) v v
-      ∂stdGaussian E) ≤ 0 := integral_nonpos hpoint
-  rw [hid] at hnonpos
-  by_contra h
-  exact (not_lt_of_ge hnonpos) (mul_pos gaussianAbsMean_pos (lt_of_not_ge h))
-
 end GaussianProjection
 
 /-- The standard simplex has exactly the pointwise `[0,1]` bounds and unit
@@ -190,22 +156,5 @@ theorem stdSimplex_eq_source : stdSimplex ℝ ι =
   ext p
   exact ⟨fun h => ⟨fun i => mem_Icc_of_mem_stdSimplex h i, h.2⟩,
     fun h => ⟨fun i => (h.1 i).1, h.2⟩⟩
-
-/-- Original label: `prop:aa-es-convex-simplex`.
-The actual unsquared-norm mixture energy score is convex on the probability
-simplex. This discharges the analytic premise in the exact quadratic defect
-identity, for every finite Euclidean dimension, including the source's 33. -/
-theorem mixture_convexOn_simplex {d : ℕ} (outcomes : ι → AnalogueAttention.Vector d)
-    (target : AnalogueAttention.Vector d) :
-    ConvexOn ℝ (stdSimplex ℝ ι) (EnergyScore.mixture outcomes target) := by
-  refine ⟨convex_stdSimplex ℝ ι, ?_⟩
-  intro p hp q hq a b ha hb hab
-  have hb' : b = 1 - a := by linarith
-  subst b
-  have ha1 : a ≤ 1 := by linarith
-  simpa only [EnergyScore.mixture, smul_eq_mul] using
-    EnergyScore.score_convex_on_normalised_weights
-      (fun i j => ‖outcomes i - outcomes j‖) (fun i => ‖outcomes i - target‖)
-      (euclidean_distance_conditionallyNegative outcomes) p q hp.2 hq.2 a ha ha1
 
 end Thesis.Intraday.EuclideanNegativeType

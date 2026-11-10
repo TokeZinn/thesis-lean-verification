@@ -17,7 +17,7 @@ open Foundations.MarketClearing.Selection
 
 attribute [local instance] Execution.sigmaBorel
 
-/-- Original label: `defn:intraday-order-space`. -/
+/-- The intraday order space: orders tagged by their market side. -/
 abbrev TaggedOrder := DisjointUnion (fun _ : Bool => Order)
 abbrev Market := Tuple TaggedOrder
 
@@ -105,7 +105,7 @@ theorem side_entry (buy : Bool) (m : Market) (i : Fin (side buy m).1) :
   cases htag
   rfl
 
-/-- Original label: `prop:separation-preserves-price-time`. -/
+/-- Separating a sorted market into its sides preserves price-time order. -/
 theorem side_sorted (buy : Bool) {m : Market} (h : SortedMarket m) : Sorted buy (side buy m) := by
   intro i j hij
   have hp := h (sideIndex_monotone buy m hij)
@@ -163,7 +163,7 @@ theorem side_join_exists (buy : Bool) (x : State) (i : Fin (side buy (joinMarket
     subst buy
     exact ⟨j, congrArg (fun z : TaggedOrder => z.2) he'⟩
 
-/-- Original block id: `source:3 - intraday/2_lobs_and_tuples.tex:331:rem:13`. -/
+/-- Retagging and joining two sorted sides gives a sorted market. -/
 theorem joinMarket_sorted {x : State} (h : SortedState x) : SortedMarket (joinMarket x) := by
   intro i
   refine Fin.addCases ?_ ?_ i

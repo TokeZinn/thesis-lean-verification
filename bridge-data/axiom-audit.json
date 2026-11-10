@@ -653,15 +653,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.BatteryValuation.everett_lagrangian_separation": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.BatteryValuation.exists_optimal_schedule": {
       "axioms": [
         "Classical.choice",
@@ -1148,15 +1139,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.CanonicalSidedLp.canonicalSidedEncodingLpReal_not_weaklyConvex": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.CanonicalSidedLp.canonicalSidedEncodingLp_essential": {
       "axioms": [
         "Classical.choice",
@@ -1238,15 +1220,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.CanonicalSidedLp.essentialSidedEncodingLpReal_not_weaklyConvex": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.CanonicalSidedLp.essential_eq_of_parametrisedGraph_ae": {
       "axioms": [
         "Classical.choice",
@@ -1265,124 +1238,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.CanonicalSidedLp.range_canonicalSidedEncodingLpReal_not_convexCone": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CanonicalSidedLp.range_essentialSidedEncodingLpReal": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CanonicalSidedLp.range_essentialSidedEncodingLpReal_not_convexCone": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.CanonicalSidedLp.selected_price_eq_of_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.countable_of_orthonormal": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_apply": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_comp_tendsto": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_eq_self": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_lipschitz": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_norm_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_tendsto": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.partialProjection_uniformlyOn_compact": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.CompactSpectralExpansion.rankOne_expansion_tendsto": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -1491,42 +1347,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.CompletedInverse.midpointPrice_monotoneOn": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalDecoding.bounded_coordinates_condExp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalDecoding.conditional_decoding_constraints": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalDecoding.coordinates_condExp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalDecoding.monotone_coordinates_condExp": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -1653,222 +1473,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.ConditionalSimulation.sampleCoalition_unbiased": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalSimulation.simulation_attribution_tendsto_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ConditionalSimulation.value_tendsto": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.continuous_tensorProduct_self": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceIntegrand": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceIntegrand_isPositive": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceIntegrand_isSymmetric": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_eq_integral_covarianceIntegrand": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_eq_rawSecondMoment_sub_mean": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_isCompactOperator": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_isPositive": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_isPositive_of_memLp_two": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.covarianceOperator_isSymmetric": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.exists_finiteRank_approximation": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.inner_covarianceOperator_apply_eq_integral_centered": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.inner_covarianceOperator_apply_eq_rawMoments": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.inner_covarianceOperator_apply_self_eq_integral_sq": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.integrable_covarianceIntegrand_of_memLp_two": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.integrable_tensorProduct_self_of_memLp_two": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.isCompactOperator_iff_finiteRank_approximation": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.isCompactOperator_of_finiteDimensional_range": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.partialProjection_comp_finiteDimensional_range": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.tensorProduct_isCompactOperator": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.tensorProduct_self_isPositive": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Covariance.tensorProduct_self_isSymmetric": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -2092,33 +1696,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.EmpiricalCoordinates.empiricalMean": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.EmpiricalCoordinates.empiricalScale": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.EmpiricalCoordinates.empiricalScale_nonneg": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.EmpiricalCoordinates.pairScaling": {
       "axioms": [
         "Classical.choice",
@@ -2200,34 +1777,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.EmpiricalCoordinates.scalingLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.EmpiricalCoordinates.scalingLp_inverse": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.EmpiricalGeometry.cellMean": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.EmpiricalGeometry.cellMean_unique_minimizer": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -3830,15 +3380,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.FunctionalData.covarianceOperator": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.FunctionalData.dense_rational_ball_basis": {
       "axioms": [
         "Classical.choice",
@@ -4919,123 +4460,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.HilbertCLTMoments.integral_inner_of_indep": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.integral_norm_sq_sum": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.memLp_integrable_inner": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.normalizedSum": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.normalizedSum_linear_secondMoment_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.normalizedSum_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.normalizedSum_secondMoment": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTMoments.normalizedSum_secondMoment_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTTightness.integral_projection_error_tendsto": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTTightness.measure_norm_ge_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTTightness.normalizedSum_finite_mass_cover": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTTightness.normalizedSum_isTight": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertCLTTightness.partialProjection_isCompact": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.HilbertSchmidtCovariance.HilbertSchmidtCoordinates": {
       "axioms": [
         "Classical.choice",
@@ -5072,15 +4496,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.HilbertSchmidtCovariance.biasedCovarianceCoordinates_strong_law_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.HilbertSchmidtCovariance.continuous_rankOneCoordinates": {
       "axioms": [
         "Classical.choice",
@@ -5091,15 +4506,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.HilbertSchmidtCovariance.covarianceCoordinates": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertSchmidtCovariance.covarianceCoordinates_apply_eq_matrixCoefficient": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -5235,33 +4641,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.HilbertSchmidtCovariance.sampleCovarianceCoordinates_eq_unbiasedFactor_smul_biased": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertSchmidtCovariance.sampleCovarianceCoordinates_strong_law_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertSchmidtCovariance.sampleCovarianceCoordinates_sub_covariance_apply": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.HilbertSchmidtCovariance.sampleCovariance_hilbertSchmidt_strong_law_ae": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -6862,142 +6241,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LiftedPriceScale.inverseLift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.inverseLift_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.inverseLift_lift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.inverseLift_quantity": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.lift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.lift_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.lift_in_inverseDomain": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.lift_inverseLift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.lift_quantity": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LiftedPriceScale.pointInverse": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.pointInverse_lift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.pointLift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.pointLift_inverse": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.pointLift_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.smear": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LiftedPriceScale.smear_quantity": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -7015,33 +6259,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LimitTheorems.charFun_map_eq_scalarProjection_one": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.covarianceOperator_comp_linearIsometryEquiv": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.covarianceOperator_map_eq": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LimitTheorems.empiricalMean": {
       "axioms": [
         "Classical.choice",
@@ -7051,61 +6268,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LimitTheorems.euclidean_central_limit": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.finiteDimensional_hilbert_central_limit": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.gaussian_covarianceOperator_eq": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LimitTheorems.hilbertSchmidtENorm": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.hilbert_central_limit": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.hilbert_central_limit_external": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.hilbert_strong_law_ae": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -7150,87 +6313,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LimitTheorems.matrixBilin_eq_inner": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.matrixQuad_covariance_eq_variance": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.memLp_comp_linearIsometryEquiv": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum_charFun_tendsto": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum_comp_linearIsometryEquiv": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum_eq_centered": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum_isTight": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.normalizedHilbertSum_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LimitTheorems.rawSecondMomentOperator": {
       "axioms": [
         "Classical.choice",
@@ -7267,15 +6349,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LimitTheorems.sampleCovariance_operatorNorm_strong_law_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LimitTheorems.scalarBiasedCovariance": {
       "axioms": [
         "Classical.choice",
@@ -7294,43 +6367,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.LimitTheorems.scalarProjection_central_limit": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.scalarProjection_central_limit_gaussianReal": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.LimitTheorems.scalarProjection_empiricalMean": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.scalarProjection_normalizedHilbertSum": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.LimitTheorems.separable_hilbert_central_limit": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -8751,15 +7788,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.NumericalDecoding.decoded_price_loss_to_representative_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.NumericalDecoding.decoded_quantity_loss_le": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -13464,15 +12492,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.PriceScale.abs_transform_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.PriceScale.inverse": {
       "axioms": [
         "Classical.choice",
@@ -13483,33 +12502,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.PriceScale.inverseLift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.inverseLift_lift": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.inverse_transform": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.lift": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -13537,42 +12529,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.PriceScale.smear_zero_residual": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.transform": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.transform_inverse": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.transform_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.PriceScale.transform_strictMono": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -13690,24 +12646,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.ProcessStationarity.weaklyStationaryProcess_iff_scalar": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RecursiveTrees.RectangularSimpleFunction": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RecursiveTrees.RectangularSimpleFunction.eval": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -13896,15 +12834,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.RecursiveTrees.treeClass": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.RegressionCounterexample.best_constant_risk": {
       "axioms": [
         "Classical.choice",
@@ -14013,33 +12942,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.RenewablePayoff.accepted_eq_screened_schedule": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.baselinePayoff": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.impactPayoff": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.RenewablePayoff.impact_acceptance_implies_baseline": {
       "axioms": [
         "Classical.choice",
@@ -14049,70 +12951,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.RenewablePayoff.pairedDifference": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.pairedDifference_eq_totals": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.payoff_le_baseline": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.RenewablePayoff.price_impact_nonpos": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.residual": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.residual_balance": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.residual_rejected": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.RenewablePayoff.screen": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -14283,15 +13122,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SAGE.LocalConditionalVersions": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SAGE.conditionalLoss": {
       "axioms": [
         "Classical.choice",
@@ -14329,24 +13159,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.SAGE.conditionalMean_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SAGE.efficiency": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SAGE.efficiency_original_loss": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -14400,24 +13212,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SAGE.localCoalitionGame": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SAGE.localVersions_prediction_efficiency_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SAGE.lossGame": {
       "axioms": [
         "Classical.choice",
@@ -14436,25 +13230,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SAGE.marginal_loss_reduction": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SAGE.maskedPredictor": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SAGE.prediction_efficiency": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -14499,41 +13275,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.Shapley.efficiency": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.efficiency_nonempty": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.efficiency_of_endpoints": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.marginal": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.Shapley.membershipGame": {
       "axioms": [
         "Classical.choice",
@@ -14562,69 +13303,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.Shapley.sum_insert_without": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_add": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_coefficient_formula": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_dummy": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_membership_other": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_membership_self": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.Shapley.value_smul": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -14669,168 +13347,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.Shapley.weight_sum": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.card_coalitionTag": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.card_positionTag": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.card_predecessor_fiber": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.card_predecessors": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.coalitionTag": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.coalitionTag_one": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.coalitionTag_two": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.coalitionTag_zero": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.contribution": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.contribution_unbiased": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.efficiency": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.exists_tag_permutation": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.integral_uniform_contribution": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.notMem_predecessors": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.positionTag": {
-      "axioms": [
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.positionTag_one": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.positionTag_two": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.positionTag_zero": {
-      "axioms": [
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.ShapleyPermutations.predecessors": {
       "axioms": [
         "Classical.choice",
@@ -14841,33 +13357,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.ShapleyPermutations.predecessors_eq_stage": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.sampleValue": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.sampleValue_tendsto_ae": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.sample_efficiency": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -14912,24 +13401,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.ShapleyPermutations.sum_contributions_by_coalition": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.tag_composition_iff": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.ShapleyPermutations.uniformMeasure": {
       "axioms": [
         "Classical.choice",
@@ -14940,15 +13411,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.ShapleyPermutations.uniformMeasure_probability": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.ShapleyPermutations.uniform_average_eq_value": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -15183,24 +13645,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.SidedCertificate.canonicalSidedEncoding_essential": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCertificate.canonicalSidedEncoding_not_weaklyConvex": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCertificate.canonicalSidedEncoding_not_weaklyConvexAE": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -15480,15 +13924,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.SidedCertificate.essentialSidedEncoding_injective": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCertificate.essentialSidedEncoding_not_weaklyConvex": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -15968,33 +14403,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SidedCertificate.range_canonicalSidedEncoding_not_convexCone": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCertificate.range_essentialSidedEncoding": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCertificate.range_essentialSidedEncoding_not_convexCone": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SidedCertificate.range_minimal_levels": {
       "axioms": [
         "Classical.choice",
@@ -16373,15 +14781,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SidedCurveLp.minimalSidedParametrisationLpReal_not_weaklyConvex": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SidedCurveLp.minimalSidedRepresentativeReal": {
       "axioms": [
         "Classical.choice",
@@ -16401,15 +14800,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.SidedCurveLp.minimalSidedRepresentativeReal_memLp": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedCurveLp.range_minimalSidedParametrisationLpReal_not_convexCone": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -17219,33 +15609,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SidedSourceExclusion.canonicalLp_not_weaklyConvex_source": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedSourceExclusion.canonical_not_weaklyConvexAE_source": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SidedSourceExclusion.canonical_not_weaklyConvex_source": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SidedSourceExclusion.parametrisedGraph_transport": {
       "axioms": [
         "Classical.choice",
@@ -17525,15 +15888,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SpectralTheorem.closure_iSup_nonzero_eigenspaces_eq_closure_range": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SpectralTheorem.compact_nonzero_eigenspace_finiteDimensional": {
       "axioms": [
         "Classical.choice",
@@ -17543,79 +15897,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SpectralTheorem.compact_selfAdjoint_eigenspaces_complete": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.compact_selfAdjoint_ordered_rankOne_expansion": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.compact_selfAdjoint_rankOne_expansion": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.compact_selfAdjoint_rankOne_expansion_external": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SpectralTheorem.exists_antitone_reindex": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.finiteDimensional_rankOne_expansion_data": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.finiteDimensional_selfAdjoint_nonzero_rankOne_expansion": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.finiteDimensional_selfAdjoint_rankOne_expansion": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.finiteDimensional_selfAdjoint_rankOne_expansion_tendsto": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -17651,52 +15933,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.DayAhead.SpectralTheorem.neg_unit_eigenvector": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.DayAhead.SpectralTheorem.nonzero_eigenspace_le_range": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.orthogonal_iSup_nonzero_eigenspaces_eq_ker": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.orthonormalBasis_projection_invariant": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.orthonormalBasis_swap_ne": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.range_basis_extension_by_kernel": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -17715,15 +15952,6 @@
       "status": "kernel-checked"
     },
     "Thesis.DayAhead.SpectralTheorem.selfAdjoint_distinct_eigenvectors_orthogonal": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.DayAhead.SpectralTheorem.unit_vectors_eq_or_neg_of_finrank_one": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -20472,11 +18700,6 @@
         "Quot.sound",
         "propext"
       ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Foundations.CurrentThesisContext.Parametrisation": {
-      "axioms": [],
       "projectAxioms": [],
       "status": "kernel-checked"
     },
@@ -42993,15 +41216,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Foundations.Stochastic.UniformTightness.of_finite_mass_covers": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Foundations.ThesisContext.AdmissibleAction": {
       "axioms": [],
       "projectAxioms": [],
@@ -43804,15 +42018,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.AnalogueAttention.attention_equivalence": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.AnalogueAttention.bias_shift_invariance": {
       "axioms": [
         "Classical.choice",
@@ -43867,25 +42072,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.AnalogueAttention.encode": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.AnalogueAttention.feedforward": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.AnalogueAttention.gaussianPolicy": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -44464,29 +42651,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.BlockBootstrap.selected_aggregate_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BlockBootstrap.selected_vector_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BlockBootstrap.selection_injective": {
-      "axioms": [],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.BookPath.atom": {
       "axioms": [
         "Classical.choice",
@@ -44596,105 +42760,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.BookPath.unitMarkedMeasure": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.deterministic_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.independent_random_selection_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.measurable_timeBlocks": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.random_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.restriction_array_independent": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.sum_restrict_eq": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.timeBlocks": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.timeBlocks_compl": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.timeBlocks_disjoint": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.time_bootstrap_same_law": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.BootstrapDistribution.time_random_bootstrap_same_law": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -45693,61 +43758,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.EncoderSourceDefinition.encodeWith": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EncoderSourceDefinition.encode_eq_source_when_norms_agree": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EncoderSourceDefinition.postFeedforwardWith": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EncoderSourceDefinition.updatedWith": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.EnergyScore.ConditionallyNegative": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EnergyScore.ensemble": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EnergyScore.ensemble_singleton": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -45847,15 +43858,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.EnergyScore.score": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EnergyScore.score_convex_on_normalised_weights": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -46008,15 +44010,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.EuclideanNegativeType.euclidean_distance_conditionallyNegative": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.EuclideanNegativeType.gaussianAbsMean": {
       "axioms": [
         "Classical.choice",
@@ -46063,15 +44056,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.EuclideanNegativeType.min_kernel_nonneg": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.EuclideanNegativeType.mixture_convexOn_simplex": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -46360,15 +44344,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.Execution.continuous_tradeprice": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Execution.crossing_closed": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -51409,7 +49384,7 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.Replay.measurable_sortedDepthStep": {
+    "Thesis.Intraday.Replay.sortedDepthStep": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -51418,7 +49393,16 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.Replay.sortedDepthStep": {
+    "Thesis.Intraday.Replay.visibleBook": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "projectAxioms": [],
+      "status": "kernel-checked"
+    },
+    "Thesis.Intraday.Replay.visibleBook_sorted": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -51554,24 +49538,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.ReplayGeometry.displacement_toReplay": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.ReplayGeometry.encode": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.ReplayGeometry.encode_toReplay": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -52264,33 +50230,6 @@
       "projectAxioms": [],
       "status": "kernel-checked"
     },
-    "Thesis.Intraday.Visibility.concat_sorted": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.continuous_concatBook": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.continuous_drop": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
     "Thesis.Intraday.Visibility.continuous_take": {
       "axioms": [
         "Classical.choice",
@@ -52301,51 +50240,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.Visibility.continuous_visible": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.depthClear": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.depthClear_sorted": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.drop": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.drop_sorted": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.measurable_depthClear": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -52373,15 +50267,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.Visibility.take": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.take_drop_key_le": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -52454,15 +50339,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.Visibility.visible_side_count_le": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.Visibility.visible_side_keySubset": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -52648,15 +50524,6 @@
       "status": "kernel-checked"
     },
     "Thesis.Intraday.retag_isometry": {
-      "axioms": [
-        "Classical.choice",
-        "Quot.sound",
-        "propext"
-      ],
-      "projectAxioms": [],
-      "status": "kernel-checked"
-    },
-    "Thesis.Intraday.retag_measurable": {
       "axioms": [
         "Classical.choice",
         "Quot.sound",
@@ -52924,7 +50791,7 @@
   "schemaVersion": 1,
   "scope": "transitive Lean axiom dependencies; prose alignment requires separate review",
   "sourceHashes": {
-    "Formalization.lean": "974b7f71cf889b91c8d3ffd6be6d2f8e2629dcc672aace23562698f2a1524ecd",
+    "Formalization.lean": "b906bd9919f94a2c22605fa724442056ea46ed1be582a77f6ad93ee2b5d820e2",
     "Thesis/Appendices/Algebra/Algebra.lean": "0a816dd5b54da16034941a6fd1f914db98095181f5e34ab8b1f55ed15ffd4526",
     "Thesis/Appendices/Algebra/CompletionScope.lean": "d7830e01f5560b341465c710829cca924746a096537e86309a560cca68b65d82",
     "Thesis/Appendices/Algebra/DoctoralAlgebra.lean": "949451a3d38fddeaebad74e11ced1ab1eeb5edc69c9b3df11f781b02a83052fa",
@@ -52958,7 +50825,7 @@
     "Thesis/Appendices/DayAheadNumerical/ForecastReader.lean": "0acd8998135f269c9db3d95e6540580a292a81ae5272503a5610111f70a1a59b",
     "Thesis/Appendices/DayAheadNumerical/GridFits.lean": "a3486942103edbf5eef351145b1c004edbd2dcedda3b12260f09fe9bfc32e97e",
     "Thesis/Appendices/DayAheadNumerical/GridPAVA.lean": "798c95f7902982231d22c1c69b6e923371d084673259681e88cf036cd6bb6ae1",
-    "Thesis/Appendices/DayAheadNumerical/NumericalDecoding.lean": "dcc10239aa88e4066bc4eb389370d8e1ff5824a931867b7cda02837a14bca925",
+    "Thesis/Appendices/DayAheadNumerical/NumericalDecoding.lean": "73ba9e65efd30052a1015a46a91b6ea52381852a4babca75a716febe371b837d",
     "Thesis/Appendices/DayAheadNumerical/NumericalEmbedding.lean": "f0b22a52bcd597c5e8df4422944e6977b22e4bbe7294370766907ee6efe7c963",
     "Thesis/Appendices/DayAheadNumerical/NumericalRepresentation.lean": "3ee40abec2cb6a27d9129cf7bcd7ca55eefcd8679d02f1177e62925d30b50c42",
     "Thesis/Appendices/DayAheadNumerical/PAVA/Algorithm.lean": "f0ad5198ed7c44b3d25830f779da8190fe2e0608a676bc44d44feb4daa8e377f",
@@ -52997,7 +50864,7 @@
     "Thesis/Appendices/SetTheory/SetConstructions.lean": "265f952ce19195c1be22e2e096b606341bf5a9727bb1093d4584fcea21234e8f",
     "Thesis/Appendices/SetTheory/SetTheory.lean": "02abef4a0e2bea5397209d92646a72c193459280d3c031a7e1a0a9d82f455eed",
     "Thesis/Appendices/SetTheory/ZFCFoundations.lean": "3c9f835ae1a3061c6f7ea880d1c4349dfa3067753977901957212a688a69d7ba",
-    "Thesis/Context/CurrentThesisContext.lean": "b9a1e9b2da74fd9d63cde1f1d5c78641fb6c4c99a89e09be803219b0c8d27278",
+    "Thesis/Context/CurrentThesisContext.lean": "54aad5e056483865e52e4a29254d85e279714b45bb4663f12b96c864a16e5b0e",
     "Thesis/Context/External.lean": "d947615c0546f934e1d7d7e6ba48da844d32d4d4598d5bcce5ce15a4d9bedd02",
     "Thesis/Context/MarketPrinciples.lean": "92b7543aa4ec493be490d9ff4f7356e19e7193c7e3786c3ab9822d9dd17c8316",
     "Thesis/Context/MoorePenrose.lean": "c9e108c76a8c122c45ac2e59f1d9022bb1aaa9b483a704300823def450660a64",
@@ -53005,17 +50872,16 @@
     "Thesis/Context/ThesisContext.lean": "a7c38989ad250d81150349d1607eed14bf7aa0ae86e26bba7ec37088dd40c87f",
     "Thesis/DayAhead/Applications/BatteryControl.lean": "55c63317ee2839860f18e9f8b7b149be778c91eac43939721c6caa45e1d7a5af",
     "Thesis/DayAhead/Applications/BatterySourceScope.lean": "528b0ddc6d54084fcf1a28b33fed0d3c373e09e688e9f8bde7ae60f298525e25",
-    "Thesis/DayAhead/Applications/BatteryValuation.lean": "1af8ce6493a0de4c133030d33025fbe542ef13a8a17eefa7cd126a1e465b9786",
-    "Thesis/DayAhead/Applications/RenewablePayoff.lean": "5b64cec54b78cfbab8ac627f2e6bdb21607d841844efe7e86f7a6c8ca7dc19d1",
+    "Thesis/DayAhead/Applications/BatteryValuation.lean": "e3cf2963b0d8716094f4a08d789eb82a37d3129dbe4d1789c84ce737c8821104",
+    "Thesis/DayAhead/Applications/RenewablePayoff.lean": "1996347cf2e77cee290a2e7d79f838ddebbb855c9022ee982320268ae26f5a87",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedCertificate.lean": "c9a82388b6d19ac8936e16921099a2523c5f58af823d7c415b9f9d6df049a7d7",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedEncoding.lean": "2324f761bb117e7d1bc2a60772bfe63bb88b8ca11a14a35294b6e009128f5765",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedExample.lean": "286182022f7987df4ab9c38776ceb0009bd83391a3d528b2d0b1df1e91f48eb0",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedGeometry.lean": "19342aa2f7a2fd34e4c7673900ea6c5d980f4d7039dfa700d57c0c91964dcd09",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedExample.lean": "b75d26858c150d826dff06e83c794a8cf9a09486bb1d60364b0e4e5ad9d2b481",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedGeometry.lean": "c0b0c0a5b907deae5784d83fd406dfd2914ae4623ee533acedfb5f94e3bbc841",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedLaws.lean": "d552f0b6fc37200aa5837fd0bbb10fa8df1ad14ac657063c17aba0f16ee0b052",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedLp.lean": "bb0fd35761f55893d413ac3a1f8ed2e619f070c14097d2e7081a2326ae1d42a6",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedNonconvexity.lean": "f883572bcb8e75b2dc9791f6f6cb43d5fbedd8a3deee2109c37fd07580af5c3e",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedObstruction.lean": "7af582daf411e62a4c7ef01ea243cebb25cef0575117841898e273c8e40d79e1",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedSourceExclusion.lean": "5e8b09d8d5528f63a3da4e96bc99e9422e4cc32c2b7c6cf788672fc6ca022891",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedSourceExclusion.lean": "c565d7e948d4420136a4ed1bf7604e3a1b11e513d133820cdf16b61453239145",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedWitnesses.lean": "57758f116ff7fe5c6f18ba3101849c44f4546e170a9f076a394220afa6d36da6",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CompletedInverse.lean": "3f2df6a8e43b1747c3d1b92fbb5d25ee65116672d22454eef61c532dd279fb5b",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CurrentCounterexamples.lean": "3e6f43d2ce163ba7918ed741264ad6f1ad1fa0eb3dd3e719611af04600fbb26c",
@@ -53044,7 +50910,7 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/InterpolatedMarket.lean": "c5c638ab2a7926e63800407322d5202bf8de269fb5f0416cc55896441a536cdc",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/InterpolatedOffered.lean": "9a071608ab3bad4ca581e313d78a6cf16471a0964af038e476612c6aa3813cd4",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/InterpolatedSide.lean": "d2d82ecfec1f069cef79978d84ff7fdd908fbd538cf4963b458e6cf7d4c36b36",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/LinearParametrisation.lean": "5b5d57358da91c82fffa7a03f274083c965f9e58667abe91fb2328ae2c760338",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/LinearParametrisation.lean": "016fca35be989f51309cd5aab9c048883c96070be9c868c7b1a556081f618a12",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/MarketCurve.lean": "9f76dc9cbe03ff28d16fccec8215d9d4cff017c72296f4be6c26459426105641",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/MarketCurveEncoding.lean": "80ead96fb4ed76eb56a7219261c89024807d8a310f218535b50bda40615aaaea",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/MarketCurveKnots.lean": "be2e905780608b734543a820afaceb76c223e6ec08108dd4308d41c5d993dced",
@@ -53064,7 +50930,7 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLGraphTracing.lean": "29de9807d1c34f0473b63f29cb49806c50177a5367f34cc2686ef4855a85f074",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLGraphTracingContinuity.lean": "70db3a1ec8158778958aac8ff5dc78122009beb86f2aaf2057c56feb431a5161",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLJoinComparison.lean": "25b51fc9b2f245c75fb43fdef9cd62de7cea026dea2f1de6b4a34de5f2a9c872",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/PLLinearCone.lean": "3975c227c72f71a5718d6f906979d05b831f8f40d5316e0cb72d174197dcbfbd",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/PLLinearCone.lean": "4546b3358125bb55e84066b597b6f597ce35a4ead7b82191781ed902865e8177",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLParameterMeasure.lean": "716c61f7b77cb7fcef2bb7e08baf366ed27472d80616f4bde1401a64913457b7",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLParametrisation.lean": "2b07ea301bbefd36466e33a91b00439833ed1b583b63bc070417c2d7c98bdb74",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PLSourceRepresentative.lean": "08470b680f9ad722c9996bdde9402fb837924b8b1f8c8d26c703d32e6794ea69",
@@ -53079,9 +50945,9 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/PriceNodeGaps.lean": "de786db1b63e55e8674363f3fc2b5125f73c7ae54ccae57b37afd6828bea66f5",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/SelectedGraphAdmissible.lean": "7872b038a4666d967e7f7a6b9c651f97f2f7fa8a2a7aeb94adcf4c7717e4ce4b",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedCertificate.lean": "a003807e4372a6a7019dddaa3d68944053a04b4743191308e750dec7aa01b40d",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedCurveLp.lean": "a2f18b68ee590596de7ad436eb98f81eedfe64dd4e9ad79809ef508364ef2e77",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedCurveLp.lean": "47cb6e8e0bb603fbbe53ad01015b1e4c01eef08079464d16260f0e8582146a51",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedInterpolation.lean": "920bef4c8c0c2eb411a2d99fb2740b1ef1df486e48b2fa7f9361dce34fd94c20",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedParametrisation.lean": "2d77f5a9f31f4276f18fe1d1d517d5f5009fb75b34773fa16c3f18e12fad9d68",
+    "Thesis/DayAhead/ClearingOperatorPriceCurves/SidedParametrisation.lean": "2d1be593513d3b6a8dba10e733811593547a27bb7f7ac715bace9d0a6f029602",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/VendorPLBorel.lean": "c44a8546442330d57f1b344aeed7ffee5ed546d96be4afb80aa936a7b8a3b781",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/VendorPLBreakpoints.lean": "f05fec0b707b7e750755d8e92cc2f3f6fbfc6f4ca34f9aea8c07d5b2759c1e67",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/VendorPLCanonicalNodes.lean": "24c778f2844cafeda328f5f514a2e989377b9c3c8ab9299b8e0597966a84e02b",
@@ -53101,45 +50967,34 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/VendorPLVertices.lean": "dc6f3c7908ae3628ca5d824333126903f4a45f71a63270d22e1e0add2d0c74d6",
     "Thesis/DayAhead/ForecastingImpact/AttributionVersions.lean": "5125db2abd16daf017fffce75efc71e8700f8da8e984a6adc9db522b0b98abab",
     "Thesis/DayAhead/ForecastingImpact/BoostingLoss.lean": "96374f281d49e9ad359aab89e27eafa54afd78f3838c93109c9c7ee22f90fc25",
-    "Thesis/DayAhead/ForecastingImpact/ConditionalDecoding.lean": "d3f1f3bb645cbe829cffbbefcd631da91058c7cad7c8aa0d5d1969967260ea43",
-    "Thesis/DayAhead/ForecastingImpact/ConditionalSimulation.lean": "e798793a3ba663d624b624abf774575ba7692cd39a6155e02e5d8cbb7387db99",
-    "Thesis/DayAhead/ForecastingImpact/EmpiricalGeometry.lean": "a02f00cddb10128fa13bd34648a02d2794b78bc35a117752ca7414b5d2a8bc7b",
+    "Thesis/DayAhead/ForecastingImpact/ConditionalSimulation.lean": "0c4e421e07228b933f5e6c11b65e1ce225473eececd5c6b678114e83e4790860",
+    "Thesis/DayAhead/ForecastingImpact/EmpiricalGeometry.lean": "c466d391cbf6f3de3df21c0b15bb265bc6e1290e5089bfa94144ab4bc9d7cc10",
     "Thesis/DayAhead/ForecastingImpact/Forecasting.lean": "066e6f2ff80fc3769700298c1b1a2e5db5865c1f9a8770e7b81f8e8c2488e490",
     "Thesis/DayAhead/ForecastingImpact/GreedyBoosting.lean": "c3e3a6b76b30d24f84994da070529e10e7ba061be86f51bf1e7cfbf4ba2f8ea3",
     "Thesis/DayAhead/ForecastingImpact/GreedyTree.lean": "b502fae2a04c4ea273b4e4061d6316965b1c3a37055298b87c09c38a0af3a2e6",
-    "Thesis/DayAhead/ForecastingImpact/LiftedPriceScale.lean": "0d2878375bc334d3ce7c71fd7450c15ad9bd5cd678f33572ffc30730f72d5820",
+    "Thesis/DayAhead/ForecastingImpact/LiftedPriceScale.lean": "1f774038d2cabad2889930fd47c24643f2baac8e1a3c5a179091ac49090316f2",
     "Thesis/DayAhead/ForecastingImpact/LowRankGram.lean": "fce03c48cb3d54262862f4c30d7e6134f7164357a0b3f54771df44dc0db32042",
-    "Thesis/DayAhead/ForecastingImpact/RecursiveTrees.lean": "6ec9de15662ab98570ba618e72500fa5ff03bdbeadf5fb6084af9684a1c8b58c",
+    "Thesis/DayAhead/ForecastingImpact/RecursiveTrees.lean": "c81b8f6b08bdb3c6e2ef1ed52e5b026ecd2d7c9a0c39cb205e4251a1fb7bc3e2",
     "Thesis/DayAhead/ForecastingImpact/RidgeForecast.lean": "d32f3df51002f0b5418188d7cb1a61ba32a415df8eca5d6b5b4e452ecde26561",
-    "Thesis/DayAhead/ForecastingImpact/SAGE.lean": "583395441b3a5d9f02cbcece23a566822438f6f56a73c0f2441906807df4d9ee",
-    "Thesis/DayAhead/ForecastingImpact/Shapley.lean": "94b9738c8a0410b2378ab09fd828759886a95fe6fa9a78b7f81da3a148d348e2",
-    "Thesis/DayAhead/ForecastingImpact/ShapleyPermutations.lean": "3663734d8c10d8a803ccca35554ae9a03ccb88966a96a6bfbe1f27e6ee0407f2",
-    "Thesis/DayAhead/ForecastingImpact/ShapleySampling.lean": "16060c20621f3bddfbc873959328439c3db5f0b018c59d48d96a3721696e209b",
-    "Thesis/DayAhead/ForecastingImpact/ShapleyWeights.lean": "7920631acd8ac25b03a63dc180c7f783a94faebf352f7997e6c215b67cfdb99c",
+    "Thesis/DayAhead/ForecastingImpact/SAGE.lean": "9656c891250f74376c70dbadf0c3e5604dc2abe35f65da099e84b8ee818f0aaf",
+    "Thesis/DayAhead/ForecastingImpact/Shapley.lean": "5466602e9a42d31148046790ce01cbd69e204ed9694d25ae844f8b14e0909829",
+    "Thesis/DayAhead/ForecastingImpact/ShapleyPermutations.lean": "80606ac0e081a16db732cc0008da9a04088d10b98ca559734e652f87235b8ff5",
+    "Thesis/DayAhead/ForecastingImpact/ShapleySampling.lean": "ed05db2cd569353f0041877b3081d37b633990353cd19a8554bb93505bbd955b",
     "Thesis/DayAhead/ForecastingImpact/SpectralSplitBound.lean": "33f6284d64ac4c425c67641461a5cb51ec370dfbef33610ba28d5233d986d8a4",
     "Thesis/DayAhead/ForecastingImpact/TreeImpurity.lean": "6696f8be9291914b24954dc99d1e57266e60c87afe8516745877bc723a63a429",
-    "Thesis/DayAhead/FunctionalDataAnalysis/CompactCovariance.lean": "c0ae6a9720f6fa151ce640a6b5887f386c15c18c82c42f857f0f7a551ff97d26",
-    "Thesis/DayAhead/FunctionalDataAnalysis/CompactSpectralExpansion.lean": "80bfad89653129784360a9d6041fbfcbb7e5ab57ff9d79ebcb84a5595a4f33b7",
-    "Thesis/DayAhead/FunctionalDataAnalysis/ConditionalBasisSource.lean": "12ff269b80f9bcc547f4807c1932879de4e039ad50f9c0bb48aa2f1f8a0a3dea",
-    "Thesis/DayAhead/FunctionalDataAnalysis/Covariance.lean": "36d3e99093e096609c81a62091375e53d7eca5491dc9d5bd31eba0e3a4946c46",
-    "Thesis/DayAhead/FunctionalDataAnalysis/FunctionalData.lean": "ac3af48848a2ff6a2bafb996e43633a47e2892fe4607806bd0520c52abe0f43a",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLT.lean": "67b5c0ca0faeb85e449814d2a4ff8b95be7ad9ad6c4d50841642b40170a9ca50",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTBasic.lean": "61aa5dbc27014d579958e0d84d87367f25ddbae8a9e292284d93c46b73eab2de",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTInfinite.lean": "7c8db2cd69412f1450813bcab4af2139f40b9a52b29d9065b9108a7808228929",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTMoments.lean": "bde30051b311d8287f38e5b6cb68c31215e9df0bd75c68417d24a7a2cde7a1dc",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTTightness.lean": "7fc26568d34e39b0a5500d421ae3520d6182e7cbd6f361f8734dc0a4766b2492",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertSchmidtCovariance.lean": "153ddfc3e4dd73fa51d236a2f1020f88ff5b171f0a3e3ee9e91e1563c7559d95",
-    "Thesis/DayAhead/FunctionalDataAnalysis/LimitTheorems.lean": "9ddd5afc3bedd5919cc9075f8b1db764e8c7da48fe42d35d2da00a8782c36cf3",
+    "Thesis/DayAhead/FunctionalDataAnalysis/ConditionalBasisSource.lean": "ffdeecd6960a2837815085fd4004287235275e358c62cd81c4daecf7bdf8c331",
+    "Thesis/DayAhead/FunctionalDataAnalysis/FunctionalData.lean": "7fe585d4af3d99ac87b9f85e72c506fff199baf416500f396ce71ce0c0923b67",
+    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertSchmidtCovariance.lean": "769bc754108f843a8edd7c13f1e65cef4653ce0bcbeff85be65538caab349888",
+    "Thesis/DayAhead/FunctionalDataAnalysis/LimitTheorems.lean": "6a603a0c751d36a006017eeb25ea1b2185c559d8eb4f986e10527047a016b5f9",
     "Thesis/DayAhead/FunctionalDataAnalysis/ProcessStationarity.lean": "46e453a24c6e5c485ffbafed6f7318f57536b5c46d3d85788d5b9dfff97d7383",
     "Thesis/DayAhead/FunctionalDataAnalysis/RegressionCounterexample.lean": "765f988cfa249782cefde806f0e98fd758810f7e1069f8684d6a6401f53c3fd9",
     "Thesis/DayAhead/FunctionalDataAnalysis/RegressionMeanSquare.lean": "3b7d666c721fffe8949291ceb1e1a49e99da5073074593ae73bc1440af76a150",
     "Thesis/DayAhead/FunctionalDataAnalysis/ScoreInformationSource.lean": "84a7c7a0e018c632d9d4d266d7c842f3653db7656cb3208069cdf81fc2f9c37b",
     "Thesis/DayAhead/FunctionalDataAnalysis/ScoreLevyL2Source.lean": "54846151e997ce606ea4430414bd4a99421c379101c5a7fd6414878547b60690",
-    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralAmbiguity.lean": "776132e0ebd20f164cfc10cb3a4aa3b6c63929362f176608796237bcf6128415",
-    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralBasis.lean": "39a85fb7d3258786097183a933afde004c9439f120ad9a488165ac59eda2eea9",
-    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralTheorem.lean": "17a954481e7633c4c8c07717e1e5ca26cf141177e97ae405e1e9b1026e30e008",
-    "Thesis/DayAhead/PriceCurveAnalysis/EmpiricalCoordinates.lean": "c3fb71924c1d2c211718c9e72dae5fbeca49788005e57d7581aba395c757467a",
-    "Thesis/DayAhead/PriceCurveAnalysis/PriceScale.lean": "b36a3541ea56b917498e9c7c932c9477e3affbe52b0d3c88f6dbf353dd90173f",
+    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralBasis.lean": "8aadc79f63e149b943fc80eb0bb9b9272a33b0755895d2f8834c4c25033befc6",
+    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralTheorem.lean": "c5291b29a8085698fed71a1999b3571f15f377efb90c3f52f73a20079254c1cd",
+    "Thesis/DayAhead/PriceCurveAnalysis/EmpiricalCoordinates.lean": "ec2384bf5bedeaf22420df35b238b03e67a2f24ec8db4973771e469ad7adcd09",
+    "Thesis/DayAhead/PriceCurveAnalysis/PriceScale.lean": "d1054720d70cdff0ee2243c5feb0a2df7bb561d2d59b5bdd00aede20eb8a6f76",
     "Thesis/Foundations/MarketActions/ActionSourceProofs.lean": "d7b79f0fb9daa6d1d928b0a234b4f83a8a8b561e392d03990fd70e52c01a25b2",
     "Thesis/Foundations/MarketActions/Alignment.lean": "ba670d11836a4160571a2c22cc3a7d297fa873518c7f9f69ebf71469bf9e3ceb",
     "Thesis/Foundations/MarketActions/Analytic.lean": "a48e94a4708919cb9ed34f499f24fa3a4d6a98c541210b934e6375a92a573cb0",
@@ -53207,38 +51062,34 @@
     "Thesis/Foundations/Stochastic/PointProcessAlignment.lean": "020e447d8e9a451e27ffd678ba58ffaca04de7aeaacc854eb9de71f4e64e1eb8",
     "Thesis/Foundations/Stochastic/PointProcesses.lean": "9ba5d49cf13e4a569426362480e067921f821d2922612243c4aaac305bec13da",
     "Thesis/Foundations/Stochastic/TupleMeasures.lean": "35359c7b88ec60a128a7c2a8500b179ee2c439020e9304e0a62b804583bdaf89",
-    "Thesis/Foundations/Stochastic/UniformTightness.lean": "07c50c63835a099e3fb27eb476f709744f1ceaaa0853c84fec973bdbf9b03752",
     "Thesis/Intraday/Applications/Mandate.lean": "efb4cdfecb77124d8c3ce3f36e93320f22b45efa0f22122c6222c88993a41882",
     "Thesis/Intraday/Applications/MandateGaussian.lean": "80bdb6d4715b4f21a6d1f4299bdc5898db49e78d44878212c2502bc99d64896e",
-    "Thesis/Intraday/InferencePointProcesses/BlockBootstrap.lean": "d22cf0787ccb385b4ef5fb5fd2eb3b4fca44dcaa591b71b6cc471d5399d0a9f4",
-    "Thesis/Intraday/InferencePointProcesses/BookPath.lean": "844f15db794c31e7cad51e1de6d558832a617bfb77b3830cce375856e4d81262",
-    "Thesis/Intraday/InferencePointProcesses/BootstrapDistribution.lean": "95b368b89aa2653c716d59e6716012bcc9da5fa5751b52a1deced0fe7d8c3746",
+    "Thesis/Intraday/InferencePointProcesses/BookPath.lean": "fbf645a48205c4cd393c3e9e2b6c1ea1472e4526b53318e5fafa2da35f2c4701",
     "Thesis/Intraday/InferencePointProcesses/EnsembleCalibration.lean": "e2b9eee9bb0ec1434f16597551bb86e0ebe7a73c89bfc4c9a9cc68e201a81278",
     "Thesis/Intraday/InferencePointProcesses/EnsembleRanks.lean": "644c7788ff37404e2c144b48da023795f22dfb2716f7333601e9da5decba3524",
     "Thesis/Intraday/InferencePointProcesses/ExchangeableRanks.lean": "3253590549c13ee491b8a714ff3c61c5fd39922e1def4e668d315425134496ef",
     "Thesis/Intraday/InferencePointProcesses/PointProcessBootstrap.lean": "b8bac8c7b8e715f075766596914e41fc84824d8bdaee8b1fd12a6d0f6dc727bd",
     "Thesis/Intraday/InferencePointProcesses/RankLimits.lean": "5de744c556af60323a38a4cc64281732abe2b97d650cb603ea5cd7fec66d78d5",
     "Thesis/Intraday/InferencePointProcesses/StrictRanks.lean": "4e1de6f2656a97f830b6edcb461a2ad03b229d7fe4e4cfb89d7756ae7733e3dd",
-    "Thesis/Intraday/LOBsAndTuples/Clearing.lean": "24630326c74d08aa4303afce919aa1cf59302b07ab43ec2b5aa5305b2d8c01e5",
+    "Thesis/Intraday/LOBsAndTuples/Clearing.lean": "4d554bbe5c5c46e5c6d35d14a48b7c7743dd369c5aa5c493aa9e9b1085cd71ca",
     "Thesis/Intraday/LOBsAndTuples/CurrentSourceIssues.lean": "4bee70b86b19180e4a777e18b19615f033a51b0783e88abaaf58772fb1f99b8f",
-    "Thesis/Intraday/LOBsAndTuples/Execution.lean": "70af1014728d6be3b25c33af8abd4c623134ec9ad7a6dc6e7e0f4b76b85765f8",
+    "Thesis/Intraday/LOBsAndTuples/Execution.lean": "4a35c65fe3a22b3f5b6d43fed96b44dc17e02321de61db683744c41320e0644c",
     "Thesis/Intraday/LOBsAndTuples/IdentifierClearing.lean": "94ff518da3d6464fa73ee67213d0752138f8c8bba152533a5dad5f3e6ea3e491",
     "Thesis/Intraday/LOBsAndTuples/IdentifierMarket.lean": "90915d000548e31e5601695437b5cec9e9d2729b7ed3f1f16271532322ead415",
     "Thesis/Intraday/LOBsAndTuples/MarketSorting.lean": "57a440e6c1d14323c48f63506abc852389f5110748ee6366326fa2cb85c10770",
     "Thesis/Intraday/LOBsAndTuples/Orders.lean": "ef743b269ec9bed148ad266c7228a6a504e6a6390b62689ff391f9f76c5433bc",
-    "Thesis/Intraday/LOBsAndTuples/Replay.lean": "a8e486c4e968c1899f44e7d622523ac7a4e931aba5305007916131106b693f15",
-    "Thesis/Intraday/LOBsAndTuples/Retagging.lean": "cf9ffdf9032bfc750987399405b41c9f2b4fa9da4a7c0bea239f041260578c0d",
-    "Thesis/Intraday/LOBsAndTuples/Visibility.lean": "f73be96155d115fe07ccf85747c791c3f4aee19af9bd831dd83eeaba35a056a0",
-    "Thesis/Intraday/Simulation/AnalogueAttention.lean": "bd34601f0d124349ed3d5a1ad701553afaa31decbcf397aa52fef367ee159757",
+    "Thesis/Intraday/LOBsAndTuples/Replay.lean": "fdef41b5fb6b52307e127e56118d910d339a4c2d90d86f4a757390c9ae2af8f2",
+    "Thesis/Intraday/LOBsAndTuples/Retagging.lean": "ff593f987a3bfb77a2c6d5f480483952637b61f67bc8acf6c9ed615b83e59cdf",
+    "Thesis/Intraday/LOBsAndTuples/Visibility.lean": "15cf2db71e3425ba646b366bbf0095366eb30697a4c51941006c4e8b409d6fd0",
+    "Thesis/Intraday/Simulation/AnalogueAttention.lean": "7b805a5d863cf3c0e5a612044024a509ceb2d8183082481cc7ba20b48efd0429",
     "Thesis/Intraday/Simulation/AnalogueReplay.lean": "bc264e67e957dadb765c9b40b78eccbb42377de6a2a57a77647e419544c14d11",
     "Thesis/Intraday/Simulation/BilateralReplay.lean": "414fecaeb1e7abd1da7bab845a072135fbb6c3d6322287f5e142da3bc2a04dfd",
     "Thesis/Intraday/Simulation/CompiledReplay.lean": "dd7c13e03b652a94f6920a624be1288adf69b853aa75cfdbaff5a3a0ba688dca",
     "Thesis/Intraday/Simulation/Conservation.lean": "eb5ca428e5959ae5f357fe98455a28572969666b5b0b859461ca456f9c50b31e",
     "Thesis/Intraday/Simulation/DepthProfile.lean": "e9f9d5096d32d93bb0c4a844921f268fecf2c5b8d893a5a0e78d4e9d75b62e81",
     "Thesis/Intraday/Simulation/DomainExtensions.lean": "ef3fb85fe15b22087879356739831cb5dbd652715f7939baa2c8c565a1ce303d",
-    "Thesis/Intraday/Simulation/EncoderSourceDefinition.lean": "0962c2ea6ca7e23eb4e6bc2a65ee087a7655288f5b95e91943f6b7346c6cf171",
-    "Thesis/Intraday/Simulation/EnergyScore.lean": "52a5e5e53b145a7f477733f9a31bf56757ba4fb7f3e3ffda2d53477b936c43c9",
-    "Thesis/Intraday/Simulation/EuclideanNegativeType.lean": "bedec308d19592421196f9ebe58f03da0f22170edcd829519c19c2ee932076d6",
+    "Thesis/Intraday/Simulation/EnergyScore.lean": "5863dd8fdb728a2bc7d0304d46ffb244e6d115f17bebc04a9d1b40b05edc7c89",
+    "Thesis/Intraday/Simulation/EuclideanNegativeType.lean": "0516685bb42ac412f2e3436efcc22cebab19a674ff07558cf8cc9361e1f9d05e",
     "Thesis/Intraday/Simulation/GeometrySweep.lean": "cf73ec88545f98bf7453328409539ca9bb5ee745eb31aa706ce52593ce72b153",
     "Thesis/Intraday/Simulation/InstructionConservation.lean": "bdf848af811c93c452c0702ae6d56d4302d6fd72b3dd1fcc27ef5d93f83a3e76",
     "Thesis/Intraday/Simulation/InstructionReplay.lean": "72f985835da9c10f71a0b453f7e0f1994d9b2c1d22f4d7a158a475b52adbe36a",
@@ -53256,11 +51107,11 @@
     "Thesis/Intraday/Simulation/ParserPrograms.lean": "675c3abcfae629e6c8b2bd0bc7dc2470e913d7ded89142fe86f05abcdd529222",
     "Thesis/Intraday/Simulation/PositionTransform.lean": "0f82be3642717958862c77abc9b62abe67ad3d975caf9fd6f45079b136618a03",
     "Thesis/Intraday/Simulation/PriceTranslation.lean": "f5ad4828da07c2d6f47bc85e3f80cc0a1a37041e879bfa8a621319e4f8ae594c",
-    "Thesis/Intraday/Simulation/ReplayGeometry.lean": "32e9e913a77867fe7dd58598eb2c0ae836b9ea86f55dd4efe0950e4b9bc4356b",
+    "Thesis/Intraday/Simulation/ReplayGeometry.lean": "39d954addd80e9604396af40260cd7c942d4736092af403910c20c8d59968c69",
     "Thesis/Intraday/Simulation/ReplayQuantities.lean": "f808dd6c3045ce2f882f4c0e7bde61a02794e42adc984c707c1c50d2f6eeeaec",
     "Thesis/Intraday/Simulation/RetrievalWeights.lean": "d94832a155cfc4851a6f198556364cd5a36408840df2e37f44a1a1122b3e9607",
     "Thesis/Intraday/Simulation/TypedReplay.lean": "47b4f33a1118834ff73bb9a4a2338c3f6c1c32918eca51d47b62b13ca2478f1b",
-    "bridge-data/review/supplementary-lean-modules.json": "fc5514a0eaa554667ea6a6145bf0b818753b856e926e4888ac465bb3b5d6d7b3",
+    "bridge-data/review/supplementary-lean-modules.json": "b344b9fc47ad6b8a48d99989d3afed8a23ef684cb492b404e9a3a0a0bfd89f14",
     "lake-manifest.json": "0b1133e66dd092d13df51f27a3daf681f3caa6f6e26d46045f658f553d4b9742",
     "lakefile.toml": "55979311576dde66fde2c751bc553789d151d1127f0b47b2575aed8333173e59",
     "lean-toolchain": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
@@ -53268,7 +51119,7 @@
   "sourceStableDuringQuery": true,
   "summary": {
     "external": 0,
-    "kernel-checked": 6016,
+    "kernel-checked": 5777,
     "unproved": 0,
     "unverified": 0
   },
@@ -53362,7 +51213,6 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedGeometry.lean",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedLaws.lean",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedLp.lean",
-    "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedNonconvexity.lean",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedObstruction.lean",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedSourceExclusion.lean",
     "Thesis/DayAhead/ClearingOperatorPriceCurves/CanonicalSidedWitnesses.lean",
@@ -53450,7 +51300,6 @@
     "Thesis/DayAhead/ClearingOperatorPriceCurves/VendorPLVertices.lean",
     "Thesis/DayAhead/ForecastingImpact/AttributionVersions.lean",
     "Thesis/DayAhead/ForecastingImpact/BoostingLoss.lean",
-    "Thesis/DayAhead/ForecastingImpact/ConditionalDecoding.lean",
     "Thesis/DayAhead/ForecastingImpact/ConditionalSimulation.lean",
     "Thesis/DayAhead/ForecastingImpact/EmpiricalGeometry.lean",
     "Thesis/DayAhead/ForecastingImpact/Forecasting.lean",
@@ -53464,19 +51313,10 @@
     "Thesis/DayAhead/ForecastingImpact/Shapley.lean",
     "Thesis/DayAhead/ForecastingImpact/ShapleyPermutations.lean",
     "Thesis/DayAhead/ForecastingImpact/ShapleySampling.lean",
-    "Thesis/DayAhead/ForecastingImpact/ShapleyWeights.lean",
     "Thesis/DayAhead/ForecastingImpact/SpectralSplitBound.lean",
     "Thesis/DayAhead/ForecastingImpact/TreeImpurity.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/CompactCovariance.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/CompactSpectralExpansion.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/ConditionalBasisSource.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/Covariance.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/FunctionalData.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLT.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTBasic.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTInfinite.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTMoments.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/HilbertCLTTightness.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/HilbertSchmidtCovariance.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/LimitTheorems.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/ProcessStationarity.lean",
@@ -53484,7 +51324,6 @@
     "Thesis/DayAhead/FunctionalDataAnalysis/RegressionMeanSquare.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/ScoreInformationSource.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/ScoreLevyL2Source.lean",
-    "Thesis/DayAhead/FunctionalDataAnalysis/SpectralAmbiguity.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/SpectralBasis.lean",
     "Thesis/DayAhead/FunctionalDataAnalysis/SpectralTheorem.lean",
     "Thesis/DayAhead/PriceCurveAnalysis/EmpiricalCoordinates.lean",
@@ -53556,12 +51395,9 @@
     "Thesis/Foundations/Stochastic/PointProcessAlignment.lean",
     "Thesis/Foundations/Stochastic/PointProcesses.lean",
     "Thesis/Foundations/Stochastic/TupleMeasures.lean",
-    "Thesis/Foundations/Stochastic/UniformTightness.lean",
     "Thesis/Intraday/Applications/Mandate.lean",
     "Thesis/Intraday/Applications/MandateGaussian.lean",
-    "Thesis/Intraday/InferencePointProcesses/BlockBootstrap.lean",
     "Thesis/Intraday/InferencePointProcesses/BookPath.lean",
-    "Thesis/Intraday/InferencePointProcesses/BootstrapDistribution.lean",
     "Thesis/Intraday/InferencePointProcesses/EnsembleCalibration.lean",
     "Thesis/Intraday/InferencePointProcesses/EnsembleRanks.lean",
     "Thesis/Intraday/InferencePointProcesses/ExchangeableRanks.lean",
@@ -53585,7 +51421,6 @@
     "Thesis/Intraday/Simulation/Conservation.lean",
     "Thesis/Intraday/Simulation/DepthProfile.lean",
     "Thesis/Intraday/Simulation/DomainExtensions.lean",
-    "Thesis/Intraday/Simulation/EncoderSourceDefinition.lean",
     "Thesis/Intraday/Simulation/EnergyScore.lean",
     "Thesis/Intraday/Simulation/EuclideanNegativeType.lean",
     "Thesis/Intraday/Simulation/GeometrySweep.lean",
